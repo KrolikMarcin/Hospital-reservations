@@ -1,0 +1,82 @@
+<h2>Sign up</h2>
+
+<%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+  <%= devise_error_messages! %>
+
+  <div class="field">
+    <%= f.label :email %><br />
+    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+  </div>
+
+  <div class="field">
+    <%= f.label :password %>
+    <% if @minimum_password_length %>
+    <em>(<%= @minimum_password_length %> characters minimum)</em>
+    <% end %><br />
+    <%= f.password_field :password, autocomplete: "off" %>
+  </div>
+
+  <div class="field">
+    <%= f.label :password_confirmation %><br />
+    <%= f.password_field :password_confirmation, autocomplete: "off" %>
+  </div>
+
+<%# proba %>
+
+  <%= fields_for :patient do |p|%>
+    <div class="field">
+      <%= p.label :first_name %><br />
+      <%= p.text_field :first_name %>
+    </div>
+
+    <div class="field">
+      <%= p.label :last_name %><br />
+      <%= p.text_field :last_name %>
+    </div>
+
+    <div class="field">
+      <%= p.label :pesel %><br />
+      <%= p.number_field :pesel %>
+    </div>
+
+
+    <%= p.fields_for :address do |a| %>
+      <div class="field">
+        <%= a.label :street %><br />
+        <%= a.text_field :street%>
+      </div>
+      <div class="field">
+        <%= a.label :house_number %><br />
+        <%= a.text_field :house_number %>
+      </div>
+      <div class="field">
+        <%= a.label :apartment_number %><br />
+        <%= a.text_field :apartment_number %>
+      </div>
+      <div class="field">
+        <%= a.label :city %><br />
+        <%= a.text_field :city %>
+      </div>
+      <div class="field">
+        <%= a.label :postal_code %><br />
+        <%= a.text_field :postal_code %>
+      </div>
+    <div class="field">
+      <%= p.label :wants_email? %><br />
+      <%= p.check_box :wants_email? %>
+    </div>
+    <% end %>
+  <% end %>
+
+
+  
+
+
+
+
+  <div class="actions">
+    <%= f.submit "Sign up" %>
+  <div class="field">
+<% end %>
+
+<%= render "users/shared/links" %>

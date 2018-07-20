@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_07_19_215429) do
+ActiveRecord::Schema.define(version: 2018_07_20_093018) do
 
   create_table "addresses", force: :cascade do |t|
     t.string "street"
@@ -48,20 +48,29 @@ ActiveRecord::Schema.define(version: 2018_07_19_215429) do
     t.decimal "price"
     t.date "payment_date"
     t.boolean "payment_status"
+    t.integer "patient_id"
+    t.index ["patient_id"], name: "index_bills_on_patient_id"
+  end
+
+  create_table "patients", force: :cascade do |t|
+    t.string "first_name"
+    t.string "last_name"
+    t.integer "pesel"
+    t.boolean "wants_email?", default: true
     t.integer "user_id"
-    t.index ["user_id"], name: "index_bills_on_user_id"
+    t.index ["user_id"], name: "index_patients_on_user_id"
   end
 
   create_table "reservations", force: :cascade do |t|
     t.date "reservation_date"
     t.string "preferred_hour"
+    t.string "doctors_specializations"
     t.integer "user_id"
-    t.string "doctor_specialization"
     t.index ["user_id"], name: "index_reservations_on_user_id"
   end
 
   create_table "staffs", force: :cascade do |t|
-    t.string "firt_name"
+    t.string "first_name"
     t.string "last_name"
     t.integer "pesel"
     t.string "specialization"
@@ -80,10 +89,6 @@ ActiveRecord::Schema.define(version: 2018_07_19_215429) do
     t.string "last_sign_in_ip"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "first_name"
-    t.string "last_name"
-    t.integer "pesel"
-    t.boolean "want_email?", default: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
