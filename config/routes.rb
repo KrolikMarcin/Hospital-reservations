@@ -4,7 +4,10 @@ Rails.application.routes.draw do
   
   resources :patients, only: [:index, :show]
   resources :reservations, :staffs
-  
+  resources :appointments do 
+    get 'new_staff_choices'
+    post 'create_staff_choices'
+   
   end 
     
 
