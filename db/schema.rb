@@ -26,7 +26,7 @@ ActiveRecord::Schema.define(version: 2018_07_20_093018) do
   create_table "appointments", force: :cascade do |t|
     t.date "appointment_date"
     t.string "appointment_hour"
-    t.string "appointment_staffs"
+    t.string "appointment_staff"
     t.integer "reservation_id"
     t.index ["reservation_id"], name: "index_appointments_on_reservation_id"
   end
@@ -64,7 +64,7 @@ ActiveRecord::Schema.define(version: 2018_07_20_093018) do
   create_table "reservations", force: :cascade do |t|
     t.date "reservation_date"
     t.string "preferred_hour"
-    t.string "doctors_specializations"
+    t.string "doctor_specialization"
     t.integer "user_id"
     t.index ["user_id"], name: "index_reservations_on_user_id"
   end

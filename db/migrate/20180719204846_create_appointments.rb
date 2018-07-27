@@ -3,8 +3,8 @@ class CreateAppointments < ActiveRecord::Migration[5.2]
     create_table :appointments do |t|
       t.date :appointment_date
       t.string :appointment_hour
-      t.string :appointment_staffs
-      t.references :reservation, foreign_key: true
+      t.string :appointment_staff
+      t.references :reservation
     end
   end
 end

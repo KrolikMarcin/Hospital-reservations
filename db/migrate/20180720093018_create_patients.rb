@@ -5,7 +5,7 @@ class CreatePatients < ActiveRecord::Migration[5.2]
       t.string :last_name
       t.integer :pesel
       t.boolean :wants_email?, default: true
-      t.references :user, foregin_key: true
+      t.references :user
       
     end
   end

@@ -1,0 +1,13 @@
+<%= form_for @reservation do |f| %>
+  <%= f.label :reservation_date %>
+  <%= f.date_field :reservation_date %>
+
+  <%= f.label :preferred_hour %>
+  <%= f.text_field :preferred_hour %>
+
+  <%= f.label :specialization %>
+  <%= f.select(:doctor_specialization, @specializations) %>
+  <%= f.submit 'Save'%>
+<% end %>
+
+

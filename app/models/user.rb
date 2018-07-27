@@ -7,7 +7,7 @@ class User < ApplicationRecord
   
   has_many :reservations
   has_one :patient
-  accepts_nested_attributes_for :patient, allow_destroy: true
+  accepts_nested_attributes_for :patient
   
   
 end

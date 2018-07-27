@@ -1,0 +1,8 @@
+<% @reservations.each do |reservation| %>
+  <%= reservation.reservation_date %>
+  <%= reservation.preferred_hour %>
+
+  <%= reservation.user.patient.first_name%>
+  <%= reservation.user.patient.last_name%>
+
+<%end%>
