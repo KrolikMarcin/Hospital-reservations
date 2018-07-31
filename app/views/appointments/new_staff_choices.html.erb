@@ -1,7 +1,0 @@
-<%=form_for @appointment, url: appointment_create_staff_choices_path(@appointment) do |f|  %>
-  
-  <%= f.select(:staff_ids, @doctors) %>
-  
- 
-  <%= f.submit 'Dodaj'%>
-<% end %>

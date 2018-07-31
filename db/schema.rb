@@ -24,17 +24,16 @@ ActiveRecord::Schema.define(version: 2018_07_20_093018) do
   end
 
   create_table "appointments", force: :cascade do |t|
-    t.date "appointment_date"
-    t.string "appointment_hour"
-    t.string "appointment_staff"
+    t.datetime "date_time"
+    t.boolean "nurse_help"
     t.integer "reservation_id"
     t.index ["reservation_id"], name: "index_appointments_on_reservation_id"
   end
 
-  create_table "appointments_staffs", id: false, force: :cascade do |t|
-    t.integer "staff_id", null: false
+  create_table "appointments_employees", id: false, force: :cascade do |t|
+    t.integer "employee_id", null: false
     t.integer "appointment_id", null: false
-    t.index ["staff_id", "appointment_id"], name: "index_appointments_staffs_on_staff_id_and_appointment_id"
+    t.index ["employee_id", "appointment_id"], name: "index_appointments_employees_on_employee_id_and_appointment_id"
   end
 
   create_table "bill_items", force: :cascade do |t|
@@ -45,35 +44,35 @@ ActiveRecord::Schema.define(version: 2018_07_20_093018) do
   end
 
   create_table "bills", force: :cascade do |t|
-    t.decimal "price"
+    t.decimal "amount"
     t.date "payment_date"
-    t.boolean "payment_status"
+    t.boolean "payment_status", default: false
     t.integer "patient_id"
     t.index ["patient_id"], name: "index_bills_on_patient_id"
+  end
+
+  create_table "employees", force: :cascade do |t|
+    t.string "first_name"
+    t.string "last_name"
+    t.integer "pesel"
+    t.string "specialization"
   end
 
   create_table "patients", force: :cascade do |t|
     t.string "first_name"
     t.string "last_name"
     t.integer "pesel"
-    t.boolean "wants_email?", default: true
+    t.boolean "wants_email", default: true
     t.integer "user_id"
     t.index ["user_id"], name: "index_patients_on_user_id"
   end
 
   create_table "reservations", force: :cascade do |t|
-    t.date "reservation_date"
-    t.string "preferred_hour"
+    t.datetime "date_time"
     t.string "doctor_specialization"
+    t.string "symptoms"
     t.integer "user_id"
     t.index ["user_id"], name: "index_reservations_on_user_id"
-  end
-
-  create_table "staffs", force: :cascade do |t|
-    t.string "first_name"
-    t.string "last_name"
-    t.integer "pesel"
-    t.string "specialization"
   end
 
   create_table "users", force: :cascade do |t|

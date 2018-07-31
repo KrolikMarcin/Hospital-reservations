@@ -1,15 +1,12 @@
 <%= form_for @appointment do |f|%>
-  <%= f.label :appointment_date %>
-  <%=f.date_field :appointment_date %>
-
-  <%= f.label :appointment_hour %>
-  <%=f.text_field :appointment_hour %>
-
-  <%= f.label :appointment_staff %>
-  <%= f.select(:appointment_staff, @appointment_staff) %>
+  <%= f.label :date_time %>
+  <%= f.datetime_select(:date_time, start_hour: 8, end_hour: 18, minute_step:30) %>
+  
+  <%= f.label 'Visit from a nurse?' %>
+  <%= f.check_box(:nurse_help) %>
 
   Rezerwacje:
-  <%= f.label :preferred_hours %>
+  <%= f.label :date_time %>
   <%= f.select(:reservation_id, @reservations) %>
 
   <%= f.submit 'save'%>

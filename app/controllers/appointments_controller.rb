@@ -1,64 +1,68 @@
 class AppointmentsController < ApplicationController
-
   def index
     @appointments = Appointment.all
   end
+
   def show
-
   end
-  def new 
+
+  def new
     @appointment = Appointment.new
-    @reservations = Reservation.pluck(:preferred_hour, :id)
-    @staff = Staff.pluck(:first_name, :id)
-    @appointment_staff = [:nurse_with_doctor, :doctor]
-    
+    @reservations = Reservation.pluck(:date_time, :id)
   end
 
-  def create 
+  def create
     @appointment = Appointment.new(appointment_params)
-    reservation =  Reservation.find(appointment_params[:reservation_id])
+    pry binding
+    reservation = Reservation.find(appointment_params[:reservation_id])
     @appointment.reservation = reservation
-    @appointment.appointment_staff = appointment_params[:appointment_staff]
-   
-    
-
-    
+    @appointment.nurse_help = appointment_params[:nurse_help]
     if @appointment.save
-      redirect_to appointment_new_staff_choices_path(@appointment)
+      redirect_to appointment_new_employees_choices_path(@appointment)
     else
-      @reservations = Reservation.pluck(:preferred_hour, :id)
-      @appointment_staff = [:nurse_with_doctor, :doctor]
+      @reservations = Reservation.pluck(:date_time, :id)
       render :new
     end
   end
 
-  def new_staff_choices
-    
+  def new_employees_choices
     @appointment = Appointment.find(params[:appointment_id])
     doctor_specialization = @appointment.reservation.doctor_specialization
-   
-    @doctors = Staff.where(specialization: doctor_specialization).pluck(:first_name, :specialization, :id)
-    @nurses = Staff.where(specialization: :nurse).pluck(:first_name, :specialization, :id)
-  
+    @doctors = employees_without_appointments(
+      doctor_specialization, @appointment.date_time
+    ).pluck(:first_name, :id)
   end
 
-  def create_staff_choices
-    @appointment = Appointment.find(appointment_params[:appointment_id])
-    doctor = Staff.find(appointment_params[:staff_ids])
-    @appointment << doctor
-    # if @appointment.appointment_staff == :nurse_with_doctor
-    #   @appointment << nurse
+  def create_employees_choices
+    @appointment = Appointment.find(params[:appointment_id])
+    pry binding
+    doctor = Employee.find(appointment_params[:employee_ids])
+    @appointment.employees << doctor
     if @appointment.save
-      redirect_to appointments
+      redirect_to appointments_path
     else
-      render :new_staff_choices
+      render :new_employees_choices
     end
   end
+
   private
 
-    def appointment_params
-      params.require(:appointment).permit(
-        :appointment_date, :appointment_hour, :appointment_staff, :reservation_id, :staff_ids, :appointment_id
-      )
-    end
+  def appointment_params
+    params.require(:appointment).permit(
+      :nurse_help, :reservation_id, :employee_ids, :appointment_id, :date_time
+    )
+  end
+
+  def employees_without_appointments(specialization, date_time)
+    Employee.where(specialization: specialization).joins(:appointments).where.not(
+      appointments: { date_time: date_time }
+    )
+  end
+
+  # def sort_by_appointments(employees)
+  #   employees.sort_by do |employee|
+  #     employee.appointments.where(appointment_date:
+  #       @appointment.appointment_date).count
+  #   end
+  # end
 end
