@@ -1,6 +1,6 @@
 <%=form_for @appointment, url: appointment_create_employees_choices_path(@appointment) do |f|  %>
   <%= f.label 'Doctors:'%>
-    <%= f.select(:employee_ids, @doctors)%>
+    <%= f.select(:employee_ids, @doctors) %>
       
   <%= f.submit 'Dodaj'%>
 <% end %>

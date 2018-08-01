@@ -16,7 +16,6 @@ class ReservationsController < ApplicationController
 
   def create
     @reservation = Reservation.new(reservation_params)
-    pry binding
     specialization = reservation_params[:doctor_specialization]
     @reservation.user = current_user
     @reservation.doctor_specialization = specialization

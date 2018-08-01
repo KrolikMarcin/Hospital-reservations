@@ -13,7 +13,6 @@ class AppointmentsController < ApplicationController
 
   def create
     @appointment = Appointment.new(appointment_params)
-    pry binding
     reservation = Reservation.find(appointment_params[:reservation_id])
     @appointment.reservation = reservation
     @appointment.nurse_help = appointment_params[:nurse_help]
@@ -30,14 +29,20 @@ class AppointmentsController < ApplicationController
     doctor_specialization = @appointment.reservation.doctor_specialization
     @doctors = employees_without_appointments(
       doctor_specialization, @appointment.date_time
-    ).pluck(:first_name, :id)
+    )
+    @doctors = sort_by_appointments(@doctors, @appointment.date_time)
+    @doctors = @doctors.pluck(:first_name, :id)
   end
 
   def create_employees_choices
     @appointment = Appointment.find(params[:appointment_id])
-    pry binding
     doctor = Employee.find(appointment_params[:employee_ids])
     @appointment.employees << doctor
+    if @appointment.nurse_help
+      nurses = Employee.where(specialization: 'nurse')
+      nurse = sort_by_appointments(nurses, @appointment.date_time).first
+      @appointment.employees << nurse
+    end
     if @appointment.save
       redirect_to appointments_path
     else
@@ -54,15 +59,14 @@ class AppointmentsController < ApplicationController
   end
 
   def employees_without_appointments(specialization, date_time)
-    Employee.where(specialization: specialization).joins(:appointments).where.not(
-      appointments: { date_time: date_time }
-    )
+    busy_employees = Employee.joins(:appointments).where(specialization:
+      specialization, appointments: { date_time: date_time })
+    Employee.where.not(id: busy_employees.ids)
   end
 
-  # def sort_by_appointments(employees)
-  #   employees.sort_by do |employee|
-  #     employee.appointments.where(appointment_date:
-  #       @appointment.appointment_date).count
-  #   end
-  # end
+  def sort_by_appointments(employees, date_time)
+    employees.sort_by do |employee|
+      employee.appointments.where(date_time: date_time.all_day).count
+    end
+  end
 end
