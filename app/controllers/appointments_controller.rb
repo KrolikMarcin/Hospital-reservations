@@ -59,9 +59,10 @@ class AppointmentsController < ApplicationController
   end
 
   def employees_without_appointments(specialization, date_time)
-    busy_employees = Employee.joins(:appointments).where(specialization:
-      specialization, appointments: { date_time: date_time })
-    Employee.where.not(id: busy_employees.ids)
+    busy_employees = Employee.joins(:appointments).where(appointments:
+     { date_time: date_time })
+    Employee.where(specialization: specialization) \
+    .where.not(id: busy_employees.ids)
   end
 
   def sort_by_appointments(employees, date_time)

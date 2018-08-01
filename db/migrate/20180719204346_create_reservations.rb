@@ -4,7 +4,7 @@ class CreateReservations < ActiveRecord::Migration[5.2]
       t.datetime :date_time
       t.string :doctor_specialization
       t.string :symptoms
-      t.references :user
+      t.references :user, foreign_key: true
     end
   end
 end

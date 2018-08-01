@@ -5,7 +5,6 @@ class CreateEmployees < ActiveRecord::Migration[5.2]
       t.string :last_name
       t.integer :pesel
       t.string :specialization
-     
     end
   end
 end

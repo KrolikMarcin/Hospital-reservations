@@ -1,4 +1,4 @@
 class Bill < ApplicationRecord
-  belongs_to :patient
+  belongs_to :appointment
   has_many :bill_items
 end
