@@ -1,0 +1,7 @@
+<%= form_for @appointment, url: patient_reservation_appointment_doctor_choice_save_path do |f|%>
+  <%= f.label 'Doctors:'%>
+  <%= f.select(:employee_ids, @doctors) %>
+  <%= f.submit 'Save'%>
+<% end %>
+
+

@@ -15,15 +15,24 @@ class ReservationsController < ApplicationController
   end
 
   def create
-    @reservation = Reservation.new(reservation_params)
-    specialization = reservation_params[:doctor_specialization]
-    @reservation.user = current_user
-    @reservation.doctor_specialization = specialization
-
-    if @reservation.save
-      redirect_to reservation_path(@reservation)
-    else
+    reservation = Reservation.new(reservation_params)
+    reservation.user = current_user
+    if Employee.employees_without_appointments(
+      reservation.doctor_specialization, reservation.date_time
+    ).empty?
+      @bad_choice = 'There are no vacancies at the given time! Change date!'
+      @reservation = Reservation.new
+      @specializations = Employee.pluck(:specialization).uniq
       render :new
+    else
+      reservation.save
+      appointment = Appointment.new
+      appointment.date_time = reservation.date_time
+      appointment.reservation = reservation
+      appointment.save
+      redirect_to patient_reservation_appointment_doctor_choice_path(
+        current_user.patient, reservation, appointment
+      )
     end
   end
 

@@ -1,9 +1,12 @@
-<%= form_for @reservation do |f| %>
+<%= @bad_choice if @bad_choice%>
+<%= form_for @reservation, url: patient_reservations_path(current_user.patient) do |f| %>
   <%= f.label :date_time %>
-  <%= f.datetime_select(:date_time, start_hour: 8, end_hour: 18, minute_step:30) %>
+  <%= f.datetime_select(:date_time, start_year: Date.today.year,
+    start_month: Date.today.month,
+   end_year: Date.today.year + 1,  start_hour: 8, end_hour: 18, minute_step:30) %><br />
   <%= f.label :symptoms %>
-  <%= f.text_field :symptoms %>
+  <%= f.text_field :symptoms %><br />
   <%= f.label :specialization %>
-  <%= f.select(:doctor_specialization, @specializations) %>
-  <%= f.submit 'Save'%>
+  <%= f.select(:doctor_specialization, @specializations) %><br />
+  <%= f.submit 'Choice doctor'%>
 <% end %>

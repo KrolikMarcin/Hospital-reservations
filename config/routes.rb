@@ -1,11 +1,14 @@
 Rails.application.routes.draw do
   root 'reservations#index'
   devise_for :users
-  resources :patients, only: [:index, :show]
-  resources :reservations, :employees
-  resources :appointments do
-    get 'new_employees_choices'
-    patch 'create_employees_choices'
+  resources :employees
+  resources :reservations, :appointments, only: [:index]
+  resources :patients, only: [:index, :show] do
+    resources :reservations do
+      resources :appointments do
+        get 'doctor_choice'
+        patch 'doctor_choice_save'
+      end
+    end
   end
-  # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 end
