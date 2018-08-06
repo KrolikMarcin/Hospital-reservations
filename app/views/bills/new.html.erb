@@ -1,0 +1,14 @@
+<% 1.times { @bill.bill_items.build }%>
+<% form_for @bill, url: appointment_bills_path(params[:appointment_id]) do |f| %>
+  <% pry binding%>
+
+  <% f.fields_for :bill_items do |i| %>
+    <% i.each do |b|%>
+      <%= b.label :description %>
+      <%= b.text_field :description %>
+      <%= b.label :price %>
+      <%= b.number_field :price %>
+    <% end %>
+  <% end %>
+  <%= f.submit 'Save'%>
+<% end %>

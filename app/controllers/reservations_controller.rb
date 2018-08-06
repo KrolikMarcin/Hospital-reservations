@@ -26,13 +26,12 @@ class ReservationsController < ApplicationController
       render :new
     else
       reservation.save
+      # redirect_to appointment_create_path
       appointment = Appointment.new
       appointment.date_time = reservation.date_time
       appointment.reservation = reservation
       appointment.save
-      redirect_to patient_reservation_appointment_doctor_choice_path(
-        current_user.patient, reservation, appointment
-      )
+      redirect_to appointment_doctor_choice_path(appointment)
     end
   end
 

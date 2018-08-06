@@ -4,7 +4,17 @@ class AppointmentsController < ApplicationController
   end
 
   def show
+    @appointment = Appointment.find(params[:id])
   end
+
+  # def create
+  #   appointment = Appointment.new
+  #   pry binding
+  #   appointment.date_time = reservation.date_time
+  #   appointment.reservation = reservation
+  #   appointment.save
+  #   redirect_to appointment_doctor_choice_path(appointment)
+  # end
 
   def doctor_choice
     @appointment = Appointment.find(params[:appointment_id])
@@ -20,7 +30,14 @@ class AppointmentsController < ApplicationController
     appointment = Appointment.find(params[:appointment_id])
     doctor = Employee.find(appointment_params[:employee_ids])
     appointment.employees << doctor
-    redirect_to patient_reservations_path
+    redirect_to patient_reservations_path(current_user)
+  end
+
+  def change_status
+    appointment = Appointment.find(params[:appointment_id])
+    appointment.status = true
+    appointment.save
+    redirect_to new_appointment_bill_path(appointment)
   end
 
   private

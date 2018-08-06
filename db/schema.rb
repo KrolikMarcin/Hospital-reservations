@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_08_01_092558) do
+ActiveRecord::Schema.define(version: 2018_08_05_151009) do
 
   create_table "addresses", force: :cascade do |t|
     t.string "street"
@@ -27,6 +27,7 @@ ActiveRecord::Schema.define(version: 2018_08_01_092558) do
     t.datetime "date_time"
     t.boolean "nurse_help"
     t.integer "reservation_id"
+    t.boolean "status", default: false
     t.index ["reservation_id"], name: "index_appointments_on_reservation_id"
   end
 

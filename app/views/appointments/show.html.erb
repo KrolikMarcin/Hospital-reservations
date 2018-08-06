@@ -1,0 +1,6 @@
+
+<%= @appointment.date_time %><br />
+<%= @appointment.status %><br />
+<%= @appointment.reservation.user.patient.first_name %><br />
+<%= @appointment.reservation.user.patient.last_name %><br />
+<%= link_to 'zmien status', appointment_change_status_path(@appointment) %>
