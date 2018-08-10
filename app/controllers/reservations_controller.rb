@@ -26,7 +26,6 @@ class ReservationsController < ApplicationController
       render :new
     else
       reservation.save
-      # redirect_to appointment_create_path
       appointment = Appointment.new
       appointment.date_time = reservation.date_time
       appointment.reservation = reservation

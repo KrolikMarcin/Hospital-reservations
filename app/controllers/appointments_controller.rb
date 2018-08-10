@@ -7,15 +7,6 @@ class AppointmentsController < ApplicationController
     @appointment = Appointment.find(params[:id])
   end
 
-  # def create
-  #   appointment = Appointment.new
-  #   pry binding
-  #   appointment.date_time = reservation.date_time
-  #   appointment.reservation = reservation
-  #   appointment.save
-  #   redirect_to appointment_doctor_choice_path(appointment)
-  # end
-
   def doctor_choice
     @appointment = Appointment.find(params[:appointment_id])
     reservation = @appointment.reservation
