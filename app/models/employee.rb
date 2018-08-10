@@ -6,6 +6,29 @@ class Employee < ApplicationRecord
     ["#{first_name} #{last_name}", id]
   end
 
+  def self.free_date_later(specialization, date_time)
+    while Employee.employees_without_appointments(
+      specialization, date_time
+    ).empty?
+      date_time += 60 * 30
+    end
+    date_time
+  end
+
+  def self.free_date_earlier(specialization, date_time)
+    while Employee.employees_without_appointments(
+      specialization, date_time
+    ).empty?
+      date_time -= 60 * 30
+    end
+    date_time
+  end
+
+  def self.free_time(specialization, date_time)
+    { later: free_date_later(specialization, date_time),
+      earlier: free_date_earlier(specialization, date_time) }
+  end
+
   def self.employees_without_appointments(specialization, date_time)
     busy_employees = joins(:appointments).where(appointments:
      { date_time: date_time })

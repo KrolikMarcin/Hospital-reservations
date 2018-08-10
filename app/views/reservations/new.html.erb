@@ -1,4 +1,5 @@
-<%= @bad_choice if @bad_choice%>
+<%= "There are no vacancies at the given time! The nearest free dates: 
+    #{@free_date[:earlier]}, #{@free_date[:later]}" if @free_date%>
 <%= form_for @reservation, url: patient_reservations_path(current_user.patient) do |f| %>
   <%= f.label :date_time %>
   <%= f.datetime_select(:date_time, start_year: Date.today.year,

@@ -22,7 +22,8 @@ class ReservationsController < ApplicationController
     if Employee.employees_without_appointments(
       reservation.doctor_specialization, reservation.date_time
     ).empty?
-      @bad_choice = 'There are no vacancies at the given time! Change date!'
+      @free_date = Employee.free_time(reservation.doctor_specialization,
+                                      reservation.date_time)
       @reservation = Reservation.new
       @specializations = Employee.pluck(:specialization).uniq
       render :new
