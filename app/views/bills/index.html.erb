@@ -1,4 +1,10 @@
 <% @bills.each do |b| %>
-  <%= b.amount %>
+  Suma:
+  <%= b.amount %><br />
+  <% b.bill_items.each do |i| %>
+    <%= i.description %>
+    <%= i.price %><br />
+  <% end %>
+
 
 <% end%>

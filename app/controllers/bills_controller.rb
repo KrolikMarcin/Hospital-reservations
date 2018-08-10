@@ -1,10 +1,10 @@
 class BillsController < ApplicationController
   def index
-    pry binding
-    patient = Appointment.find(params[:appointment_id]).reservation.user
-    @bills = patient.reservations.collect do |r|
-      r.appointment.bill.amount
-    end
+    reservations_ids = Patient.find(params[:patient_id])
+                              .user.reservations.pluck(:id)
+    appointments_ids = Appointment.where(reservation_id: reservations_ids)
+                                  .pluck(:id)
+    @bills = Bill.where(appointment_id: appointments_ids)
   end
 
   def new
@@ -15,9 +15,10 @@ class BillsController < ApplicationController
     bill = Bill.new(bill_params)
     appointment = Appointment.find(params[:appointment_id])
     bill.appointment = appointment
-    bill.amount = bill.bill_items.sum('price')
+    pry binding
+    bill.amount = bill.bill_items.sum(&:price)
     if bill.save
-      redirect_to appointment_bills_path
+      redirect_to patient_bills_path(appointment.reservation.user.patient)
     else
       @bill = Bill.new
       render :new

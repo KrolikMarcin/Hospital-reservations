@@ -1,6 +1,12 @@
 class AppointmentsController < ApplicationController
   def index
-    @appointments = Appointment.all
+    if params[:patient_id]
+      reservation_ids = Patient.find(params[:patient_id])
+                               .user.reservations.pluck(:id)
+      @appointments = Appointment.where(reservation_id: reservation_ids)
+    else
+      @appointments = Appointment.all
+    end
   end
 
   def show

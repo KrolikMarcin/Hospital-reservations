@@ -2,7 +2,9 @@ class ReservationsController < ApplicationController
   before_action :authenticate_user!, only: [:new, :create]
 
   def index
-    @reservations = Reservation.all
+    reservation_ids = Patient.find(params[:patient_id])
+                             .user.reservations.pluck(:id)
+    @reservations = Reservation.find(reservation_ids)
   end
 
   def show
