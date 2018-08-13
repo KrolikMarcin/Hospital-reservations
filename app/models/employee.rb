@@ -24,7 +24,7 @@ class Employee < ApplicationRecord
     date_time
   end
 
-  def self.free_time(specialization, date_time)
+  def self.free_date(specialization, date_time)
     { later: free_date_later(specialization, date_time),
       earlier: free_date_earlier(specialization, date_time) }
   end

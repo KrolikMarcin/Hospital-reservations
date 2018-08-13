@@ -1,5 +1,6 @@
-
 <%= form_for @bill, url: appointment_bills_path(params[:appointment_id]) do |f| %>
+  <%= f.label 'Bill paid'%>
+  <%= f.check_box :payment_status %>
   <% 5.times do %>
   <%= f.fields_for :bill_items, @bill.bill_items.build do |b| %>
     <%= b.label :description %>
