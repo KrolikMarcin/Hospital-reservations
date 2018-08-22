@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_08_05_151009) do
+ActiveRecord::Schema.define(version: 2018_08_22_085427) do
 
   create_table "addresses", force: :cascade do |t|
     t.string "street"
@@ -18,9 +18,25 @@ ActiveRecord::Schema.define(version: 2018_08_05_151009) do
     t.string "apartment_number"
     t.string "postal_code"
     t.string "city"
-    t.string "addressable_type"
-    t.integer "addressable_id"
-    t.index ["addressable_type", "addressable_id"], name: "index_addresses_on_addressable_type_and_addressable_id"
+    t.integer "user_id"
+    t.index ["user_id"], name: "index_addresses_on_user_id"
+  end
+
+  create_table "admins", force: :cascade do |t|
+    t.string "email", default: "", null: false
+    t.string "encrypted_password", default: "", null: false
+    t.string "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.integer "sign_in_count", default: 0, null: false
+    t.datetime "current_sign_in_at"
+    t.datetime "last_sign_in_at"
+    t.string "current_sign_in_ip"
+    t.string "last_sign_in_ip"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["email"], name: "index_admins_on_email", unique: true
+    t.index ["reset_password_token"], name: "index_admins_on_reset_password_token", unique: true
   end
 
   create_table "appointments", force: :cascade do |t|
@@ -72,8 +88,8 @@ ActiveRecord::Schema.define(version: 2018_08_05_151009) do
     t.datetime "date_time"
     t.string "doctor_specialization"
     t.string "symptoms"
-    t.integer "user_id"
-    t.index ["user_id"], name: "index_reservations_on_user_id"
+    t.integer "patient_id"
+    t.index ["patient_id"], name: "index_reservations_on_patient_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -87,10 +103,14 @@ ActiveRecord::Schema.define(version: 2018_08_05_151009) do
     t.datetime "last_sign_in_at"
     t.string "current_sign_in_ip"
     t.string "last_sign_in_ip"
+    t.boolean "role"
+    t.string "userable_type"
+    t.integer "userable_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+    t.index ["userable_type", "userable_id"], name: "index_users_on_userable_type_and_userable_id"
   end
 
 end

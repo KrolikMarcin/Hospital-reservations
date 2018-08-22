@@ -18,9 +18,9 @@ class ReservationsController < ApplicationController
   def create
     reservation = Reservation.new(reservation_params)
     reservation.user = current_user
-    if Employee.employees_without_appointments(
+    if !Employee.employees_without_appointments(
       reservation.doctor_specialization, reservation.date_time
-    ).empty? == false
+    ).empty?
       reservation.save
       appointment = Appointment.new
       appointment.date_time = reservation.date_time

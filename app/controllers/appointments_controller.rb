@@ -27,7 +27,7 @@ class AppointmentsController < ApplicationController
     appointment = Appointment.find(params[:appointment_id])
     doctor = Employee.find(appointment_params[:employee_ids])
     appointment.employees << doctor
-    redirect_to patient_reservations_path(current_user)
+    redirect_to patient_reservations_path(current_user.patient)
   end
 
   def change_status

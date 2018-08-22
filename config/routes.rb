@@ -2,7 +2,9 @@ Rails.application.routes.draw do
   root 'appointments#index'
   get 'bills/not_paid', to: 'bills#not_paid'
   devise_for :users
-  resources :employees
+  devise_for :admins do
+    resources :employees
+  end
   resources :appointments, only: [:index]
   resources :patients, only: [:index, :show], shallow: true do
     resources :bills, only: [:index]
