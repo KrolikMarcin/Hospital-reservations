@@ -80,8 +80,6 @@ ActiveRecord::Schema.define(version: 2018_08_22_085427) do
     t.string "last_name"
     t.integer "pesel"
     t.boolean "wants_email", default: true
-    t.integer "user_id"
-    t.index ["user_id"], name: "index_patients_on_user_id"
   end
 
   create_table "reservations", force: :cascade do |t|
