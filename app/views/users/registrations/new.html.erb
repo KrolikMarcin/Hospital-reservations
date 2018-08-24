@@ -2,7 +2,45 @@
 <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
   <%= devise_error_messages! %>
   
-  
+  <div class="field">
+    <%= f.label :first_name %><br />
+    <%= f.text_field :first_name %>
+  </div>
+
+  <div class="field">
+    <%= f.label :last_name %><br />
+    <%= f.text_field :last_name %>
+  </div>
+
+  <div class="field">
+    <%= f.label :pesel %><br />
+    <%= f.number_field :pesel %>
+  </div>
+
+  <% f.build_address if f.address.nil? %>
+  <%= f.fields_for :address do |a| %>
+    <div class="field">
+      <%= a.label :street %><br />
+      <%= a.text_field :street%>
+    </div>
+    <div class="field">
+      <%= a.label :house_number %><br />
+      <%= a.text_field :house_number %>
+    </div>
+    <div class="field">
+      <%= a.label :apartment_number %><br />
+      <%= a.text_field :apartment_number %>
+    </div>
+    <div class="field">
+      <%= a.label :city %><br />
+      <%= a.text_field :city %>
+    </div>
+    <div class="field">
+      <%= a.label :postal_code %><br />
+      <%= a.text_field :postal_code %>
+    </div>
+  <% end%>
+
   <div class="field">
     <%= f.label :email %><br />
     <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
@@ -20,7 +58,7 @@
     <%= f.label :password_confirmation %><br />
     <%= f.password_field :password_confirmation, autocomplete: "off" %>
   </div>
-
+  
   <div class="field">
     <%= f.label :role %>
     <%= f.select :role, [['Patient', false], ['Employee', true]] %>
