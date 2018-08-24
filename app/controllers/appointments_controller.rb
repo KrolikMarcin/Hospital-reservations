@@ -1,4 +1,5 @@
 class AppointmentsController < ApplicationController
+  before_action :authenticate_user!
   def index
     if params[:patient_id]
       reservation_ids = Patient.find(params[:patient_id])

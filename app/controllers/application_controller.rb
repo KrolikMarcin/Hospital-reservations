@@ -4,13 +4,13 @@ class ApplicationController < ActionController::Base
   protected
 
   def configure_permitted_parameters
-    devise_parameter_sanitizer.permit(:sign_up, keys: [:role])
+    devise_parameter_sanitizer.permit(:sign_up, keys: [:role, :first_name, :last_name, :pesel])
   end
 
   def after_sign_in_path_for(resource)
-    if !resource.userable && resource.role
+    if resource.class == User && !resource.userable && resource.role
       new_employee_path
-    elsif !resource.userable && !resource.role
+    elsif resource.class == User && !resource.userable && !resource.role
       new_patient_path
     else stored_location_for(resource) || root_path
     end

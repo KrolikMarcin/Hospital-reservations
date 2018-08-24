@@ -20,7 +20,6 @@ class DeviseCreateUsers < ActiveRecord::Migration[5.2]
       t.datetime :last_sign_in_at
       t.string   :current_sign_in_ip
       t.string   :last_sign_in_ip
-      t.boolean :role
       ## Confirmable
       # t.string   :confirmation_token
       # t.datetime :confirmed_at
@@ -32,8 +31,13 @@ class DeviseCreateUsers < ActiveRecord::Migration[5.2]
       # t.string   :unlock_token # Only if unlock strategy is :email or :both
       # t.datetime :locked_at
 
-      t.references :userable, polymorphic: true
       t.timestamps null: false
+      t.string :first_name
+      t.string :last_name
+      t.integer :pesel
+      t.boolean :admin
+      t.boolean :role
+      t.boolean :want_email
     end
 
     add_index :users, :email,                unique: true
