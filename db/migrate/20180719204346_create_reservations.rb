@@ -4,7 +4,6 @@ class CreateReservations < ActiveRecord::Migration[5.2]
       t.datetime :date_time
       t.string :doctor_specialization
       t.string :symptoms
-      t.boolean :status
     end
   end
 end

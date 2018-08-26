@@ -5,7 +5,10 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :trackable, :validatable
   has_one :address
   has_and_belongs_to_many :reservations
-  accepts_nested_attributes_for :address
+
+  def full_name
+    ["#{first_name} #{last_name}", id]
+  end
 
   def self.free_date_later(specialization, date_time)
     while User.employees_without_appointments(
@@ -30,15 +33,16 @@ class User < ApplicationRecord
       earlier: free_date_earlier(specialization, date_time) }
   end
 
-  def self.employee_without_appointments(specialization, date_time)
-    busy_employees = joins(:appointments).where(appointments:
-     { date_time: date_time })
-    where(specialization: specialization).where.not(id: busy_employees.ids)
+  def self.free_employees(specialization, date_time)
+    busy_employees = joins(:reservations)
+                     .where(reservations: { date_time: date_time })
+    where(employee: true, specialization: specialization)
+      .where.not(id: busy_employees.ids)
   end
 
   def self.sort_by_appointments(employees, date_time)
     employees.sort_by do |employee|
-      employee.appointments.where(date_time: date_time.all_day).count
+      employee.reservations.where(date_time: date_time.all_day).count
     end
   end
 end

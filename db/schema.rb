@@ -24,6 +24,7 @@ ActiveRecord::Schema.define(version: 2018_08_25_171624) do
 
   create_table "appointments", force: :cascade do |t|
     t.datetime "date_time"
+    t.string "diagnosis"
     t.integer "reservation_id"
     t.boolean "status", default: false
     t.index ["reservation_id"], name: "index_appointments_on_reservation_id"
@@ -48,7 +49,6 @@ ActiveRecord::Schema.define(version: 2018_08_25_171624) do
     t.datetime "date_time"
     t.string "doctor_specialization"
     t.string "symptoms"
-    t.boolean "status"
   end
 
   create_table "reservations_users", id: false, force: :cascade do |t|

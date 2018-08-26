@@ -1,6 +1,8 @@
 <% @reservations.each do |reservation| %>
   <%= reservation.date_time %>
-  <%= reservation.user.patient.first_name%>
-  <%= reservation.user.patient.last_name%>
-
-<%end%>
+  <% reservation.users.where(employee: true).each do |employee| %>
+    <%= employee.first_name %>
+    <%= employee.last_name %>
+  <% end%>
+  <br />
+<% end%>

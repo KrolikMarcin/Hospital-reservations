@@ -17,30 +17,6 @@
     <%= f.number_field :pesel %>
   </div>
 
-  <% resource.build_address if resource.address.nil? %>
-  <%= f.fields_for :address do |a| %>
-    <div class="field">
-      <%= a.label :street %><br />
-      <%= a.text_field :street%>
-    </div>
-    <div class="field">
-      <%= a.label :house_number %><br />
-      <%= a.text_field :house_number %>
-    </div>
-    <div class="field">
-      <%= a.label :apartment_number %><br />
-      <%= a.text_field :apartment_number %>
-    </div>
-    <div class="field">
-      <%= a.label :city %><br />
-      <%= a.text_field :city %>
-    </div>
-    <div class="field">
-      <%= a.label :postal_code %><br />
-      <%= a.text_field :postal_code %>
-    </div>
-  <% end%>
-
   <div class="field">
     <%= f.label :email %><br />
     <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
@@ -60,6 +36,11 @@
   </div>
   
   <div class="field">
+    <%= f.label :want_email %>
+    <%= f.check_box :want_email %>
+  </div>
+
+  <div class="field">
     <%= f.label :employee %>
     <%= f.check_box :employee %>
   </div>
@@ -74,21 +55,19 @@
   </div>
 <% end %>
 
-<% content_for :head do %>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
 <script>
-var script = document.createElement('script');script.src = "https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js";document.getElementsByTagName('head')[0].appendChild(script);
-
-$(document).read(function(){
-$('#user_role').change(function() {
-   if($(this).is(":checked")) {
-      $("#specialization").removeClass("hidden");
-      return;
-   }
-   $("#specialization").addClass("hidden");
-});
-})
-
+  $(document).ready(function() {
+    $('#user_employee').change(function() {
+       if($(this).is(":checked")) {
+          $("#specialization").removeClass("hidden");
+          return;
+       }
+       $("#specialization").addClass("hidden");
+    });
+  })
 </script>
 
-<% end %>
+
 <%= render "users/shared/links" %>

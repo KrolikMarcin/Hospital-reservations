@@ -2,7 +2,7 @@ class ReservationsController < ApplicationController
   before_action :authenticate_user!, only: [:new, :create]
 
   def index
-    @reservations = User.find(params[:user_id]).reservations
+    @reservations = current_user.reservations
   end
 
   def show
@@ -11,35 +11,52 @@ class ReservationsController < ApplicationController
 
   def new
     @reservation = Reservation.new
-    @specializations = User.pluck(:specialization).uniq
+    @specializations = User.where(employee: true).pluck(:specialization).uniq
   end
 
   def create
     reservation = Reservation.new(reservation_params)
-    reservation.user = current_user
-    if !Employee.employees_without_appointments(
+    reservation.users << current_user
+    if !User.free_employees(
       reservation.doctor_specialization, reservation.date_time
     ).empty?
       reservation.save
-      appointment = Appointment.new
-      appointment.date_time = reservation.date_time
-      appointment.reservation = reservation
-      appointment.save
-      redirect_to appointment_doctor_choice_path(appointment)
+      # appointment = Appointment.new
+      # appointment.date_time = reservation.date_time
+      # appointment.reservation = reservation
+      # appointment.save
+      redirect_to reservation_doctor_choice_path(reservation)
     else
-      @free_date = Employee.free_date(reservation.doctor_specialization,
-                                      reservation.date_time)
+      @free_date = User.free_date(reservation.doctor_specialization,
+                                  reservation.date_time)
       @reservation = Reservation.new
-      @specializations = Employee.pluck(:specialization).uniq
+      @specializations = User.where(employee: true).pluck(:specialization).uniq
       render :new
     end
+  end
+
+  def doctor_choice
+    @reservation = Reservation.find(params[:reservation_id])
+    @doctors = User.free_employees(
+      @reservation.doctor_specialization, @reservation.date_time
+    )
+    @doctors = User.sort_by_appointments(@doctors, @reservation.date_time)
+                   .collect(&:full_name)
+  end
+
+  def doctor_choice_save
+    pry binding
+    reservation = Reservation.find(params[:reservation_id])
+    doctor = User.find(reservation_params[:user_ids])
+    reservation.users << doctor
+    redirect_to reservations_path
   end
 
   private
 
   def reservation_params
     params.require(:reservation).permit(
-      :doctor_specialization, :symptoms, :date_time
+      :doctor_specialization, :symptoms, :date_time, :user_ids
     )
   end
 end
