@@ -2,8 +2,7 @@ class ReservationsController < ApplicationController
   before_action :authenticate_user!, only: [:new, :create]
 
   def index
-    @reservations = Patient.find(params[:patient_id])
-                           .user.reservations
+    @reservations = User.find(params[:user_id]).reservations
   end
 
   def show
@@ -12,7 +11,7 @@ class ReservationsController < ApplicationController
 
   def new
     @reservation = Reservation.new
-    @specializations = Employee.pluck(:specialization).uniq
+    @specializations = User.pluck(:specialization).uniq
   end
 
   def create

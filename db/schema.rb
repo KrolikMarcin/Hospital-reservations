@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_08_24_214155) do
+ActiveRecord::Schema.define(version: 2018_08_25_171624) do
 
   create_table "addresses", force: :cascade do |t|
     t.string "street"
@@ -24,7 +24,6 @@ ActiveRecord::Schema.define(version: 2018_08_24_214155) do
 
   create_table "appointments", force: :cascade do |t|
     t.datetime "date_time"
-    t.boolean "nurse_help"
     t.integer "reservation_id"
     t.boolean "status", default: false
     t.index ["reservation_id"], name: "index_appointments_on_reservation_id"
@@ -49,6 +48,7 @@ ActiveRecord::Schema.define(version: 2018_08_24_214155) do
     t.datetime "date_time"
     t.string "doctor_specialization"
     t.string "symptoms"
+    t.boolean "status"
   end
 
   create_table "reservations_users", id: false, force: :cascade do |t|
@@ -73,9 +73,10 @@ ActiveRecord::Schema.define(version: 2018_08_24_214155) do
     t.string "first_name"
     t.string "last_name"
     t.integer "pesel"
-    t.boolean "admin"
-    t.boolean "role"
-    t.boolean "want_email"
+    t.boolean "admin", default: false
+    t.boolean "employee", default: false
+    t.boolean "want_email", default: true
+    t.string "specialization"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end

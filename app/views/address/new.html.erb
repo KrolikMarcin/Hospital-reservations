@@ -1,0 +1,22 @@
+<%= form_for @address do |a| %>
+  <div class="field">
+    <%= a.label :street %><br />
+    <%= a.text_field :street%>
+  </div>
+  <div class="field">
+    <%= a.label :house_number %><br />
+    <%= a.text_field :house_number %>
+  </div>
+  <div class="field">
+    <%= a.label :apartment_number %><br />
+    <%= a.text_field :apartment_number %>
+  </div>
+  <div class="field">
+    <%= a.label :city %><br />
+    <%= a.text_field :city %>
+  </div>
+  <div class="field">
+    <%= a.label :postal_code %><br />
+    <%= a.text_field :postal_code %>
+  </div>
+<% end%>
