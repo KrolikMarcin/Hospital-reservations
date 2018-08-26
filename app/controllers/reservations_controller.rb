@@ -21,10 +21,6 @@ class ReservationsController < ApplicationController
       reservation.doctor_specialization, reservation.date_time
     ).empty?
       reservation.save
-      # appointment = Appointment.new
-      # appointment.date_time = reservation.date_time
-      # appointment.reservation = reservation
-      # appointment.save
       redirect_to reservation_doctor_choice_path(reservation)
     else
       @free_date = User.free_date(reservation.doctor_specialization,
@@ -45,7 +41,6 @@ class ReservationsController < ApplicationController
   end
 
   def doctor_choice_save
-    pry binding
     reservation = Reservation.find(params[:reservation_id])
     doctor = User.find(reservation_params[:user_ids])
     reservation.users << doctor
