@@ -1,6 +1,11 @@
+Employee:
+<% @appointment.reservation.users.first.first_name %>
 
-<%= @appointment.date_time %><br />
-<%= @appointment.status %><br />
-<%= @appointment.reservation.user.patient.first_name %><br />
-<%= @appointment.reservation.user.patient.last_name %><br />
-<%= link_to 'zmien status', appointment_change_status_path(@appointment) %>
+<%= @appointment.diagnosis %><br />
+<%= @appointment.bill.amount %><br />
+<%= @appointment.bill.payment_status %>
+<% if !@appointment.bill.payment_status %>
+  <%= @appointment.bill.payment_date %>
+<% end%>
+
+

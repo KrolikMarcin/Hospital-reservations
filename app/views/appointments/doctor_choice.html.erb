@@ -1,7 +1,0 @@
-<%= form_for @reservation, url: reservation_doctor_choice_save_path do |f|%>
-  <%= f.label 'Doctors:'%>
-  <%= f.select(:employee_ids, @doctors) %>
-  <%= f.submit 'Save'%>
-<% end %>
-
-

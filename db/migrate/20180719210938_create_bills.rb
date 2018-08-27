@@ -3,7 +3,7 @@ class CreateBills < ActiveRecord::Migration[5.2]
     create_table :bills do |t|
       t.decimal :amount
       t.date :payment_date
-      t.boolean :payment_status, default: false
+      t.boolean :paid, default: false
       t.references :appointment, foreign_key: true
     end
   end

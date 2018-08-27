@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_08_25_171624) do
+ActiveRecord::Schema.define(version: 2018_08_26_164314) do
 
   create_table "addresses", force: :cascade do |t|
     t.string "street"
@@ -23,10 +23,8 @@ ActiveRecord::Schema.define(version: 2018_08_25_171624) do
   end
 
   create_table "appointments", force: :cascade do |t|
-    t.datetime "date_time"
     t.string "diagnosis"
     t.integer "reservation_id"
-    t.boolean "status", default: false
     t.index ["reservation_id"], name: "index_appointments_on_reservation_id"
   end
 
@@ -40,7 +38,7 @@ ActiveRecord::Schema.define(version: 2018_08_25_171624) do
   create_table "bills", force: :cascade do |t|
     t.decimal "amount"
     t.date "payment_date"
-    t.boolean "payment_status", default: false
+    t.boolean "paid", default: false
     t.integer "appointment_id"
     t.index ["appointment_id"], name: "index_bills_on_appointment_id"
   end

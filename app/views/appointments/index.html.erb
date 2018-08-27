@@ -1,6 +1,7 @@
 <% @appointments.each do |appointment| %>
   <%= appointment.date_time %>
-  <% appointment.reservation.user.each do |employee| %>
+  <% appointment.reservation.users.each do |employee| %>
+    <%= employee.employee ? 'Employee:' : 'Patient:' %>
     <%= employee.first_name %>
     <%= employee.last_name %>
   <% end%>
