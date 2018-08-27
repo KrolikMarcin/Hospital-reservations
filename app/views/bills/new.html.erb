@@ -1,0 +1,13 @@
+
+<%= form_for @bill, url: appointment_bills_path do |f| %>
+ 
+  <%= f.label :paid %>
+  <%= f.check_box :paid %><br />
+  <%= f.fields_for :bill_items do |b| %>
+    <%= b.label :description %>
+    <%= b.text_field :description %><br />
+    <%= b.label :price %>
+    <%= b.number_field :price %><br />
+  <% end %>
+  <%= f.submit 'Save'%>
+<% end %>

@@ -3,15 +3,11 @@
   <%= f.text_area :diagnosis %><br />
   <%= f.label :reservation %>
   <%= f.select :reservation_id, @reservations %><br />
-  <%= f.fields_for :bill do |b| %>
-    <%= b.label :payment_status %>
-    <%= b.check_box :payment_status %><br />
-    <%= b.fields_for :bill_items do |i| %>
-      <%= i.label :description %>
-      <%= i.text_field :description %><br />
-      <%= i.label :price %>
-      <%= i.number_field :price %><br />
-    <% end %>
+  <%= f.fields_for :prescriptions do |p| %>
+    <%= p.label :medicine %>
+    <%= p.text_field :medicine %><br />
+    <%= p.label :recommendations %>
+    <%= p.text_field :recommendations %><br />
   <% end %>
-  <%= f.submit 'Save'%>
+  <%= f.submit 'To bill'%>
 <% end%>

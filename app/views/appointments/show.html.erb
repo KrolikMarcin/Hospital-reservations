@@ -3,8 +3,8 @@ Employee:
 
 <%= @appointment.diagnosis %><br />
 <%= @appointment.bill.amount %><br />
-<%= @appointment.bill.payment_status %>
-<% if !@appointment.bill.payment_status %>
+<%= @appointment.bill.paid %>
+<% if !@appointment.bill.paid %>
   <%= @appointment.bill.payment_date %>
 <% end%>
 

@@ -6,7 +6,7 @@ Rails.application.routes.draw do
     get 'doctor_choice'
     patch 'doctor_choice_save'
   end
-  resource :appointments do
+  resources :appointments do
     resources :bills
   end
 end

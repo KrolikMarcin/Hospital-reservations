@@ -8,6 +8,6 @@ class Bill < ApplicationRecord
   end
 
   def check_date
-    payment_status ? Time.now : Time.now + 7.days
+    paid ? Time.now : Time.now + 7.days
   end
 end
