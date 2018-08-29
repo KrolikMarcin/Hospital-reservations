@@ -7,6 +7,7 @@ Rails.application.routes.draw do
     patch 'doctor_choice_save'
   end
   resources :appointments do
-    resources :bills
+    resources :bills, only: [:new, :create]
   end
+  resources :bills, only: [:index]
 end

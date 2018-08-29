@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_08_27_201408) do
+ActiveRecord::Schema.define(version: 2018_08_29_073737) do
 
   create_table "addresses", force: :cascade do |t|
     t.string "street"
@@ -40,7 +40,9 @@ ActiveRecord::Schema.define(version: 2018_08_27_201408) do
     t.date "payment_date"
     t.boolean "paid", default: false
     t.integer "appointment_id"
+    t.integer "user_id"
     t.index ["appointment_id"], name: "index_bills_on_appointment_id"
+    t.index ["user_id"], name: "index_bills_on_user_id"
   end
 
   create_table "prescriptions", force: :cascade do |t|

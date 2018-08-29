@@ -1,7 +1,12 @@
 class AppointmentsController < ApplicationController
   before_action :authenticate_user!
   def index
-    @appointments = Appointment.all
+    if current_user.admin
+      @appointments = Appointment.all
+    else
+      user_reservations = current_user.reservations.pluck(:id)
+      @appointments = Appointment.where(reservation: user_reservations)
+    end
   end
 
   def new
