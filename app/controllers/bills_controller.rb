@@ -1,10 +1,10 @@
 class BillsController < ApplicationController
   def index
-    if current_user.admin
-      @bills = Bill.all.order(payment_date: :desc)
-    elsif !current_user.employee
-      @bills = Bill.where(user: current_user).order(payment_date: :desc)
-    end
+    @bills = if current_user.admin
+               Bill.all.order(payment_date: :desc)
+             elsif !current_user.employee
+               Bill.where(user: current_user).order(payment_date: :desc)
+             end
   end
 
   def new

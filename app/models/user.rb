@@ -8,7 +8,7 @@ class User < ApplicationRecord
   has_and_belongs_to_many :reservations
 
   def full_name
-    ["#{first_name} #{last_name}", id]
+    "#{first_name} #{last_name}"
   end
 
   def self.free_date_later(specialization, date_time)

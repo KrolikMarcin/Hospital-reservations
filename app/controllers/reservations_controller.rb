@@ -2,7 +2,11 @@ class ReservationsController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @reservations = current_user.reservations
+    @reservations = if !current_user.employee
+                      current_user.reservations
+                    else
+                      @reservations = Reservation.all
+                    end
   end
 
   def show
@@ -37,7 +41,7 @@ class ReservationsController < ApplicationController
       @reservation.doctor_specialization, @reservation.date_time
     )
     @doctors = User.sort_by_appointments(@doctors, @reservation.date_time)
-                   .collect(&:full_name)
+                   .collect { |doctor| [doctor.full_name, doctor.id] }
   end
 
   def doctor_choice_save

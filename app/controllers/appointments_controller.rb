@@ -1,17 +1,20 @@
 class AppointmentsController < ApplicationController
   before_action :authenticate_user!
   def index
-    if current_user.admin
-      @appointments = Appointment.all
-    else
-      user_reservations = current_user.reservations.pluck(:id)
-      @appointments = Appointment.where(reservation: user_reservations)
-    end
+    @appointments = if current_user.admin
+                      Appointment.includes(:bill, :prescriptions,
+                                           reservation: :users)
+                    else
+                      Appointment.includes(:bill, :prescriptions,
+                                           reservation: :users)
+                                 .where(users: { id: current_user })
+                    end
   end
 
   def new
     @appointment = Appointment.new
-    @reservations = Reservation.where(date_time: Time.now.all_day).pluck(:date_time, :id)
+    @reservations = Reservation.where(date_time: Time.now - 2.hour..Time.now)
+                               .pluck(:date_time, :id)
     3.times do
       @appointment.prescriptions.build
     end
@@ -25,7 +28,7 @@ class AppointmentsController < ApplicationController
       redirect_to new_appointment_bill_path(appointment)
     else
       @appointment = Appointment.new
-      @reservations = Reservation.where(date_time: Time.now.all_day)
+      @reservations = Reservation.where(date_time: Time.now - 2.hour..Time.now)
                                  .pluck(:date_time, :id)
       3.times do
         @appointment.prescriptions.build

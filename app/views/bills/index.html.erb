@@ -1,7 +1,8 @@
 <% @bills.each do |b| %>
   Suma:
   <%= b.amount %><br />
-  <%= b.payment_status %><br />
+  Paid:
+  <%= b.paid %><br />
   <%= b.payment_date %><br />
   <% b.bill_items.each do |i| %>
     <%= i.description %>
