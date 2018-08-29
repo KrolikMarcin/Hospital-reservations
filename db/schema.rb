@@ -22,12 +22,6 @@ ActiveRecord::Schema.define(version: 2018_08_29_115829) do
     t.index ["user_id"], name: "index_addresses_on_user_id"
   end
 
-  create_table "appointments", force: :cascade do |t|
-    t.string "diagnosis"
-    t.integer "reservation_id"
-    t.index ["reservation_id"], name: "index_appointments_on_reservation_id"
-  end
-
   create_table "bill_items", force: :cascade do |t|
     t.integer "bill_id"
     t.string "description"
@@ -39,18 +33,18 @@ ActiveRecord::Schema.define(version: 2018_08_29_115829) do
     t.decimal "amount"
     t.date "payment_date"
     t.boolean "paid", default: false
-    t.integer "appointment_id"
+    t.integer "reservation_id"
     t.integer "user_id"
-    t.index ["appointment_id"], name: "index_bills_on_appointment_id"
+    t.index ["reservation_id"], name: "index_bills_on_reservation_id"
     t.index ["user_id"], name: "index_bills_on_user_id"
   end
 
   create_table "prescriptions", force: :cascade do |t|
     t.string "medicine"
     t.string "recommendations"
-    t.integer "appointment_id"
+    t.integer "reservation_id"
     t.integer "user_id"
-    t.index ["appointment_id"], name: "index_prescriptions_on_appointment_id"
+    t.index ["reservation_id"], name: "index_prescriptions_on_reservation_id"
     t.index ["user_id"], name: "index_prescriptions_on_user_id"
   end
 
@@ -58,6 +52,8 @@ ActiveRecord::Schema.define(version: 2018_08_29_115829) do
     t.datetime "date_time"
     t.string "doctor_specialization"
     t.string "symptoms"
+    t.string "diagnosis"
+    t.boolean "status"
   end
 
   create_table "reservations_users", id: false, force: :cascade do |t|

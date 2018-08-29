@@ -1,5 +1,5 @@
 class Bill < ApplicationRecord
-  belongs_to :appointment
+  belongs_to :reservation
   belongs_to :user
   has_many :bill_items, dependent: :destroy
   accepts_nested_attributes_for :bill_items, reject_if: :bill_item_empty
