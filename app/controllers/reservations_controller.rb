@@ -3,9 +3,9 @@ class ReservationsController < ApplicationController
 
   def index
     @reservations = if !current_user.employee
-                      current_user.reservations
+                      current_user.reservations.order(date_time: :desc)
                     else
-                      @reservations = Reservation.all
+                      @reservations = Reservation.all.order(date_time: :desc)
                     end
   end
 

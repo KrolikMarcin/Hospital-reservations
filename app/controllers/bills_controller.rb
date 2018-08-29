@@ -18,7 +18,7 @@ class BillsController < ApplicationController
     bill = Bill.new(bill_params)
     appointment = Appointment.find(params[:appointment_id])
     bill.appointment = appointment
-    bill.user = appointment.reservation.users.where(employee: false)
+    bill.user = appointment.reservation.users.find_by(employee: false)
     bill.payment_date = bill.check_date
     bill.amount = bill.bill_items.sum(&:price)
     if bill.save

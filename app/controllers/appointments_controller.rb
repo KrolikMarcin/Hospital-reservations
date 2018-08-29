@@ -2,8 +2,7 @@ class AppointmentsController < ApplicationController
   before_action :authenticate_user!
   def index
     @appointments = if current_user.admin
-                      Appointment.includes(:bill, :prescriptions,
-                                           reservation: :users)
+                      Appointment
                     else
                       Appointment.includes(:bill, :prescriptions,
                                            reservation: :users)
