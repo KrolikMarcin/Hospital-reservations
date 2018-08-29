@@ -5,6 +5,7 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :trackable, :validatable
   has_one :address
   has_many :bills
+  has_many :prescriptions
   has_and_belongs_to_many :reservations
 
   def full_name

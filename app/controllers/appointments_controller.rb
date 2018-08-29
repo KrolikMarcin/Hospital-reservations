@@ -23,6 +23,9 @@ class AppointmentsController < ApplicationController
     appointment = Appointment.new(appointment_params)
     reservation = Reservation.find(appointment_params[:reservation_id])
     appointment.reservation = reservation
+    appointment.prescriptions.each do |p|
+      p.user = reservation.users.find_by(employee: false)
+    end
     if appointment.save
       redirect_to new_appointment_bill_path(appointment)
     else
