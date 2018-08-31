@@ -4,17 +4,22 @@ class Reservation < ApplicationRecord
   has_many :prescriptions, dependent: :destroy
   accepts_nested_attributes_for :prescriptions, reject_if: :prescription_empty
   validate :date_with_free_employees
+  before_destroy :too_late
 
   def prescription_empty(attributes)
     attributes[:medicine].blank? && attributes[:recommendations].blank?
   end
 
   def date_with_free_employees
-    if User.free_employees(doctor_specialization, date_time).empty?
-      errors.add(:date_time, "There are no free doctors at the given time!")
-    end
+    errors.add(:date_time, 'There are no free doctors at the given time!') if
+      User.free_employees(doctor_specialization, date_time).empty?
   end
 
+  def too_late
+    time = Time.now.beginning_of_day + 3.days
+    errors.add(:base, 'Is too late for delete reservation!') if
+      time < reservation.date_time
+  end
   # def free_date_later
   #   while User.free_employees(doctor_specialization, date_time).empty?
   #     date_time += date_time.advance(hours: 1)

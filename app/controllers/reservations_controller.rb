@@ -42,6 +42,11 @@ class ReservationsController < ApplicationController
     end
   end
 
+  def destroy
+    reservation = Reservation.find(params[:reservation_id])
+    reservation.destroy
+  end
+
   def doctor_choice
     @reservation = Reservation.find(params[:reservation_id])
     @doctors = User.free_employees(
@@ -66,8 +71,7 @@ class ReservationsController < ApplicationController
 
   def change_status_save
     @reservation = Reservation.find(params[:reservation_id])
-    pry binding
-    @reservation.update(reservation_params)
+    @reservation.update(reservation_params[:prescriptions_attributes])
     @reservation.status = true
     @reservation.assign_patient_to_prescriptions
     if @reservation.save

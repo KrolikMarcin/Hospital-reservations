@@ -33,11 +33,12 @@ class BillsController < ApplicationController
 
   def pay_bill
     bill = Bill.find(params[:bill_id])
-    bill.()
+    bill.update(paid: true)
+    redirect_to bill_path(bill)
   end
 
   def not_paid
-    @bills = Bill.where(paid: false)
+    @bills = Bill.where(paid: false).order(:payment_date)
   end
 
   private
