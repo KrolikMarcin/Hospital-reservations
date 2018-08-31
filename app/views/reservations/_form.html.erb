@@ -1,0 +1,24 @@
+<%= form_for @reservation do |f| %>
+  <% if @reservation.errors.any? %>
+    <div id='error_explanation'>
+      <h2>
+        <%= pluralize(@reservation.errors.count, "error") %> 
+        prohibited this reservation from being save:
+      </h2>
+      <ul>
+        <% @reservation.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end%>
+      </ul>
+    </div>
+  <% end %>
+  <%= f.label :date_time %>
+  <%= f.datetime_select(:date_time, start_year: Date.today.year,
+    start_month: Date.today.month,
+   end_year: Date.today.year + 1,  start_hour: 8, end_hour: 18, minute_step:60) %><br />
+  <%= f.label :symptoms %>
+  <%= f.text_field :symptoms %><br />
+  <%= f.label :specialization %>
+  <%= f.select(:doctor_specialization, @specializations) %><br />
+  <%= f.submit 'Choice doctor'%>
+<% end %>

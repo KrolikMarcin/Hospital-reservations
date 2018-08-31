@@ -15,33 +15,33 @@ class Reservation < ApplicationRecord
     end
   end
 
-  def free_date_later
-    while User.free_employees(
-      doctor_specialization, date_time
-    ).empty?
-      date_time += date_time.advance(hours: 1)
-    end
-    date_time
-  end
+  # def free_date_later
+  #   while User.free_employees(doctor_specialization, date_time).empty?
+  #     date_time += date_time.advance(hours: 1)
+  #   end
+  #   date_time
+  # end
 
-  def free_date_earlier
-    while User.free_employees(
-      doctor_specialization, date_time
-    ).empty?
-      date_time -= date_time.advance(hours: 1)
-    end
-    date_time
-  end
+  # def free_date_earlier
+  #   while User.free_employees(doctor_specialization, date_time).empty?
+  #     date_time -= date_time.advance(hours: 1)
+  #   end
+  #   date_time
+  # end
 
-  def free_date
-    { later: free_date_later,
-      earlier: free_date_earlier }
-  end
+  # def free_date
+  #   { later: free_date_later,
+  #     earlier: free_date_earlier }
+  # end
 
   def assign_patient_to_prescriptions
-    pry binding
     prescriptions.each do |p|
       p.user = users.find_by(employee: false)
     end
+  end
+
+  def remove_doctor_if_exists
+    employee = users.where(employee: true)
+    users.delete(employee) if employee.exists?
   end
 end

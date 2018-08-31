@@ -7,6 +7,10 @@ class BillsController < ApplicationController
              end
   end
 
+  def show
+    @bill = Bill.find(params[:id])
+  end
+
   def new
     @bill = Bill.new
     3.times do
@@ -25,6 +29,11 @@ class BillsController < ApplicationController
     else
       render :new
     end
+  end
+
+  def pay_bill
+    bill = Bill.find(params[:bill_id])
+    bill.()
   end
 
   def not_paid

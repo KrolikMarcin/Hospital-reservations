@@ -9,5 +9,5 @@ Rails.application.routes.draw do
     patch 'change_status_save'
     resources :bills, only: [:new, :create]
   end
-  resources :bills, only: [:index]
+  resources :bills, only: [:index, :show]
 end

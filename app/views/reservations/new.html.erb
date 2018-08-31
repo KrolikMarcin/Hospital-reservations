@@ -1,16 +1,1 @@
-<%= form_for @reservation do |f| %>
-  <% if @reservation.errors.any? %>
-    <% @reservation.errors.full_messages.each do |msg| %>
-      <%= msg %>
-    <% end%>
-  <% end %>
-  <%= f.label :date_time %>
-  <%= f.datetime_select(:date_time, start_year: Date.today.year,
-    start_month: Date.today.month,
-   end_year: Date.today.year + 1,  start_hour: 8, end_hour: 18, minute_step:60) %><br />
-  <%= f.label :symptoms %>
-  <%= f.text_field :symptoms %><br />
-  <%= f.label :specialization %>
-  <%= f.select(:doctor_specialization, @specializations) %><br />
-  <%= f.submit 'Choice doctor'%>
-<% end %>
+<%= render 'form'%>

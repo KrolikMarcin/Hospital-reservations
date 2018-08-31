@@ -2,10 +2,10 @@ class ReservationsController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @reservations = if !current_user.employee
+    @reservations = if !current_user.admin
                       current_user.reservations.order(date_time: :desc)
                     else
-                      @reservations = Reservation.all.order(date_time: :desc)
+                      Reservation.all.order(date_time: :desc)
                     end
   end
 
@@ -29,17 +29,29 @@ class ReservationsController < ApplicationController
     end
   end
 
+  def edit
+    @reservation = Reservation.find(params[:id])
+  end
+
+  def update
+    @reservation = Reservation.find(params[:id])
+    if @reservation.update
+      redirect_to reservation_path(@reservation)
+    else
+      render :edit
+    end
+  end
+
   def doctor_choice
     @reservation = Reservation.find(params[:reservation_id])
-    doctors = User.free_employees(
+    @doctors = User.free_employees(
       @reservation.doctor_specialization, @reservation.date_time
-    )
-    @doctors = User.sort_by_appointments(doctors, @reservation.date_time)
-                   .collect { |doctor| [doctor.full_name, doctor.id] }
+    ).collect { |doctor| [doctor.full_name, doctor.id] }
   end
 
   def doctor_choice_save
     reservation = Reservation.find(params[:reservation_id])
+    reservation.remove_doctor_if_exists
     doctor = User.find(reservation_params[:user_ids])
     reservation.users << doctor
     redirect_to reservations_path
@@ -54,8 +66,9 @@ class ReservationsController < ApplicationController
 
   def change_status_save
     @reservation = Reservation.find(params[:reservation_id])
-    @reservation.status = true
+    pry binding
     @reservation.update(reservation_params)
+    @reservation.status = true
     @reservation.assign_patient_to_prescriptions
     if @reservation.save
       redirect_to new_reservation_bill_path(@reservation)

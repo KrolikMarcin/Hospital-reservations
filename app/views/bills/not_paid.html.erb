@@ -2,6 +2,5 @@
   <%= b.amount %>
   <%= b.payment_status %>
   <%= b.payment_date %>
-  <%= b.appointment.reservation.user.patient.first_name %>
-  <%= b.appointment.reservation.user.patient.last_name %><br />
+  <%= b.user.full_name %><br />
 <% end %>

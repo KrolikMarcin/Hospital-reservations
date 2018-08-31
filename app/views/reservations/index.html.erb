@@ -1,8 +1,7 @@
 <% @reservations.each do |reservation| %>
   <%= reservation.date_time %>
   <% reservation.users.where(employee: true).each do |employee| %>
-    <%= employee.first_name %>
-    <%= employee.last_name %>
+    <%= employee.full_name %>
   <% end%>
   <br />
 <% end%>
