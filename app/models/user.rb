@@ -25,7 +25,7 @@ class User < ApplicationRecord
     while User.employees_without_appointments(
       specialization, date_time
     ).empty?
-      date_time -= 60 * 30
+      date_time -= date_time.advance(hours: 1)
     end
     date_time
   end
@@ -36,10 +36,9 @@ class User < ApplicationRecord
   end
 
   def self.free_employees(specialization, date_time)
-    busy_employees = joins(:reservations)
-                     .where(reservations: { date_time: date_time })
     where(employee: true, specialization: specialization)
-      .where.not(id: busy_employees.ids)
+      .joins(:reservations).where.not(reservations: { date_time: date_time })
+      .uniq
   end
 
   def self.sort_by_appointments(employees, date_time)

@@ -53,7 +53,7 @@ ActiveRecord::Schema.define(version: 2018_08_29_115829) do
     t.string "doctor_specialization"
     t.string "symptoms"
     t.string "diagnosis"
-    t.boolean "status"
+    t.boolean "status", default: false
   end
 
   create_table "reservations_users", id: false, force: :cascade do |t|

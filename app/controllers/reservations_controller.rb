@@ -19,17 +19,11 @@ class ReservationsController < ApplicationController
   end
 
   def create
-    reservation = Reservation.new(reservation_params)
-    reservation.users << current_user
-    if !User.free_employees(
-      reservation.doctor_specialization, reservation.date_time
-    ).empty?
-      reservation.save
-      redirect_to reservation_doctor_choice_path(reservation)
+    @reservation = Reservation.new(reservation_params)
+    @reservation.users << current_user
+    if @reservation.save
+      redirect_to reservation_doctor_choice_path(@reservation)
     else
-      @free_date = User.free_date(reservation.doctor_specialization,
-                                  reservation.date_time)
-      @reservation = Reservation.new
       @specializations = User.where(employee: true).pluck(:specialization).uniq
       render :new
     end
@@ -37,10 +31,10 @@ class ReservationsController < ApplicationController
 
   def doctor_choice
     @reservation = Reservation.find(params[:reservation_id])
-    @doctors = User.free_employees(
+    doctors = User.free_employees(
       @reservation.doctor_specialization, @reservation.date_time
     )
-    @doctors = User.sort_by_appointments(@doctors, @reservation.date_time)
+    @doctors = User.sort_by_appointments(doctors, @reservation.date_time)
                    .collect { |doctor| [doctor.full_name, doctor.id] }
   end
 
@@ -51,11 +45,31 @@ class ReservationsController < ApplicationController
     redirect_to reservations_path
   end
 
+  def change_status
+    @reservation = Reservation.find(params[:reservation_id])
+    3.times do
+      @reservation.prescriptions.build
+    end
+  end
+
+  def change_status_save
+    @reservation = Reservation.find(params[:reservation_id])
+    @reservation.status = true
+    @reservation.update(reservation_params)
+    @reservation.assign_patient_to_prescriptions
+    if @reservation.save
+      redirect_to new_reservation_bill_path(@reservation)
+    else
+      render :change_status
+    end
+  end
+
   private
 
   def reservation_params
     params.require(:reservation).permit(
-      :doctor_specialization, :symptoms, :date_time, :user_ids
+      :doctor_specialization, :symptoms, :date_time, :user_ids, :diagnosis,
+      prescriptions_attributes: [:medicine, :recommendations]
     )
   end
 end

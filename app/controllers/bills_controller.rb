@@ -15,19 +15,14 @@ class BillsController < ApplicationController
   end
 
   def create
-    bill = Bill.new(bill_params)
-    appointment = Appointment.find(params[:appointment_id])
-    bill.appointment = appointment
-    bill.user = appointment.reservation.users.find_by(employee: false)
-    bill.payment_date = bill.check_date
-    bill.amount = bill.bill_items.sum(&:price)
-    if bill.save
-      redirect_to appointment_path(appointment)
+    @bill = Bill.new(bill_params)
+    reservation = Reservation.find(params[:reservation_id])
+    @bill.user = reservation.users.find_by(employee: false)
+    @bill.payment_date = @bill.check_date
+    @bill.amount = @bill.bill_items.sum(&:price)
+    if @bill.save
+      redirect_to reservation_path(reservation)
     else
-      @bill = Bill.new
-      3.times do
-        @bill.bill_items.build
-      end
       render :new
     end
   end
