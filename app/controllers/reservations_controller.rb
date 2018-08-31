@@ -1,6 +1,8 @@
 class ReservationsController < ApplicationController
   before_action :authenticate_user!
-
+  before_action :admin_only, only: :change_status
+  before_action :patient_only, only: [:new, :create, :choice_doctor,
+   :choice_doctor_save, :edit, :destroy]
   def index
     @reservations = if !current_user.admin
                       current_user.reservations.order(date_time: :desc)

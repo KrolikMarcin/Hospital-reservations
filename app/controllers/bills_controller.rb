@@ -1,4 +1,6 @@
 class BillsController < ApplicationController
+  befor_action :admin_only, only: [:new, :create, :not_paid]
+
   def index
     @bills = if current_user.admin
                Bill.all.order(payment_date: :desc)
