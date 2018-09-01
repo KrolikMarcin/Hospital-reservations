@@ -6,6 +6,10 @@ class ReservationsController < ApplicationController
   def index
     @reservations = if !current_user.admin
                       current_user.reservations.order(date_time: :desc)
+                    elsif current_user.admin && params[:format]
+                      @reservations = Reservation.where(
+                        status: false, date_time: Time.now.all_day
+                      )
                     else
                       Reservation.all.order(date_time: :desc)
                     end
@@ -17,7 +21,7 @@ class ReservationsController < ApplicationController
 
   def new
     @reservation = Reservation.new
-    @specializations = User.where(employee: true).pluck(:specialization).uniq
+    @specializations = User.specializations
   end
 
   def create
@@ -26,13 +30,14 @@ class ReservationsController < ApplicationController
     if @reservation.save
       redirect_to reservation_doctor_choice_path(@reservation)
     else
-      @specializations = User.where(employee: true).pluck(:specialization).uniq
+      @specializations = User.specializations
       render :new
     end
   end
 
   def edit
     @reservation = Reservation.find(params[:id])
+    @specializations = User.specializations
   end
 
   def update

@@ -1,1 +1,28 @@
-<%= @reservation.user.patient.first_name %>
+<div class="container">            
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Patient</th>
+        <th>Date</th>
+        <th>Doctor</th>
+        <th>Symptoms</th>
+        <th>Status</th>
+        <% unless @reservation.diagnosis.empty? || @reservation.diagnosis.nil? %>
+          <th>Diagnosis</th>
+        <% end %>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><%= @reservation.users.find_by(employee: false).full_name %></td>
+        <td><%= @reservation.date_formated %></td>
+        <td><%= @reservation.users.find_by(employee: true).full_name %>
+        <td><%= @reservation.symptoms %></td>
+        <td><%= @reservation.check_status%>
+        <% unless @reservation.diagnosis.empty? || @reservation.diagnosis.nil? %>
+          <td><%= @reservation.diagnosis %></td>
+        <% end %>
+      </tr>
+    </tbody>
+  </table>
+</div>

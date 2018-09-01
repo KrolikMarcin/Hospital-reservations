@@ -19,4 +19,8 @@ class User < ApplicationRecord
         employee.reservations.where(date_time: date_time.all_day).count
       end
   end
+
+  def self.specializations
+    where(employee: true).pluck(:specialization).uniq
+  end
 end

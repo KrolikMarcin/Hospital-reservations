@@ -48,4 +48,24 @@ class Reservation < ApplicationRecord
     employee = users.where(employee: true)
     users.delete(employee) if employee.exists?
   end
+
+  def date_formated
+    date_time.strftime('%a, %d-%m-%Y %H:%M')
+  end
+
+  def check_status
+    if status
+      'The appointment was held'
+    else
+      'The appointment has not yet taken place'
+    end
+  end
+
+  def employee
+    users.find_by(employee: true)
+  end
+
+  def patient
+    users.find_by(employee: false)
+  end
 end
