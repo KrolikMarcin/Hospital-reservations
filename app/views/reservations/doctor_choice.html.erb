@@ -1,5 +1,7 @@
 <%= form_for @reservation, url: reservation_doctor_choice_save_path do |f|%>
-  <%= f.label 'Doctors:'%>
-  <%= f.select(:user_ids, @doctors) %>
-  <%= f.submit 'Save'%>
+  <div class="form-group">
+    <%= f.label 'Doctors:'%>
+    <%= f.select(:user_ids, @doctors, {}, class:'custom-select') %>
+  </div>
+  <%= f.submit 'Save', class:"btn btn-outline-secondary"%>
 <% end %>

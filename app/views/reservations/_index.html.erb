@@ -6,6 +6,7 @@
       <th>Date</th>
       <th>Doctor</th>
       <th>Status</th>
+      <th></th>
     </tr>
   </thead>
   <tbody>
@@ -15,6 +16,12 @@
       <td><%= reservation.date_formated %></td>
       <td><%= reservation.users.find_by(employee: true).full_name %>
       <td><%= reservation.check_status %>
+      <td>
+      <%= link_to 'Show', reservation_path(reservation), class: "btn btn-outline-secondary" %>
+      <% if params[:format] %>
+        <%= link_to 'Change status', reservation_change_status_path(reservation), class: "btn btn-outline-secondary" %>
+      <% end %>
+      </td>
     <% end %>
     </tr>
   </tbody>

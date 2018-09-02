@@ -8,8 +8,7 @@ Rails.application.routes.draw do
     get 'change_status'
     patch 'change_status_save'
     resources :bills, only: [:new, :create]
-    
   end
   resources :bills, only: [:index, :show]
-  get 'appointments_today', to: 'reservations#appointments_today'
+  resources :addresses, only: [:new, :create, :index]
 end

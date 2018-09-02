@@ -17,7 +17,8 @@ class Reservation < ApplicationRecord
 
   def check_date
     errors.add(:base, 'Is too late for delete reservation!') if
-    Time.now.beginning_of_day + 3.days < date_time
+    Time.now.beginning_of_day + 3.days > date_time
+    false
   end
   # def free_date_later
   #   while User.free_employees(doctor_specialization, date_time).empty?
@@ -55,9 +56,9 @@ class Reservation < ApplicationRecord
 
   def check_status
     if status
-      'The appointment was held'
+      'V'
     else
-      'The appointment has not yet taken place'
+      'X'
     end
   end
 

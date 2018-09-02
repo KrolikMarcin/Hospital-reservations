@@ -50,8 +50,10 @@ class ReservationsController < ApplicationController
   end
 
   def destroy
-    reservation = Reservation.find(params[:reservation_id])
+    reservation = Reservation.find(params[:id])
+    pry binding
     reservation.destroy
+    redirect_to reservations_path
   end
 
   def doctor_choice

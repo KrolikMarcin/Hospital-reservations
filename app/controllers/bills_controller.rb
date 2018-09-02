@@ -4,7 +4,9 @@ class BillsController < ApplicationController
   def index
     @bills = if current_user.admin
                Bill.all.order(payment_date: :desc)
-             elsif !current_user.employee
+             elsif current_user.admin && params[:format]
+               Bill.not_paid.order(:payment_date)
+             else
                Bill.where(user: current_user).order(payment_date: :desc)
              end
   end
@@ -23,7 +25,7 @@ class BillsController < ApplicationController
   def create
     @bill = Bill.new(bill_params)
     reservation = Reservation.find(params[:reservation_id])
-    @bill.user = reservation.users.find_by(employee: false)
+    @bill.user = reservation.patient
     @bill.payment_date = @bill.check_date
     @bill.amount = @bill.bill_items.sum(&:price)
     if @bill.save
@@ -37,10 +39,6 @@ class BillsController < ApplicationController
     bill = Bill.find(params[:bill_id])
     bill.update(paid: true)
     redirect_to bill_path(bill)
-  end
-
-  def not_paid
-    @bills = Bill.where(paid: false).order(:payment_date)
   end
 
   private

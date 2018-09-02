@@ -11,4 +11,8 @@ class Bill < ApplicationRecord
   def check_date
     paid ? Time.now : Time.now + 7.days
   end
+
+  def self.not_paid
+    where(paid: false)
+  end
 end

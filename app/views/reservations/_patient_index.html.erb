@@ -6,18 +6,27 @@
       <th>Doctor</th>
       <th>Specialization</th>
       <th>Status</th>
+      <th></th>
     </tr>
   </thead>
   <tbody>
     <% @reservations.each do |reservation| %>
     <tr>
+  
       <td><%= reservation.date_formated %></td>
       <td><%= reservation.employee.full_name %>
       <td><%= reservation.employee.specialization%>
       <td><%= reservation.check_status %>
-      <%= link_to 'Edit', edit_reservation_path(reservation) %>
+      <td>
+      <%= link_to 'Show', reservation_path(reservation), class: "btn btn-outline-secondary" %>
+      <%= link_to 'Edit', edit_reservation_path(reservation), class: "btn btn-outline-secondary" %> 
+      
+      <%= link_to 'Cancel', reservation_path(reservation),
+          method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-outline-secondary"%>
+      </td>
     <% end %>
     </tr>
+    
   </tbody>
 </table>
 

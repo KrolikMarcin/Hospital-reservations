@@ -13,6 +13,8 @@
       <td><%= reservation.patient.full_name %>
       <td><%= reservation.date_formated %></td>
       <td><%= reservation.check_status %>
+      <%= link_to 'Show', reservation_path(reservation) %>
+
     <% end %>
     </tr>
   </tbody>

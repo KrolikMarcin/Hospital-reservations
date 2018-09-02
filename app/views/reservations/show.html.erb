@@ -7,9 +7,8 @@
         <th>Doctor</th>
         <th>Symptoms</th>
         <th>Status</th>
-        <% unless @reservation.diagnosis.empty? || @reservation.diagnosis.nil? %>
-          <th>Diagnosis</th>
-        <% end %>
+        <th>Diagnosis</th>
+   
       </tr>
     </thead>
     <tbody>
@@ -19,9 +18,8 @@
         <td><%= @reservation.users.find_by(employee: true).full_name %>
         <td><%= @reservation.symptoms %></td>
         <td><%= @reservation.check_status%>
-        <% unless @reservation.diagnosis.empty? || @reservation.diagnosis.nil? %>
-          <td><%= @reservation.diagnosis %></td>
-        <% end %>
+        <td><%= @reservation.diagnosis %></td>
+       
       </tr>
     </tbody>
   </table>

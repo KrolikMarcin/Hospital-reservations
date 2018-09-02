@@ -1,4 +1,5 @@
 <%= form_for @reservation do |f| %>
+<form class="needs-validation" novalidate>
   <% if @reservation.errors.any? %>
     <div id='error_explanation'>
       <h2>
@@ -12,13 +13,27 @@
       </ul>
     </div>
   <% end %>
-  <%= f.label :date_time %>
-  <%= f.datetime_select(:date_time, start_year: Date.today.year,
-    start_month: Date.today.month,
-   end_year: Date.today.year + 1,  start_hour: 8, end_hour: 18, minute_step:60) %><br />
-  <%= f.label :symptoms %>
-  <%= f.text_field :symptoms %><br />
-  <%= f.label :specialization %>
-  <%= f.select(:doctor_specialization, @specializations) %><br />
-  <%= f.submit 'Choice doctor'%>
+
+  <div class='form-group'>
+    <%= f.label 'Date'%>
+    <%= f.datetime_select(:date_time, start_year: Date.today.year,
+      start_month: Date.today.month,
+    end_year: Date.today.year + 1,  start_hour: 8, end_hour: 18, minute_step:60)%>
+  </div>
+
+  <div class='form-group'>
+    <%= f.label :symptoms %>
+    <%= f.text_field :symptoms, class: "form-control" %>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :specialization %><br />
+    <%= f.select(:doctor_specialization, @specializations, {}, class:'custom-select') %>
+  </div>
+
+  <div class="actions">
+
+   <%= f.submit 'Choice doctor', class:"btn btn-outline-secondary"%>
+  </div>
+</form>
 <% end %>
