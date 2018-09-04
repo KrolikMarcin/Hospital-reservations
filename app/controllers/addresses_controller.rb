@@ -1,8 +1,4 @@
 class AddressesController < ApplicationController
-  def index
-    @addresses = Address.all
-  end
-
   def new
     @address = Address.new
   end
@@ -11,9 +7,22 @@ class AddressesController < ApplicationController
     @address = Address.new(address_params)
     @address.user = current_user
     if @address.save
-      redirect to addresses_path
+      redirect_to addresses_path
     else
       render :new
+    end
+  end
+
+  def edit
+    @address = Address.find(params[:id])
+  end
+
+  def update
+    @address = Address.find(params[:id])
+    if @address.update(address_params)
+      redirect_to address_path(@address)
+    else
+      render :edit
     end
   end
 

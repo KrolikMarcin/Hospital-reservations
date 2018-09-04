@@ -8,7 +8,7 @@ class Bill < ApplicationRecord
     attributes[:description].blank? && attributes[:price].blank?
   end
 
-  def check_date
+  def check_paid
     paid ? Time.now : Time.now + 7.days
   end
 

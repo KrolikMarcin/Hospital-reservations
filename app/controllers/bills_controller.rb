@@ -26,7 +26,7 @@ class BillsController < ApplicationController
     @bill = Bill.new(bill_params)
     reservation = Reservation.find(params[:reservation_id])
     @bill.user = reservation.patient
-    @bill.payment_date = @bill.check_date
+    @bill.payment_date = @bill.check_paid
     @bill.amount = @bill.bill_items.sum(&:price)
     if @bill.save
       redirect_to reservation_path(reservation)
@@ -44,7 +44,8 @@ class BillsController < ApplicationController
   private
 
   def bill_params
-    params.require(:bill).permit(:paid,
-                                 bill_items_attributes: [:description, :price])
+    params.require(:bill).permit(
+      :paid, bill_items_attributes: [:description, :price]
+    )
   end
 end

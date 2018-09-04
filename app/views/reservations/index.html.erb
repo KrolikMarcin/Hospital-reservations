@@ -1,7 +1,7 @@
 <% if current_user.employee && !current_user.admin %>
   <%= render 'employee_index'%>
 <% elsif current_user.admin %>
-  <%= render 'index' %>
+  <%= render 'admin_index' %>
 <% else %>
   <%= render 'patient_index' %>
 <% end %>
