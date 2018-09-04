@@ -12,12 +12,17 @@ class User < ApplicationRecord
     "#{first_name} #{last_name}"
   end
 
-  def self.free_employees(specialization, date_time)
-    where(employee: true, specialization: specialization)
-      .joins(:reservations).where.not(reservations: { date_time: date_time })
-      .uniq.sort_by do |employee|
-        employee.reservations.where(date_time: date_time.all_day).count
-      end
+  def self.free_employees(reservation)
+    where(employee: true, specialization: reservation.doctor_specialization)
+      .joins(:reservations).where.not(reservations:
+        { date_time: reservation.date_time }).uniq
+  end
+
+  def self.sorted_free_employees(reservation)
+    free_employees(reservation).sort_by do |employee|
+      employee.reservations.where(date_time: reservation.date_time.all_day)
+              .count
+    end.collect { |doctor| [doctor.full_name, doctor.id] }
   end
 
   def self.specializations

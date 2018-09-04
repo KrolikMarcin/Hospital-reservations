@@ -48,9 +48,7 @@ class ReservationsController < ApplicationController
 
   def doctor_choice
     @reservation = Reservation.find(params[:reservation_id])
-    @doctors = User.free_employees(
-      @reservation.doctor_specialization, @reservation.date_time
-    ).collect { |doctor| [doctor.full_name, doctor.id] }
+    @doctors = User.sorted_free_employees(@reservation)
   end
 
   def doctor_choice_save

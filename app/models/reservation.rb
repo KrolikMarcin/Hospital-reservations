@@ -12,7 +12,7 @@ class Reservation < ApplicationRecord
 
   def date_with_free_employees
     errors.add(:date_time, 'There are no free doctors at the given time!') if
-      User.free_employees(doctor_specialization, date_time).empty?
+      User.free_employees(self).empty?
   end
 
   def check_date
