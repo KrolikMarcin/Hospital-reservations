@@ -10,5 +10,12 @@ Rails.application.routes.draw do
     resources :bills, only: [:new, :create]
   end
   resources :bills, only: [:index, :show]
-  resources :addresses, only: [:new, :create, :index]
+  resources :addresses, only: [:show, :new, :create, :index]
+  namespace :admin do
+    resources :reservations, only: [:index, :show] do
+      
+      get 'change_status'
+      patch 'change_status_save'
+    end
+  end
 end

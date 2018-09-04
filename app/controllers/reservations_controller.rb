@@ -1,18 +1,9 @@
 class ReservationsController < ApplicationController
   before_action :authenticate_user!
-  before_action :admin_only, only: :change_status
   before_action :patient_only, only: [:new, :create, :choice_doctor,
    :choice_doctor_save, :edit, :destroy]
   def index
-    @reservations = if !current_user.admin
-                      current_user.reservations.order(date_time: :desc)
-                    elsif current_user.admin && params[:format]
-                      @reservations = Reservation.where(
-                        status: false, date_time: Time.now.all_day
-                      )
-                    else
-                      Reservation.all.order(date_time: :desc)
-                    end
+    @reservations = current_user.reservations.order(date_time: :desc)
   end
 
   def show
@@ -51,7 +42,6 @@ class ReservationsController < ApplicationController
 
   def destroy
     reservation = Reservation.find(params[:id])
-    pry binding
     reservation.destroy
     redirect_to reservations_path
   end
@@ -71,31 +61,11 @@ class ReservationsController < ApplicationController
     redirect_to reservations_path
   end
 
-  def change_status
-    @reservation = Reservation.find(params[:reservation_id])
-    3.times do
-      @reservation.prescriptions.build
-    end
-  end
-
-  def change_status_save
-    @reservation = Reservation.find(params[:reservation_id])
-    @reservation.update(reservation_params[:prescriptions_attributes])
-    @reservation.status = true
-    @reservation.assign_patient_to_prescriptions
-    if @reservation.save
-      redirect_to new_reservation_bill_path(@reservation)
-    else
-      render :change_status
-    end
-  end
-
   private
 
   def reservation_params
     params.require(:reservation).permit(
-      :doctor_specialization, :symptoms, :date_time, :user_ids, :diagnosis,
-      prescriptions_attributes: [:medicine, :recommendations]
+      :doctor_specialization, :symptoms, :date_time, :user_ids, :diagnosis
     )
   end
 end
