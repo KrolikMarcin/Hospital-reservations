@@ -18,8 +18,8 @@
       <td><%= reservation.check_status %>
       <td>
       <%= link_to 'Show', reservation_path(reservation), class: "btn btn-outline-secondary" %>
-      <% if params[:format] %>
-        <%= link_to 'Change status', reservation_change_status_path(reservation), class: "btn btn-outline-secondary" %>
+      <% if params[:format] == :today %>
+        <%= link_to 'Change status', admin_reservation_change_status_path(reservation), class: "btn btn-outline-secondary" %>
       <% end %>
       </td>
     <% end %>

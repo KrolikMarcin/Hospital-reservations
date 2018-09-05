@@ -1,0 +1,14 @@
+<% @bills.each do |b| %>
+  Suma:
+  <%= b.amount %><br />
+  Paid:
+  <%= b.paid %><br />
+  
+  <%= b.payment_date %><br />
+  <% b.bill_items.each do |i| %>
+    <%= i.description %>
+    <%= i.price %><br />
+  <% end %>
+
+
+<% end%>

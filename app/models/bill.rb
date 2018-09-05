@@ -13,6 +13,10 @@ class Bill < ApplicationRecord
   end
 
   def self.not_paid
-    where(paid: false)
+    where(paid: false).order(payment_date: :desc)
+  end
+
+  def self.paid
+    where(paid: true).order(payment_date: :desc)
   end
 end

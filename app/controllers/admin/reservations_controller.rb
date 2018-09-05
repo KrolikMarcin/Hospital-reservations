@@ -2,10 +2,8 @@ class Admin::ReservationsController < ApplicationController
   before_action :admin_only, only: [:index, :change_status, :change_status_save]
   before_action :authenticate_user!
   def index
-    @reservations = if current_user.admin && params[:format]
-                      Reservation.where(
-                        status: false, date_time: Time.now.all_day
-                      )
+    @reservations = if params[:format]
+                      Reservation.send(params[:format].to_sym)
                     else
                       Reservation.all.order(date_time: :desc)
                     end

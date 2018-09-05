@@ -69,4 +69,12 @@ class Reservation < ApplicationRecord
   def patient
     users.find_by(employee: false)
   end
+
+  def self.today
+    where(status: false, date_time: Time.now.all_day)
+  end
+
+  def self.status_false
+    where(status: false)
+  end
 end
