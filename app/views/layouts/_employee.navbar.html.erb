@@ -5,17 +5,8 @@
       Reservations
     </a>
     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-      <%= link_to 'New reservation', new_reservation_path, class: 'dropdown-item'%>
-      <%= link_to 'Your reservations', reservations_path, class: 'dropdown-item' %>
-    </div>
-  </li>
-
-  <li class='nabar-item dropdown'>
-    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-      Bills
-    </a>
-    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-      <%= link_to 'Your bills', bills_path, class: 'dropdown-item' %>
+      <%= link_to 'Today reservations', reservations_path(:today), class: 'dropdown-item'%>
+      <%= link_to 'All reservations', reservations_path, class: 'dropdown-item' %>
     </div>
   </li>
 
