@@ -55,11 +55,7 @@ class Reservation < ApplicationRecord
   end
 
   def check_status
-    if status
-      'V'
-    else
-      'X'
-    end
+    status ? 'V' : 'X'
   end
 
   def employee
@@ -70,11 +66,26 @@ class Reservation < ApplicationRecord
     users.find_by(employee: false)
   end
 
-  def self.today
-    where(status: false, date_time: Time.now.all_day)
+  def self.today_all_reservations
+    where(status: false, date_time: Time.now.all_day).order(date_time: :desc)
   end
 
-  def self.status_false
-    where(status: false)
+
+  def self.employee_today_reservations(employee)
+    where(date_time: Time.now.all_day).joins(:users)
+                                      .where(users: { id: employee.id })
+                                      .order(date_time: :desc)
+  end
+
+  def self.employee_week_reservations(employee)
+    where(date_time: Time.now.all_week).joins(:users)
+                                       .where(users: { id: employee.id })
+                                       .order(date_time: :desc)
+  end
+
+  def self.employee_month_reservations(employee)
+    where(date_time: Time.now.all_month).joins(:users)
+                                        .where(users: { id: employee.id })
+                                        .order(date_time: :desc)
   end
 end

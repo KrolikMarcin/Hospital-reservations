@@ -21,10 +21,6 @@ class Bill < ApplicationRecord
   end
 
   def check_status
-    if paid
-      'V'
-    else
-      'X'
-    end
+    paid ? 'V' : 'X'
   end
 end

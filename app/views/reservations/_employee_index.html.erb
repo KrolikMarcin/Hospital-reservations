@@ -14,7 +14,10 @@
       <td><%= reservation.date_formated %></td>
       <td><%= reservation.check_status %></td>
       <td>
-      <%= link_to 'Show', reservation_path(reservation), class:"btn btn-outline-secondary" %>
+      <%= link_to 'Show', reservation_path(reservation), class: "btn btn-outline-secondary" %>
+      <% unless reservation.status %>
+      <%= link_to 'Change status', reservation_change_status_path(reservation), class: "btn btn-outline-secondary"%>
+      <% end %>
       </td>
     <% end %>
     </tr>
