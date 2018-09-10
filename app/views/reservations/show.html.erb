@@ -8,7 +8,7 @@
         <th>Symptoms</th>
         <th>Status</th>
         <th>Diagnosis</th>
-   
+        <th></th>
       </tr>
     </thead>
     <tbody>
@@ -19,7 +19,16 @@
         <td><%= @reservation.symptoms %></td>
         <td><%= @reservation.check_status%>
         <td><%= @reservation.diagnosis %></td>
-       
+        <td>
+        <% unless current_user.employee%>
+          <%= link_to 'Edit', edit_reservation_path(@reservation), class: "btn btn-outline-secondary" %> 
+          <% if Time.now.beginning_of_day + 3.days < @reservation.date_time %>
+            <%= link_to 'Cancel', reservation_path(@reservation),
+                method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-outline-secondary"%>
+          <% end %>
+          
+        <% end %>
+        </td>
       </tr>
     </tbody>
   </table>

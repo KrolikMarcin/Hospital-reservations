@@ -2,6 +2,7 @@ class ReservationsController < ApplicationController
   before_action :authenticate_user!
   before_action :patient_only, only: [:new, :create, :choice_doctor,
    :choice_doctor_save, :edit, :destroy]
+  before_action :employee_only, only: [:change_status, :change_status_save]
   def index
     @reservations = current_user.reservations.order(date_time: :desc)
   end
@@ -57,6 +58,25 @@ class ReservationsController < ApplicationController
     doctor = User.find(reservation_params[:user_ids])
     reservation.users << doctor
     redirect_to reservations_path
+  end
+
+  def change_status
+    @reservation = Reservation.find(params[:reservation_id])
+    3.times do
+      @reservation.prescriptions.build
+    end
+  end
+
+  def change_status_save
+    @reservation = Reservation.find(params[:reservation_id])
+    @reservation.update(prescriptions_params[:prescriptions_attributes])
+    @reservation.status = true
+    @reservation.assign_patient_to_prescriptions
+    if @reservation.save
+      redirect_to reservation_path(@reservation)
+    else
+      render :change_status
+    end
   end
 
   private

@@ -1,0 +1,12 @@
+<ul class='navbar-nav mr-auto'>
+
+  <li class='navbar-item dropdown'>
+    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      Reservations
+    </a>
+    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+      <%= link_to 'Today reservations', reservations_path(:today), class: 'dropdown-item'%>
+      <%= link_to 'All reservations', reservations_path, class: 'dropdown-item' %>
+    </div>
+  </li>
+</ul>

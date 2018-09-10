@@ -25,23 +25,51 @@
     </button>
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      
-      <% if user_signed_in? && !current_user.employee %>
+
+
+      <% if user_signed_in? && current_user.admin %>
+        <%= render 'layouts/admin_navbar'%>
+      <% elsif user_signed_in? && !current_user.employee %>
         <%= render 'layouts/patient_navbar'%>
       <% elsif user_signed_in? && current_user.employee && !current_user.admin %>
-        <%= render 'layouts/employee_navbar '%>
+        <%= render 'layouts/employee_navbar'%>
+      <% end %>
+
+      <% if user_signed_in? %>
+        <ul class="navbar-nav ml-auto">
+
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Profile
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+      
+              <%= link_to 'Edit profile', edit_user_registration_path, class: 'dropdown-item' %> 
+              <%= link_to 'Destroy', user_registration_path(current_user), method: :delete, class: 'dropdown-item' %>
+              <div class="dropdown-divider"></div>
+              <%= link_to 'Add address', new_address_path, class: 'dropdown-item'%>
+              <% unless current_user.address.nil? %>
+                <%= link_to 'Edit address', edit_address_path(current_user.address), class: 'dropdown-item'%>
+              <% end %>
+            </div>
+          </li>
+
+          <li class='nav-item'>
+            <%= link_to "Logout", destroy_user_session_path, method: :delete, class: 'nav-link'  %>
+          </li>
+        </ul>
       <% else %>
-      <ul class="navbar-nav ml-auto">
-        <li class='nav-item'>
-          <%= link_to "Sign up", new_user_registration_path, class: 'nav-link'  %>
-        </li>
 
-        <li class='nav-item'> 
-          <%= link_to "Login", new_user_session_path, class: 'nav-link'  %>
-        </li>
-      <% end%>
-      </ul>
+        <ul class="navbar-nav ml-auto">
+          <li class='nav-item'>
+            <%= link_to "Sign up", new_user_registration_path, class: 'nav-link'  %>
+          </li>
 
+          <li class='nav-item'> 
+            <%= link_to "Login", new_user_session_path, class: 'nav-link'  %>
+          </li>
+        </ul>
+      <% end %>
     </div>
   </div>
 </nav>

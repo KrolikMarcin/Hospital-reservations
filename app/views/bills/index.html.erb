@@ -1,14 +1,29 @@
-<% @bills.each do |b| %>
-  Suma:
-  <%= b.amount %><br />
-  Paid:
-  <%= b.paid %><br />
+<div class="container">            
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Amount</th>
+      <th>Paid</th>
+      <th>Payment date</th>
+      <th>Doctor name</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @bills.each do |bill| %>
+    <tr>
   
-  <%= b.payment_date %><br />
-  <% b.bill_items.each do |i| %>
-    <%= i.description %>
-    <%= i.price %><br />
-  <% end %>
+      <td><%= bill.amount %></td>
+      <td><%= bill.check_status %></td>
+      <td><%= bill.payment_date %></td>
+      <td><%= bill.reservation.employee.full_name %></td>
+      <td>
+      <%= link_to 'Show', reservation_path(reservation), class: "btn btn-outline-secondary" %>
+      </td>
+    <% end %>
+    </tr>
+    
+  </tbody>
+</table>
 
-
-<% end%>
+</div>

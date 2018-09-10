@@ -19,4 +19,12 @@ class Bill < ApplicationRecord
   def self.paid
     where(paid: true).order(payment_date: :desc)
   end
+
+  def check_status
+    if paid
+      'V'
+    else
+      'X'
+    end
+  end
 end
