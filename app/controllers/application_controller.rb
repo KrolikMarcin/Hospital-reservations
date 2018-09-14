@@ -17,4 +17,9 @@ class ApplicationController < ActionController::Base
     redirect_back(fallback_location: root_path, alert: 'Access denied.') if
       current_user.employee? || current_user.admin?
   end
+
+  def employee_only
+    redirect_back(fallback_location: root_path, alert: 'Access denied.') if
+    !current_user.employee? || current_user.admin?
+  end
 end

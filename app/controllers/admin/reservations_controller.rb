@@ -18,11 +18,4 @@ class Admin::ReservationsController < ApplicationController
     reservation.destroy
     redirect_to reservations_path
   end
-
-  private
-
-  def prescriptions_params
-    require(:reservation).permit(prescriptions_attributes: [:medicine, :recommendations])
-  end
-
 end

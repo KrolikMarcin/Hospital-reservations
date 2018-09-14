@@ -15,7 +15,7 @@
       <td><%= reservation.check_status %></td>
       <td>
       <%= link_to 'Show', reservation_path(reservation), class: "btn btn-outline-secondary" %>
-      <% unless reservation.status %>
+      <% if !reservation.status && params[:format] == 'employee_today_reservations' %>
       <%= link_to 'Change status', reservation_change_status_path(reservation), class: "btn btn-outline-secondary"%>
       <% end %>
       </td>

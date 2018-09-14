@@ -70,7 +70,6 @@ class Reservation < ApplicationRecord
     where(status: false, date_time: Time.now.all_day).order(date_time: :desc)
   end
 
-
   def self.employee_today_reservations(employee)
     where(date_time: Time.now.all_day).joins(:users)
                                       .where(users: { id: employee.id })
