@@ -3,7 +3,7 @@ class Reservation < ApplicationRecord
   has_one :bill, dependent: :destroy
   has_many :prescriptions, dependent: :destroy
   accepts_nested_attributes_for :prescriptions, reject_if: :prescription_empty
-  validate :date_with_free_employees
+  # validate :date_with_free_employees
   before_destroy :check_date
 
   def prescription_empty(attributes)
