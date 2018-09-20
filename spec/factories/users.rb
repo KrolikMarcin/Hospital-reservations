@@ -16,6 +16,17 @@ FactoryBot.define do
       admin { true }
       employee { true }
     end
+
+    factory :user_with_many_reservations do
+      transient do
+        reservations_count { 10 }
+      end
+
+      after(:create) do |user, evaluator|
+        create_list(:reservation, evaluator.reservations_count,
+                    users: [user])
+      end
+    end
+    factory :user_employee, traits: [:employee]
   end
-  factory :user_employee, traits: [:user, :employee]
 end
