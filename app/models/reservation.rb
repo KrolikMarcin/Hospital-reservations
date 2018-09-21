@@ -5,6 +5,7 @@ class Reservation < ApplicationRecord
   accepts_nested_attributes_for :prescriptions, reject_if: :prescription_empty
   # validate :date_with_free_employees
   before_destroy :check_date
+  validates :doctor_specialization, presence: true
 
   def prescription_empty(attributes)
     attributes[:medicine].blank? && attributes[:recommendations].blank?

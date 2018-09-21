@@ -15,7 +15,9 @@ FactoryBot.define do
                                          reservations: [reservation])
       end
     end
-
+    factory :invalid_reservation do
+      doctor_specialization { nil }
+    end
     factory :reservation_with_prescriptions do
       transient do
         prescriptions_count { 3 }
