@@ -13,7 +13,7 @@ class AddressesController < ApplicationController
     @address = Address.new(address_params)
     @address.user = current_user
     if @address.save
-      redirect_to addresses_path
+      redirect_to address_path(@address)
     else
       render :new
     end
@@ -30,6 +30,12 @@ class AddressesController < ApplicationController
     else
       render :edit
     end
+  end
+
+  def destroy
+    address = Address.find(params[:id])
+    address.destroy
+    redirect_to root_path
   end
 
   private

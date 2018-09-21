@@ -13,7 +13,7 @@ Rails.application.routes.draw do
     patch 'change_status_save'
     resources :bills, only: :show
   end
-  resources :addresses, only: [:show, :new, :edit, :create, :index]
+  resources :addresses
   namespace :admin do
     resources :reservations, only: [:index, :show]
     resources :bills, only: [:index, :show, :new, :create]

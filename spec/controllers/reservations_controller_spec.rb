@@ -16,6 +16,22 @@ RSpec.describe ReservationsController, type: :controller do
     end
   end
 
+  describe 'GET #show' do
+    before do
+      sign_in(create(:user))
+    end
+    it 'assigns the requested reservation to @reservation' do
+      reservation = create(:reservation)
+      get :show, params: { id: reservation }
+      expect(assigns(:reservation)).to eq(reservation)
+    end
+
+    it 'renders the :show template' do
+      reservation = create(:reservation)
+      get :show, params: { id: reservation }
+      expect(response).to render_template :show
+    end
+  end
   describe 'POST #create' do
     before do
       sign_in(create(:user))
@@ -57,7 +73,7 @@ RSpec.describe ReservationsController, type: :controller do
         expect(assigns(:reservation)).to eq(@reservation)
       end
 
-      it "changes @contact's attribuites" do
+      it "changes @reservation's attribuites" do
         patch :update, params: {
           id: @reservation,
           reservation: attributes_for(:reservation,
@@ -76,7 +92,7 @@ RSpec.describe ReservationsController, type: :controller do
     end
 
     context 'with invalid attributes' do
-      it "does not change the contact's attributes" do
+      it "does not change the reservation's attributes" do
         patch :update, params: {
           id: @reservation, reservation: attributes_for(:reservation,
                                                         doctor_specialization: nil)
@@ -88,8 +104,25 @@ RSpec.describe ReservationsController, type: :controller do
       it 're-renders the :edit template' do
         patch :update, params: { id: @reservation,
                                  reservation: attributes_for(:invalid_reservation) }
-        expect(response).to render_template :edit                        
+        expect(response).to render_template :edit
       end
     end
   end
+
+  describe 'Delete #destroy' do
+    before(:each) do
+      sign_in(create(:user))
+      @reservation = create(:reservation)
+    end
+
+    it 'deletes the reservation' do
+      expect { delete :destroy, params: { id: @reservation } }.to change(Reservation, :count).by(-1)
+    end
+
+    it 'redirects to reservations#index' do
+      delete :destroy, params: { id: @reservation }
+      expect(response).to redirect_to reservations_path
+    end
+  end
 end
+
