@@ -57,10 +57,10 @@ class ReservationsController < ApplicationController
   end
 
   def doctor_choice_save
-    reservation = Reservation.find(params[:reservation_id])
-    reservation.remove_doctor_if_exists
+    @reservation = Reservation.find(params[:reservation_id])
+    @reservation.remove_doctor_if_exists
     doctor = User.find(reservation_params[:user_ids])
-    reservation.users << doctor
+    @reservation.users << doctor
     redirect_to reservations_path
   end
 

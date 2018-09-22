@@ -4,14 +4,16 @@ RSpec.describe ReservationsController, type: :controller do
   describe 'GET #new' do
     before do
       sign_in(create(:user))
-    end
-    it 'assigns new Reservation to @reservation' do
+      create_list(:user_doctor, 2)
       get :new
+    end
+
+    it 'assigns new Reservation to @reservation, and specializations to @specializations' do
       expect(assigns(:reservation)).to be_a_new(Reservation)
+      expect(assigns(:specializations)).to eq(['specialization1', 'specialization2'])
     end
 
     it 'renders the :new template' do
-      get :new
       expect(response).to render_template(:new)
     end
   end
@@ -19,27 +21,30 @@ RSpec.describe ReservationsController, type: :controller do
   describe 'GET #show' do
     before do
       sign_in(create(:user))
+      @reservation = create(:reservation)
+      get :show, params: { id: @reservation }
     end
+
     it 'assigns the requested reservation to @reservation' do
-      reservation = create(:reservation)
-      get :show, params: { id: reservation }
-      expect(assigns(:reservation)).to eq(reservation)
+      expect(assigns(:reservation)).to eq(@reservation)
     end
 
     it 'renders the :show template' do
-      reservation = create(:reservation)
-      get :show, params: { id: reservation }
       expect(response).to render_template :show
     end
   end
+
   describe 'POST #create' do
     before do
-      sign_in(create(:user))
+      @patient = create(:user)
+      sign_in(@patient)
     end
+
     context 'with valid params' do
-      it 'creates a new Reservation' do
+      it 'creates a new Reservation, and assign patient to reservation' do
         expect { post :create, params: { reservation: attributes_for(:reservation) } }
           .to change(Reservation, :count).by(1)
+        expect(assigns(:reservation).users).to eq([@patient])
       end
 
       it 'redirects to reservation#doctor_choice' do
@@ -62,48 +67,48 @@ RSpec.describe ReservationsController, type: :controller do
   end
 
   describe 'PATCH #update' do
-    before :each do
+    before(:each) do
       @reservation = create(:reservation)
       sign_in(create(:user))
     end
 
     context 'valid attributes' do
+      before do
+        patch :update, params: {
+          id: @reservation, reservation: attributes_for(:reservation,
+                                                        date_time: Time.new(2001, 10, 10),
+                                                        doctor_specialization: 'dentist')
+        }
+        @reservation.reload
+      end
+
       it 'locates the requested @reservation' do
-        patch :update, params: { id: @reservation, reservation: attributes_for(:reservation) }
         expect(assigns(:reservation)).to eq(@reservation)
       end
 
       it "changes @reservation's attribuites" do
-        patch :update, params: {
-          id: @reservation,
-          reservation: attributes_for(:reservation,
-                                      date_time: Time.new(2001, 10, 10),
-                                      doctor_specialization: 'dentist')
-        }
-        @reservation.reload
         expect(@reservation.date_time).to eq(Time.new(2001, 10, 10))
         expect(@reservation.doctor_specialization).to eq('dentist')
       end
 
       it 'redirects to the updated reservation' do
-        patch :update, params: { id: @reservation, reservation: attributes_for(:reservation) }
         expect(response).to redirect_to @reservation
       end
     end
 
     context 'with invalid attributes' do
-      it "does not change the reservation's attributes" do
+      before(:each) do
         patch :update, params: {
-          id: @reservation, reservation: attributes_for(:reservation,
-                                                        doctor_specialization: nil)
+          id: @reservation, reservation: attributes_for(:invalid_reservation)
         }
         @reservation.reload
+      end
+
+      it "does not change the reservation's attributes" do
         expect(@reservation.doctor_specialization).not_to eq(nil)
       end
 
       it 're-renders the :edit template' do
-        patch :update, params: { id: @reservation,
-                                 reservation: attributes_for(:invalid_reservation) }
         expect(response).to render_template :edit
       end
     end
@@ -121,6 +126,35 @@ RSpec.describe ReservationsController, type: :controller do
 
     it 'redirects to reservations#index' do
       delete :destroy, params: { id: @reservation }
+      expect(response).to redirect_to reservations_path
+    end
+  end
+
+  # describe 'GET #doctor_choice' do
+  #   before do
+  #     @reservation = create(:reservation_with_patient)
+  #     sign_in(@reservation.patient)
+  #     get :doctor_choice, params: { reservation_id: @reservation.id }
+  #   end
+  # end
+
+  describe 'PATCH #doctor_choice_save' do
+    before do
+      @reservation = create(:reservation_with_patient)
+      sign_in(@reservation.patient)
+      @doctor = create(:user_doctor, specialization: @reservation.doctor_specialization)
+      patch :doctor_choice_save, params: {
+        reservation_id: @reservation.id, reservation: { user_ids: @doctor.id }
+      }
+      @reservation.reload
+    end
+
+    it 'assigns the requested reservation and chosen doctor to @reservation' do
+      expect(assigns(:reservation)).to eq(@reservation)
+      expect(assigns(:reservation).users).to eq([@reservation.patient, @doctor])
+    end
+
+    it 'redicrects to reservations#index' do
       expect(response).to redirect_to reservations_path
     end
   end

@@ -2,16 +2,16 @@ require 'rails_helper'
 
 RSpec.describe AddressesController, type: :controller do
   describe 'GET #new' do
-    before do
+    before(:each) do
       sign_in(create(:user))
-    end
-    it 'assigns new Address to @address' do
       get :new
+    end
+
+    it 'assigns new Address to @address' do
       expect(assigns(:address)).to be_a_new(Address)
     end
 
     it 'renders the :new template' do
-      get :new
       expect(response).to render_template(:new)
     end
   end
@@ -19,23 +19,24 @@ RSpec.describe AddressesController, type: :controller do
   describe 'GET #show' do
     before do
       sign_in(create(:user))
-    end
-    it 'assigns the requested address to @address' do
-      address = create(:address)
-      get :show, params: { id: address }
-      expect(assigns(:address)).to eq(address)
+      @address = create(:address)
+      get :show, params: { id: @address }
     end
 
-    it 'renders the :show template' do
-      address = create(:address)
-      get :show, params: { id: address }
+    it 'assigns the requested address to @address' do
+      expect(assigns(:address)).to eq(@address)
+    end
+
+    it 'renders the :new template' do
       expect(response).to render_template :show
     end
   end
+
   describe 'POST #create' do
     before do
       sign_in(create(:user))
     end
+
     context 'with valid params' do
       it 'creates a new Address' do
         expect { post :create, params: { address: attributes_for(:address) } }
@@ -62,45 +63,46 @@ RSpec.describe AddressesController, type: :controller do
   end
 
   describe 'PATCH #update' do
-    before :each do
+    before(:each) do
       @address = create(:address)
       sign_in(create(:user))
     end
 
     context 'valid attributes' do
-      it 'locates the requested @address' do
-        patch :update, params: { id: @address, address: attributes_for(:address) }
-        expect(assigns(:address)).to eq(@address)
-      end
-
-      it "changes @address attribuites" do
+      before do
         patch :update, params: {
           id: @address,
           address: attributes_for(:address, city: 'Moskwa', postal_code: '10-100')
         }
         @address.reload
+      end
+      it 'locates the requested @address' do
+        expect(assigns(:address)).to eq(@address)
+      end
+
+      it 'changes @address attribuites' do
         expect(@address.city).to eq('Moskwa')
         expect(@address.postal_code).to eq('10-100')
       end
 
       it 'redirects to the updated address' do
-        patch :update, params: { id: @address, address: attributes_for(:address) }
         expect(response).to redirect_to @address
       end
     end
 
     context 'with invalid attributes' do
-      it "does not change the address attributes" do
+      before do
         patch :update, params: {
-          id: @address, address: attributes_for(:address, city: nil)
+          id: @address, address: attributes_for(:invalid_address)
         }
         @address.reload
+      end
+
+      it 'does not change the address attributes' do
         expect(@address.city).not_to eq(nil)
       end
 
       it 're-renders the :edit template' do
-        patch :update, params: { id: @address,
-                                 address: attributes_for(:invalid_address) }
         expect(response).to render_template :edit
       end
     end

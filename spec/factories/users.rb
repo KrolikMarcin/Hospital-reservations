@@ -7,7 +7,7 @@ FactoryBot.define do
     password { 'asdasd' }
     employee { false }
 
-    trait :employee do
+    trait :doctor do
       employee { true }
       sequence(:specialization) { |n| "specialization#{n}" }
     end
@@ -27,6 +27,6 @@ FactoryBot.define do
                     users: [user])
       end
     end
-    factory :user_employee, traits: [:employee]
+    factory :user_doctor, traits: [:doctor]
   end
 end
