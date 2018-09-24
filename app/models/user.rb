@@ -17,9 +17,9 @@ class User < ApplicationRecord
   def self.free_employees(reservation)
     users = where(employee: true, specialization: reservation.doctor_specialization)
             .left_outer_joins(:reservations)
-    users.where.not(reservations:
+    users = users.where.not(reservations:
       { date_time: reservation.date_time }).or(users.where(reservations: { id: nil }))
-         .group(:id).order('COUNT(reservations.id) DESC')
+    users.group(:id).order('COUNT(reservations.id)')
   end
 
   def self.specializations

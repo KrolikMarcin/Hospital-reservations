@@ -73,7 +73,6 @@ class ReservationsController < ApplicationController
 
   def change_status_save
     @reservation = Reservation.find(params[:reservation_id])
-    pry binding
     @reservation.update(reservation_params)
     @reservation.status = true
     @reservation.assign_patient_to_prescriptions

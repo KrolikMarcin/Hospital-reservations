@@ -6,10 +6,10 @@ FactoryBot.define do
     pesel { Random.new.rand(10**8..999_999_999).to_i }
     password { 'asdasd' }
     employee { false }
-
+    
     trait :doctor do
       employee { true }
-      sequence(:specialization) { |n| "specialization#{n}" }
+      specialization { 'psychiatrist' }
     end
 
     trait :admin do
@@ -17,14 +17,37 @@ FactoryBot.define do
       employee { true }
     end
 
-    factory :user_with_many_reservations do
+    trait :random_specialization do
+      sequence(:specialization) { |n| "specialization#{n}"}
+    end
+    
+    factory :doctor_with_one_reservation do
+      employee { true }
+      specialization { 'psychiatrist' }
+      after(:create) do |user|
+        create_list(:reservation, 1, users: [user])
+      end
+    end
+
+    factory :doctor_with_many_reservations do
+      employee { true }
+      specialization { 'psychiatrist' }
       transient do
-        reservations_count { 10 }
+        reservations_count { 3 }
       end
 
       after(:create) do |user, evaluator|
-        create_list(:reservation, evaluator.reservations_count,
-                    users: [user])
+        create_list(:reservation, evaluator.reservations_count, :random_date, users: [user])
+      end
+    end
+
+    factory :user_with_many_reservations do
+      transient do
+        reservations_count { 1 }
+      end
+
+      after(:create) do |user, evaluator|
+        create_list(:reservation, evaluator.reservations_count, :random_date, users: [user])
       end
     end
     factory :user_doctor, traits: [:doctor]

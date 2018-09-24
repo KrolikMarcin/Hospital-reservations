@@ -4,13 +4,13 @@ RSpec.describe ReservationsController, type: :controller do
   describe 'GET #new' do
     before do
       sign_in(create(:user))
-      create_list(:user_doctor, 2)
+      create_list(:user_doctor, 2, :random_specialization)
       get :new
     end
 
     it 'assigns new Reservation to @reservation, and specializations to @specializations' do
       expect(assigns(:reservation)).to be_a_new(Reservation)
-      expect(assigns(:specializations)).to eq(['specialization1', 'specialization2'])
+      expect(assigns(:specializations)).to eq(User.specializations)
     end
 
     it 'renders the :new template' do
@@ -130,13 +130,36 @@ RSpec.describe ReservationsController, type: :controller do
     end
   end
 
-  # describe 'GET #doctor_choice' do
-  #   before do
-  #     @reservation = create(:reservation_with_patient)
-  #     sign_in(@reservation.patient)
-  #     get :doctor_choice, params: { reservation_id: @reservation.id }
-  #   end
-  # end
+  describe 'GET #doctor_choice' do
+    before do
+      @reservation = create(:reservation_with_patient)
+      sign_in(@reservation.patient)
+      get :doctor_choice, params: { reservation_id: @reservation.id }
+    end
+
+    context 'assigns reservation to @resevation and free doctors to @doctors' do
+      it '3 doctors without any reservations' do
+        doctors = create_list(:user_doctor, 3, specialization: @reservation.doctor_specialization)
+        expect(assigns(:reservation)).to eq(@reservation)
+        expect(assigns(:doctors)).to eq(doctors)
+      end
+
+      it 'with 5 busy doctors, and 3 free' do
+        create_list(:doctor_with_one_reservation, 5)
+        free_doctors = create_list(:doctor_with_many_reservations, 3)
+        expect(assigns(:doctors)).to eq(free_doctors)
+      end
+
+      it 'all doctors are busy' do
+        create_list(:doctor_with_one_reservation, 5)
+        expect(assigns(:doctors)).to eq([])
+      end
+    end
+
+    it 'renders the :doctor_choice template' do
+      expect(response).to render_template :doctor_choice
+    end
+  end
 
   describe 'PATCH #doctor_choice_save' do
     before do
@@ -158,5 +181,60 @@ RSpec.describe ReservationsController, type: :controller do
       expect(response).to redirect_to reservations_path
     end
   end
-end
 
+  describe 'GET #change_status' do
+    before do
+      @reservation = create(:reservation_with_patient_and_doctor)
+      sign_in(@reservation.employee)
+      get :change_status, params: { reservation_id: @reservation.id }
+    end
+
+    it 'assigns reservation to @reservation, and build prescriptions' do
+      expect(assigns(:reservation)).to eq(@reservation)
+      expect(assigns(:reservation).prescriptions).to all(be_a_new(Prescription))
+    end
+
+    it 'renders the :change_status template' do
+      expect(response).to render_template :change_status
+    end
+  end
+
+  describe 'PATCH #change_status_save' do
+    context 'valid params' do
+      before do
+        @reservation = create(:reservation_with_patient_and_doctor)
+        sign_in(@reservation.employee)
+        patch :change_status_save, params: {
+          reservation_id: @reservation.id, reservation: {
+            prescriptions_attributes: [attributes_for(:prescription), attributes_for(:prescription)]
+          }
+        }
+      end
+
+      it 'assigns precriptions to reservation' do
+        expect(assigns(:reservation)).to eq(@reservation)
+        expect(assigns(:reservation).prescriptions).to eq(@reservation.prescriptions)
+      end
+
+      it 'redirects to reservations#show' do
+        expect(response).to redirect_to reservation_path(assigns(:reservation))
+      end
+    end
+
+    context 'invalid params' do
+      before do
+        @reservation = create(:reservation_with_patient_and_doctor)
+        sign_in(@reservation.employee)
+        patch :change_status_save, params: {
+          reservation_id: @reservation.id, reservation: {
+            prescriptions_attributes: [attributes_for(:invalid_prescription)]
+          }
+        }
+      end
+
+      it 'not create empty recipe' do
+        expect(assigns(:reservation).prescriptions).to eq([])
+      end
+    end
+  end
+end
