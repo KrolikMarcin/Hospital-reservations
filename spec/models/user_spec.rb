@@ -7,9 +7,8 @@ RSpec.describe User, type: :model do
   end
 
   it 'specializations' do
-    doctor1 = create(:user_employee)
-    doctor2 = create(:user_employee)
-    doctors = User.specializations
-    expect(doctors).to eq([doctor1.specialization, doctor2.specialization])
+    doctor1 = create(:user_doctor, :random_specialization)
+    doctor2 = create(:user_doctor, :random_specialization)
+    expect(User.specializations).to eq([doctor1.specialization, doctor2.specialization])
   end
 end

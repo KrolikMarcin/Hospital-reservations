@@ -10,7 +10,7 @@ RSpec.describe Reservation, type: :model do
       expect(@reservation.users).to eq([@reservation.patient])
     end
     it 'with existing doctor' do
-      doctor = create(:user, :employee)
+      doctor = create(:user_doctor)
       @reservation.users << doctor
       @reservation.remove_doctor_if_exists
       expect(@reservation.users).to eq([@reservation.patient])

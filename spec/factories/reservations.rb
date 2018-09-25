@@ -1,5 +1,4 @@
 FactoryBot.define do
-
   factory :reservation do
     date_time { Time.new(2000, 10, 10, 16, 30, 0, 0) }
     doctor_specialization { 'psychiatrist' }

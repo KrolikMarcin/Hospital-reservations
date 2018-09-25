@@ -145,13 +145,13 @@ RSpec.describe ReservationsController, type: :controller do
       end
 
       it 'with 5 busy doctors, and 3 free' do
-        create_list(:doctor_with_one_reservation, 5)
+        create_list(:doctor_with_many_reservations, 5, random_date: false)
         free_doctors = create_list(:doctor_with_many_reservations, 3)
         expect(assigns(:doctors)).to eq(free_doctors)
       end
 
       it 'all doctors are busy' do
-        create_list(:doctor_with_one_reservation, 5)
+        create_list(:doctor_with_many_reservations, 5, random_date: false)
         expect(assigns(:doctors)).to eq([])
       end
     end
@@ -214,6 +214,7 @@ RSpec.describe ReservationsController, type: :controller do
       it 'assigns precriptions to reservation' do
         expect(assigns(:reservation)).to eq(@reservation)
         expect(assigns(:reservation).prescriptions).to eq(@reservation.prescriptions)
+        expect(assigns(:reservation).prescriptions).not_to eq([])
       end
 
       it 'redirects to reservations#show' do
@@ -234,6 +235,45 @@ RSpec.describe ReservationsController, type: :controller do
 
       it 'not create empty recipe' do
         expect(assigns(:reservation).prescriptions).to eq([])
+      end
+
+      it 're-renders change_status template' do
+        expect(response).to render_template :change_status
+      end
+    end
+  end
+
+  describe 'GET #index' do
+    before do
+      create_list(:doctor_with_many_reservations, 3)
+      @doctor = create(:doctor_with_many_reservations, reservations_count: 20)
+      sign_in(@doctor)
+    end
+
+    context 'with params[:format]' do
+      it 'params[:format] = :employee_today_reservations' do
+        get :index, params: { format: 'employee_today_reservations' }
+        expect(assigns(:reservations)).to eq(@doctor.reservations
+                                                    .where(date_time: Time.now.all_day))
+      end
+
+      it 'params[:format] = :employee_week_reservations' do
+        get :index, params: { format: 'employee_week_reservations' }
+        expect(assigns(:reservations)).to eq(@doctor.reservations
+                                              .where(date_time: Time.now.all_week))
+      end
+
+      it 'params[:format] = :employee_month_reservations' do
+        get :index, params: { format: 'employee_month_reservations' }
+        expect(assigns(:reservations)).to eq(@doctor.reservations
+                                              .where(date_time: Time.now.all_month))
+      end
+    end
+
+    context 'without params' do
+      it 'the user all reservations' do
+        get :index
+        expect(assigns(:reservations)).to eq(@doctor.reservations.order(date_time: :desc))
       end
     end
   end

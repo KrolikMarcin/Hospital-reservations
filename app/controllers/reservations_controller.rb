@@ -76,7 +76,7 @@ class ReservationsController < ApplicationController
     @reservation.update(reservation_params)
     @reservation.status = true
     @reservation.assign_patient_to_prescriptions
-    if @reservation.save
+    if @reservation.save && !@reservation.prescriptions.empty?
       redirect_to reservation_path(@reservation)
     else
       render :change_status

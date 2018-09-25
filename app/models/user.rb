@@ -19,7 +19,7 @@ class User < ApplicationRecord
             .left_outer_joins(:reservations)
     users = users.where.not(reservations:
       { date_time: reservation.date_time }).or(users.where(reservations: { id: nil }))
-    users.group(:id).order('COUNT(reservations.id)')
+    users.group(:id).order('count(reservations.id)')
   end
 
   def self.specializations
