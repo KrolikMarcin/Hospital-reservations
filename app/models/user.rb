@@ -10,11 +10,7 @@ class User < ApplicationRecord
   validates :first_name, :last_name, presence: true, length: { in: 3..15 }
   validates :pesel, presence: true, numericality: { equel_to: 9 }
 
-  def full_name
-    "#{first_name} #{last_name}"
-  end
-
-  def self.free_employees(reservation)
+  def self.free_doctors(reservation)
     users = where(employee: true, specialization: reservation.doctor_specialization)
             .left_outer_joins(:reservations)
     users = users.where.not(reservations:
@@ -22,7 +18,19 @@ class User < ApplicationRecord
     users.group(:id).order('count(reservations.id)')
   end
 
+  # def self.doctors_collection(reservation)
+  #   free_doctors(reservation).collect { |user| [user.full_name, user.id] }
+  # end
+
   def self.specializations
     where(employee: true).pluck(:specialization).uniq
+  end
+
+  def collection
+    [full_name, id]
+  end
+
+  def full_name
+    "#{first_name} #{last_name}"
   end
 end

@@ -53,7 +53,7 @@ class ReservationsController < ApplicationController
 
   def doctor_choice
     @reservation = Reservation.find(params[:reservation_id])
-    @doctors = User.free_employees(@reservation)
+    @doctors = User.free_doctors(@reservation).map(&:collection)
   end
 
   def doctor_choice_save

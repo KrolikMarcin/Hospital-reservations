@@ -18,16 +18,17 @@ FactoryBot.define do
     end
 
     trait :random_specialization do
-      sequence(:specialization) { |n| "specialization#{n}"}
+      sequence(:specialization) { |n| "specialization#{n}" }
     end
 
     factory :doctor_with_many_reservations do
       employee { true }
       specialization { 'psychiatrist' }
+
       transient do
-        random_date { true }
+        random_date { false }
         reservations_count { 3 }
-        given_date { Time.new(2000, 10, 10, 16, 30, 0, 0) }
+        given_date { Time.now }
       end
 
       after(:create) do |user, evaluator|
@@ -49,6 +50,7 @@ FactoryBot.define do
         create_list(:reservation, evaluator.reservations_count, :random_date, users: [user])
       end
     end
+
     factory :user_doctor, traits: [:doctor]
   end
 end

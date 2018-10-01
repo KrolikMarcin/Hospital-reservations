@@ -11,8 +11,8 @@ FactoryBot.define do
 
     factory :reservation_with_patient_and_doctor do
       after(:create) do |reservation|
-        create_list(:user, 1, reservations: [reservation])
-        create_list(:user_doctor, 1, reservations: [reservation])
+        create(:user, reservations: [reservation])
+        create(:user_doctor, reservations: [reservation])
       end
     end
 

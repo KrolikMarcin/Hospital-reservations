@@ -3,7 +3,7 @@ class Reservation < ApplicationRecord
   has_one :bill, dependent: :destroy
   has_many :prescriptions, dependent: :destroy
   accepts_nested_attributes_for :prescriptions, reject_if: :prescription_empty
-  # validate :date_with_free_employees
+  validate :date_with_free_doctors
   before_destroy :check_date
   validates :doctor_specialization, presence: true
 
@@ -11,9 +11,9 @@ class Reservation < ApplicationRecord
     attributes[:medicine].blank? && attributes[:recommendations].blank?
   end
 
-  def date_with_free_employees
+  def date_with_free_doctors
     errors.add(:date_time, 'There are no free doctors at the given time!') if
-      User.free_employees(self).empty?
+      User.free_doctors(self).empty?
   end
 
   def check_date
@@ -21,24 +21,6 @@ class Reservation < ApplicationRecord
     Time.now.beginning_of_day + 3.days > date_time
     false
   end
-  # def free_date_later
-  #   while User.free_employees(doctor_specialization, date_time).empty?
-  #     date_time += date_time.advance(hours: 1)
-  #   end
-  #   date_time
-  # end
-
-  # def free_date_earlier
-  #   while User.free_employees(doctor_specialization, date_time).empty?
-  #     date_time -= date_time.advance(hours: 1)
-  #   end
-  #   date_time
-  # end
-
-  # def free_date
-  #   { later: free_date_later,
-  #     earlier: free_date_earlier }
-  # end
 
   def assign_patient_to_prescriptions
     prescriptions.each do |p|
@@ -71,19 +53,19 @@ class Reservation < ApplicationRecord
     where(status: false, date_time: Time.now.all_day).order(date_time: :desc)
   end
 
-  def self.employee_today_reservations(employee)
+  def self.doctor_today_reservations(employee)
     where(date_time: Time.now.all_day).joins(:users)
                                       .where(users: { id: employee.id })
                                       .order(date_time: :desc)
   end
 
-  def self.employee_week_reservations(employee)
+  def self.doctor_week_reservations(employee)
     where(date_time: Time.now.all_week).joins(:users)
                                        .where(users: { id: employee.id })
                                        .order(date_time: :desc)
   end
 
-  def self.employee_month_reservations(employee)
+  def self.doctor_month_reservations(employee)
     where(date_time: Time.now.all_month).joins(:users)
                                         .where(users: { id: employee.id })
                                         .order(date_time: :desc)

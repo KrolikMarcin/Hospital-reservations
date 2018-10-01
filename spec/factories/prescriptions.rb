@@ -7,5 +7,5 @@ FactoryBot.define do
       medicine { nil }
       recommendations { nil }
     end
-  end 
+  end
 end

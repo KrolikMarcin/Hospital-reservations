@@ -1,54 +1,51 @@
 require 'rails_helper'
 
 RSpec.describe Reservation, type: :model do
-  context 'remove_doctor_if_exists' do
+  context '#remove_doctor_if_exists' do
     before do
-      @reservation = create(:reservation_with_patient)
+      @doctor = create(:user_doctor)
+      @reservation = create(:reservation_with_patient,
+                            doctor_specialization: @doctor.specialization)
     end
-    it 'without existing doctor' do
+    it 'returns reservation without doctor if doctor not assigns to reservation' do
       @reservation.remove_doctor_if_exists
       expect(@reservation.users).to eq([@reservation.patient])
     end
-    it 'with existing doctor' do
-      doctor = create(:user_doctor)
-      @reservation.users << doctor
+    it 'returns reservation with removed doctors if doctor is assigns to reservation' do
+      @reservation.users << @doctor
       @reservation.remove_doctor_if_exists
       expect(@reservation.users).to eq([@reservation.patient])
     end
   end
 
-  context 'assign_patient_to_prescriptions' do
+  context '#assign_patient_to_prescriptions' do
     before do
-      @reservation = create(:reservation_with_patient)
+      allow_any_instance_of(Reservation).to receive(:date_with_free_doctors) { true }
+      @reservation = create(:reservation_with_patient_and_doctor)
     end
 
-    it 'with one prescription' do
+    it 'returns prescriptions with assigns patient' do
       @prescription = build(:prescription)
       @reservation.prescriptions << @prescription
       @reservation.assign_patient_to_prescriptions
       expect(@prescription.user).to eq(@reservation.patient)
     end
-
-    it 'without prescriptions' do
-      @reservation.assign_patient_to_prescriptions
-      expect(@reservation.prescriptions).to eq([])
-    end
   end
 
-  context 'check_status' do
-    it 'status false' do
+  context '#check_status' do
+    it 'returns X if the appointment not been yet' do
       reservation = build(:reservation)
       expect(reservation.check_status).to eq('X')
     end
 
-    it 'status true' do
+    it 'returns V if the reservation was been' do
       reservation = build(:reservation, status: true)
       expect(reservation.check_status).to eq('V')
     end
   end
 
-  context 'date_formated' do
-    it 'format date' do
+  context '#date_formated' do
+    it 'returns formatted date' do
       reservation = build(:reservation, date_time:
                           Time.new(2000, 10, 10, 18, 30, 0, 0))
       expect(reservation.date_formated).to eq('Tue, 10-10-2000 18:30')
