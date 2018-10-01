@@ -29,16 +29,20 @@ RSpec.describe Bill, type: :model do
     end
   end
 
-  # context '#bill_items_empty(attributes)' do
-  #   it 'empty description and nil price' do
-  #     allow_any_instance_of(Reservation).to receive(:date_with_free_doctors) { true }
-  #     bill = create(:bill, invalid_bill_items: true)
-  #     expect(bill.bill_item_empty(bill_item)).to eq(true)
-  #   end
+  context '#bill_item_empty(attributes)' do
+    it 'returns true if bill item attributes are empty or nil' do
+      bill = create(:bill)
+      expect(bill.bill_item_empty(attributes_for(:bill_item_empty))).to be true
+    end
 
-  #   # it 'normal bill item' do
-  #   #   bill = create(:bill)
-  #   #   expect(attributes_for(:bill_item)).to eq('false')
-  #   # end
-  # end
+    it 'returns false if bill item attributes are not empty' do
+      bill = create(:bill)
+      expect(bill.bill_item_empty(attributes_for(:bill_item))).to be false
+    end
+
+    it 'returns true if one bill item attribute is empty and second is no empty' do
+      bill = create(:bill)
+      expect(bill.bill_item_empty(attributes_for(:bill_item, price: nil))).to be true
+    end
+  end
 end

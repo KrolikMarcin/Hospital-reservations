@@ -5,7 +5,7 @@ class Bill < ApplicationRecord
   accepts_nested_attributes_for :bill_items, reject_if: :bill_item_empty
 
   def bill_item_empty(attributes)
-    attributes[:description].blank? && attributes[:price].blank?
+    attributes[:description].blank? || attributes[:price].blank?
   end
 
   def check_paid

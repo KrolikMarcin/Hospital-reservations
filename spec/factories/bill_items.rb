@@ -1,10 +1,10 @@
 FactoryBot.define do
   factory :bill_item do
-    description { 'nurse helps'}
+    description { 'nurse helps' }
     price { 100 }
     bill
 
-    trait :invalid_bill_item do
+    factory :bill_item_empty do
       description { '' }
       price { nil }
     end
