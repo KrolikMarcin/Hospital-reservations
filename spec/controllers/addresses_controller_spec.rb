@@ -27,7 +27,7 @@ RSpec.describe AddressesController, type: :controller do
       expect(assigns(:address)).to eq(@address)
     end
 
-    it 'renders the :new template' do
+    it 'renders the :show template' do
       expect(response).to render_template :show
     end
   end

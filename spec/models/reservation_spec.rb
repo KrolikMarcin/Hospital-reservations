@@ -112,7 +112,7 @@ RSpec.describe Reservation, type: :model do
   describe 'validations' do
     it { is_expected.to validate_presence_of(:doctor_specialization) }
 
-    describe '#date_with_free_doctors' do
+    describe 'date_time validations' do
       context 'with valid date_time' do
         it 'returns true if there are free doctors with a given date and specialization' do
           doctor = create(:user_doctor)

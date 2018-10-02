@@ -51,6 +51,20 @@ FactoryBot.define do
       end
     end
 
+    factory :user_with_many_bills do
+      transient do
+        bills_count { 3 }
+        paid { true }
+      end
+
+      after(:create) do |user, evaluator|
+        if evaluator.paid
+          create_list(:bill, evaluator.bills_count, user: user)
+        else
+          create_list(:bill, evaluator.bills_count, :paid_false, user: user)
+        end
+      end
+    end
     factory :user_doctor, traits: [:doctor]
   end
 end

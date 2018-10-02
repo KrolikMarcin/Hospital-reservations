@@ -44,4 +44,11 @@ RSpec.describe User, type: :model do
       expect(user.full_name).to eq("#{user.first_name} #{user.last_name}")
     end
   end
+
+  context '#collection' do
+    it 'returns collection with full name and id' do
+      user = create(:user)
+      expect(user.collection).to eq([user.full_name, user.id])
+    end
+  end
 end

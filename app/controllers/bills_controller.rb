@@ -1,4 +1,5 @@
 class BillsController < ApplicationController
+  before_action :authenticate_user!
   before_action :patient_only
 
   def index

@@ -4,6 +4,7 @@ FactoryBot.define do
     paid { true }
     user
     reservation
+    payment_date { Time.now }
 
     transient do
       bill_items_count { 3 }
