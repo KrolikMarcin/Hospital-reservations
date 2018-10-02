@@ -1,6 +1,63 @@
 require 'rails_helper'
 
 RSpec.describe Reservation, type: :model do
+  context '.today_all_reservations' do
+    it 'returns reservations only from today' do
+      allow_any_instance_of(Reservation).to receive(:date_with_free_doctors) { true }
+      today_reservations = create_list(:reservation, 5, date_time: Time.now)
+      create_list(:reservation, 3, date_time: Time.now - 3.days)
+      expect(Reservation.today_all_reservations).to eq(today_reservations)
+    end
+  end
+
+  context '.doctor_today_reservations(employee)' do
+    it "returns only today's reservations for the given doctor" do
+      allow_any_instance_of(Reservation).to receive(:date_with_free_doctors) { true }
+      doctor = create(:user_doctor)
+      todays_reservations = create_list(
+        :reservation, 3, doctor_specialization: doctor.specialization, date_time: Time.now
+      )
+      not_todays_reservations = create_list(
+        :reservation, 4, doctor_specialization: doctor.specialization, date_time: Time.now + 10.days
+      )
+      doctor.reservations << [todays_reservations, not_todays_reservations]
+      create(:doctor_with_many_reservations, reservations_count: 5, random_date: true)
+      expect(Reservation.doctor_today_reservations(doctor)).to eq(todays_reservations)
+    end
+  end
+
+  context '.doctor_week_reservations(employee)' do
+    it 'returns reservations only from this week for the given doctor' do
+      allow_any_instance_of(Reservation).to receive(:date_with_free_doctors) { true }
+      doctor = create(:user_doctor)
+      reservations_from_this_week = create_list(
+        :reservation, 3, doctor_specialization: doctor.specialization, date_time: Time.now
+      )
+      reservations_from_other_week = create_list(
+        :reservation, 4, doctor_specialization: doctor.specialization, date_time: Time.now + 30.days
+      )
+      doctor.reservations << [reservations_from_this_week, reservations_from_other_week]
+      create(:doctor_with_many_reservations, reservations_count: 5, random_date: true)
+      expect(Reservation.doctor_today_reservations(doctor)).to eq(reservations_from_this_week)
+    end
+  end
+
+  context '.doctor_month_reservations(employee)' do
+    it 'returns reservations only from this month for the given doctor' do
+      allow_any_instance_of(Reservation).to receive(:date_with_free_doctors) { true }
+      doctor = create(:user_doctor)
+      reservations_from_this_month = create_list(
+        :reservation, 3, doctor_specialization: doctor.specialization, date_time: Time.now
+      )
+      reservations_from_other_month = create_list(
+        :reservation, 4, doctor_specialization: doctor.specialization, date_time: Time.now + 80.days
+      )
+      doctor.reservations << [reservations_from_this_month, reservations_from_other_month]
+      create(:doctor_with_many_reservations, reservations_count: 5, random_date: true)
+      expect(Reservation.doctor_today_reservations(doctor)).to eq(reservations_from_this_month)
+    end
+  end
+
   context '#remove_doctor_if_exists' do
     before do
       @doctor = create(:user_doctor)
