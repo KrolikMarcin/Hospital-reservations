@@ -7,6 +7,28 @@ class Reservation < ApplicationRecord
   before_destroy :check_date
   validates :doctor_specialization, presence: true
 
+  def self.today_all_reservations
+    where(status: false, date_time: Time.now.all_day).order(date_time: :desc)
+  end
+
+  def self.doctor_today_reservations(employee)
+    where(date_time: Time.now.all_day).joins(:users)
+                                      .where(users: { id: employee.id })
+                                      .order(date_time: :desc)
+  end
+
+  def self.doctor_week_reservations(employee)
+    where(date_time: Time.now.all_week).joins(:users)
+                                       .where(users: { id: employee.id })
+                                       .order(date_time: :desc)
+  end
+
+  def self.doctor_month_reservations(employee)
+    where(date_time: Time.now.all_month).joins(:users)
+                                        .where(users: { id: employee.id })
+                                        .order(date_time: :desc)
+  end
+
   def prescription_empty(attributes)
     attributes[:medicine].blank? && attributes[:recommendations].blank?
   end
@@ -23,9 +45,7 @@ class Reservation < ApplicationRecord
   end
 
   def assign_patient_to_prescriptions
-    prescriptions.each do |p|
-      p.user = users.find_by(employee: false)
-    end
+    prescriptions.each { |p| p.user = users.find_by(employee: false) }
   end
 
   def remove_doctor_if_exists
@@ -47,27 +67,5 @@ class Reservation < ApplicationRecord
 
   def patient
     users.find_by(employee: false)
-  end
-
-  def self.today_all_reservations
-    where(status: false, date_time: Time.now.all_day).order(date_time: :desc)
-  end
-
-  def self.doctor_today_reservations(employee)
-    where(date_time: Time.now.all_day).joins(:users)
-                                      .where(users: { id: employee.id })
-                                      .order(date_time: :desc)
-  end
-
-  def self.doctor_week_reservations(employee)
-    where(date_time: Time.now.all_week).joins(:users)
-                                       .where(users: { id: employee.id })
-                                       .order(date_time: :desc)
-  end
-
-  def self.doctor_month_reservations(employee)
-    where(date_time: Time.now.all_month).joins(:users)
-                                        .where(users: { id: employee.id })
-                                        .order(date_time: :desc)
   end
 end

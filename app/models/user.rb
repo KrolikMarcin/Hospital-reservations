@@ -7,7 +7,7 @@ class User < ApplicationRecord
   has_many :bills
   has_many :prescriptions
   has_and_belongs_to_many :reservations
-  validates :first_name, :last_name, presence: true, length: { in: 3..15 }
+  validates :first_name, :last_name, presence: true, length: { in: 3..20 }
   validates :pesel, presence: true, numericality: { equel_to: 9 }
 
   def self.free_doctors(reservation)
@@ -15,12 +15,8 @@ class User < ApplicationRecord
             .left_outer_joins(:reservations)
     users = users.where.not(reservations:
       { date_time: reservation.date_time }).or(users.where(reservations: { id: nil }))
-    users.group(:id).order('count(reservations.id)')
+    users.group(:id).order(Arel.sql('count(reservations.id)'))
   end
-
-  # def self.doctors_collection(reservation)
-  #   free_doctors(reservation).collect { |user| [user.full_name, user.id] }
-  # end
 
   def self.specializations
     where(employee: true).pluck(:specialization).uniq
