@@ -1,6 +1,6 @@
 FactoryBot.define do
   factory :reservation do
-    date_time { Time.new(2000, 10, 10, 16, 30, 0, 0) }
+    date_time { Time.now + 1.hour }
     doctor_specialization { 'psychiatrist' }
 
     factory :reservation_with_patient do
@@ -18,15 +18,7 @@ FactoryBot.define do
 
     factory :invalid_reservation do
       doctor_specialization { nil }
-    end
-
-    factory :reservation_with_prescriptions do
-      transient do
-        prescriptions_count { 3 }
-      end
-      after(:create) do |reservation, evaluator|
-        build_list(:prescription, evaluator.prescriptions_count, reservation: reservation)
-      end
+      date_time { Time.new(2013, 1, 1) }
     end
 
     trait :random_date do

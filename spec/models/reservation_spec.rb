@@ -4,8 +4,8 @@ RSpec.describe Reservation, type: :model do
   context '.today_all_reservations' do
     it 'returns reservations only from today' do
       allow_any_instance_of(Reservation).to receive(:date_with_free_doctors) { true }
-      today_reservations = create_list(:reservation, 5, date_time: Time.now)
-      create_list(:reservation, 3, date_time: Time.now - 3.days)
+      today_reservations = create_list(:reservation, 5, date_time: Time.now + 1.hour)
+      create_list(:reservation, 3, date_time: Time.now + 5.days)
       expect(Reservation.today_all_reservations).to eq(today_reservations)
     end
   end
@@ -15,7 +15,7 @@ RSpec.describe Reservation, type: :model do
       allow_any_instance_of(Reservation).to receive(:date_with_free_doctors) { true }
       doctor = create(:user_doctor)
       todays_reservations = create_list(
-        :reservation, 3, doctor_specialization: doctor.specialization, date_time: Time.now
+        :reservation, 3, doctor_specialization: doctor.specialization, date_time: Time.now + 1.hour
       )
       not_todays_reservations = create_list(
         :reservation, 4, doctor_specialization: doctor.specialization, date_time: Time.now + 10.days
@@ -31,7 +31,7 @@ RSpec.describe Reservation, type: :model do
       allow_any_instance_of(Reservation).to receive(:date_with_free_doctors) { true }
       doctor = create(:user_doctor)
       reservations_from_this_week = create_list(
-        :reservation, 3, doctor_specialization: doctor.specialization, date_time: Time.now
+        :reservation, 3, doctor_specialization: doctor.specialization, date_time: Time.now + 1.hour
       )
       reservations_from_other_week = create_list(
         :reservation, 4, doctor_specialization: doctor.specialization, date_time: Time.now + 30.days
@@ -47,7 +47,7 @@ RSpec.describe Reservation, type: :model do
       allow_any_instance_of(Reservation).to receive(:date_with_free_doctors) { true }
       doctor = create(:user_doctor)
       reservations_from_this_month = create_list(
-        :reservation, 3, doctor_specialization: doctor.specialization, date_time: Time.now
+        :reservation, 3, doctor_specialization: doctor.specialization, date_time: Time.now + 1.hour
       )
       reservations_from_other_month = create_list(
         :reservation, 4, doctor_specialization: doctor.specialization, date_time: Time.now + 80.days
@@ -110,11 +110,13 @@ RSpec.describe Reservation, type: :model do
   end
 
   describe 'validations' do
+    subject { build(:reservation) }
     it { is_expected.to validate_presence_of(:doctor_specialization) }
 
     describe 'date_time validations' do
       context 'with valid date_time' do
-        it 'returns true if there are free doctors with a given date and specialization' do
+        it 'returns true if there are free doctors with a given date and specialization
+          and chosen date is current' do
           doctor = create(:user_doctor)
           reservation = create(
             :reservation, :random_date, doctor_specialization: doctor.specialization
@@ -124,16 +126,15 @@ RSpec.describe Reservation, type: :model do
       end
 
       context 'with invalid date_time' do
-        it "returns 'There are no free doctors at the given time!' if
-          all specialist are busy at the given date" do
-          time = Time.new(2017, 10, 10, 18)
-          doctor = create(:doctor_with_many_reservations, reservations_count: 1, given_date: time)
-          reservation = build(
-            :reservation, doctor_specialization: doctor.specialization, date_time: time
-          )
+        it "returns errors: 'There are no free doctors at the given time!' and
+          'You can't chose outdated date' if all specialist are busy at the given date and
+          chosen date is outdated" do
+          reservation = build(:reservation, date_time: Time.new(2016, 10, 10, 18))
           expect(reservation).to_not be_valid
           expect(reservation.errors.messages[:date_time])
-            .to eq(['There are no free doctors at the given time!'])
+            .to eq(
+              ['There are no free doctors at the given time!', "You can't chose outdated date"]
+            )
         end
       end
     end

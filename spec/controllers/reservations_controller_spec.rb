@@ -77,7 +77,7 @@ RSpec.describe ReservationsController, type: :controller do
     context 'with valid attributes' do
       before do
         patch :update, params: {
-          id: @reservation, reservation: { date_time: Time.new(2001, 10, 10),
+          id: @reservation, reservation: { date_time: Time.new(2019, 10, 10),
                                            doctor_specialization: 'dentist' }
         }
         @reservation.reload
@@ -88,7 +88,7 @@ RSpec.describe ReservationsController, type: :controller do
       end
 
       it "changes @reservation's attribuites" do
-        expect(@reservation.date_time).to eq(Time.new(2001, 10, 10))
+        expect(@reservation.date_time).to eq(Time.new(2019, 10, 10))
         expect(@reservation.doctor_specialization).to eq('dentist')
       end
 

@@ -28,7 +28,7 @@ FactoryBot.define do
       transient do
         random_date { false }
         reservations_count { 3 }
-        given_date { Time.now }
+        given_date { Time.now + 1.hour }
       end
 
       after(:create) do |user, evaluator|
@@ -38,16 +38,6 @@ FactoryBot.define do
           create_list(:reservation, evaluator.reservations_count,
                       date_time: evaluator.given_date, users: [user])
         end
-      end
-    end
-
-    factory :user_with_many_reservations do
-      transient do
-        reservations_count { 1 }
-      end
-
-      after(:create) do |user, evaluator|
-        create_list(:reservation, evaluator.reservations_count, :random_date, users: [user])
       end
     end
 

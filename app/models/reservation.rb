@@ -3,7 +3,7 @@ class Reservation < ApplicationRecord
   has_one :bill, dependent: :destroy
   has_many :prescriptions, dependent: :destroy
   accepts_nested_attributes_for :prescriptions, reject_if: :prescription_empty
-  validate :date_with_free_doctors
+  validate :date_with_free_doctors, :current_date
   before_destroy :check_date
   validates :doctor_specialization, presence: true
 
@@ -36,6 +36,10 @@ class Reservation < ApplicationRecord
   def date_with_free_doctors
     errors.add(:date_time, 'There are no free doctors at the given time!') if
       User.free_doctors(self).empty?
+  end
+
+  def current_date
+    errors.add(:date_time, "You can't chose outdated date") if date_time < Time.now
   end
 
   def check_date
