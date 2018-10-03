@@ -45,4 +45,10 @@ RSpec.describe Bill, type: :model do
       expect(bill.bill_item_empty(attributes_for(:bill_item, price: nil))).to be true
     end
   end
+
+  context 'validations' do
+    subject { build(:bill) }
+    it { is_expected.to validate_presence_of(:amount) }
+    it { is_expected.to validate_presence_of(:payment_date) }
+  end
 end

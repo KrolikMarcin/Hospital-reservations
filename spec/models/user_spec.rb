@@ -51,4 +51,14 @@ RSpec.describe User, type: :model do
       expect(user.collection).to eq([user.full_name, user.id])
     end
   end
+
+  context 'validations' do
+    subject { build(:user) }
+    it { is_expected.to validate_presence_of(:first_name) }
+    it { is_expected.to validate_length_of(:first_name) }
+    it { is_expected.to validate_presence_of(:last_name) }
+    it { is_expected.to validate_length_of(:last_name) }
+    it { is_expected.to validate_presence_of(:pesel) }
+    it { is_expected.to validate_numericality_of(:pesel) }
+  end
 end

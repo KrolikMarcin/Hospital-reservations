@@ -112,6 +112,7 @@ RSpec.describe Reservation, type: :model do
   describe 'validations' do
     subject { build(:reservation) }
     it { is_expected.to validate_presence_of(:doctor_specialization) }
+    it { is_expected.to validate_presence_of(:symptoms) }
 
     describe 'date_time validations' do
       context 'with valid date_time' do

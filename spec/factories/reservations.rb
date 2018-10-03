@@ -2,6 +2,7 @@ FactoryBot.define do
   factory :reservation do
     date_time { Time.now + 1.hour }
     doctor_specialization { 'psychiatrist' }
+    symptoms { 'headache' }
 
     factory :reservation_with_patient do
       after(:create) do |reservation|

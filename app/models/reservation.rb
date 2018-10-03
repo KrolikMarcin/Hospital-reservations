@@ -5,7 +5,7 @@ class Reservation < ApplicationRecord
   accepts_nested_attributes_for :prescriptions, reject_if: :prescription_empty
   validate :date_with_free_doctors, :current_date
   before_destroy :check_date
-  validates :doctor_specialization, presence: true
+  validates :doctor_specialization, :symptoms, presence: true
 
   def self.today_all_reservations
     where(status: false, date_time: Time.now.all_day).order(date_time: :desc)
