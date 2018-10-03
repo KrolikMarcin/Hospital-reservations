@@ -70,7 +70,7 @@ RSpec.describe ReservationsController, type: :controller do
   describe 'PATCH #update' do
     before do
       allow_any_instance_of(Reservation).to receive(:date_with_free_doctors) { true }
-      @reservation = create(:reservation_with_patient_and_doctor)
+      @reservation = create(:reservation_with_chosen_doctor)
       sign_in(@reservation.patient)
     end
 
@@ -135,7 +135,7 @@ RSpec.describe ReservationsController, type: :controller do
   describe 'GET #doctor_choice' do
     before do
       allow_any_instance_of(Reservation).to receive(:date_with_free_doctors) { true }
-      @reservation = create(:reservation_with_patient)
+      @reservation = create(:reservation)
       @doctors = create_list(:user_doctor, 3, specialization: @reservation.doctor_specialization)
       sign_in(@reservation.patient)
       get :doctor_choice, params: { reservation_id: @reservation.id }
@@ -154,7 +154,7 @@ RSpec.describe ReservationsController, type: :controller do
   describe 'PATCH #doctor_choice_save' do
     before do
       allow_any_instance_of(Reservation).to receive(:date_with_free_doctors) { true }
-      @reservation = create(:reservation_with_patient)
+      @reservation = create(:reservation)
       sign_in(@reservation.patient)
       @doctor = create(:user_doctor, specialization: @reservation.doctor_specialization)
       patch :doctor_choice_save, params: {
@@ -176,7 +176,7 @@ RSpec.describe ReservationsController, type: :controller do
   describe 'GET #change_status' do
     before do
       allow_any_instance_of(Reservation).to receive(:date_with_free_doctors) { true }
-      @reservation = create(:reservation_with_patient_and_doctor)
+      @reservation = create(:reservation_with_chosen_doctor)
       sign_in(@reservation.employee)
       get :change_status, params: { reservation_id: @reservation.id }
     end
@@ -195,7 +195,7 @@ RSpec.describe ReservationsController, type: :controller do
     context 'with valid params' do
       before do
         allow_any_instance_of(Reservation).to receive(:date_with_free_doctors) { true }
-        @reservation = create(:reservation_with_patient_and_doctor)
+        @reservation = create(:reservation_with_chosen_doctor)
         sign_in(@reservation.employee)
         patch :change_status_save, params: {
           reservation_id: @reservation.id, reservation: {
@@ -218,7 +218,7 @@ RSpec.describe ReservationsController, type: :controller do
     context 'with invalid params' do
       before do
         allow_any_instance_of(Reservation).to receive(:date_with_free_doctors) { true }
-        @reservation = create(:reservation_with_patient_and_doctor)
+        @reservation = create(:reservation_with_chosen_doctor)
         sign_in(@reservation.employee)
         patch :change_status_save, params: {
           reservation_id: @reservation.id, reservation: {

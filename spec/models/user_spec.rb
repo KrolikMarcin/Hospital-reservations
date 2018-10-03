@@ -11,7 +11,7 @@ RSpec.describe User, type: :model do
   context '.free_employees' do
     before do
       allow_any_instance_of(Reservation).to receive(:date_with_free_doctors) { true }
-      @reservation = create(:reservation_with_patient)
+      @reservation = create(:reservation)
       @busy_doctors = create_list(:doctor_with_many_reservations, 3,
                                   reservations_count: 1,
                                   specialization: @reservation.doctor_specialization,

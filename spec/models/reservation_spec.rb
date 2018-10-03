@@ -61,8 +61,7 @@ RSpec.describe Reservation, type: :model do
   context '#remove_doctor_if_exists' do
     before do
       @doctor = create(:user_doctor)
-      @reservation = create(:reservation_with_patient,
-                            doctor_specialization: @doctor.specialization)
+      @reservation = create(:reservation, doctor_specialization: @doctor.specialization)
     end
     it 'returns reservation without doctor if doctor not assigns to reservation' do
       @reservation.remove_doctor_if_exists
@@ -78,7 +77,7 @@ RSpec.describe Reservation, type: :model do
   context '#assign_patient_to_prescriptions' do
     before do
       allow_any_instance_of(Reservation).to receive(:date_with_free_doctors) { true }
-      @reservation = create(:reservation_with_patient_and_doctor)
+      @reservation = create(:reservation_with_chosen_doctor)
     end
 
     it 'returns prescriptions with assigns patient' do

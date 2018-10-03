@@ -4,13 +4,11 @@ FactoryBot.define do
     doctor_specialization { 'psychiatrist' }
     symptoms { 'headache' }
 
-    factory :reservation_with_patient do
-      after(:create) do |reservation|
-        create_list(:user, 1, reservations: [reservation])
-      end
+    after(:create) do |reservation|
+      create(:user, reservations: [reservation])
     end
 
-    factory :reservation_with_patient_and_doctor do
+    factory :reservation_with_chosen_doctor do
       after(:create) do |reservation|
         create(:user, reservations: [reservation])
         create(:user_doctor, reservations: [reservation])
