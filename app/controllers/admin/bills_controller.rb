@@ -1,6 +1,6 @@
 class Admin::BillsController < ApplicationController
   before_action :authenticate_user!
-  befor_action :admin_only
+  before_action :admin_only
 
   def index
     @bills = if params[:format]
@@ -33,7 +33,6 @@ class Admin::BillsController < ApplicationController
       render :new
     end
   end
-
 
   private
 

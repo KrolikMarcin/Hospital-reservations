@@ -1,12 +1,13 @@
-
-<%= form_for @bill, url: reservation_bills_path do |f| %>
-  <%= f.fields_for :bill_items do |b| %>
-    <%= b.label :description %>
-    <%= b.text_field :description %><br />
-    <%= b.label :price %>
-    <%= b.number_field :price %><br />
+<div class="container">    
+  <%= form_for @bill, url: reservation_bills_path do |f| %>
+    <%= f.fields_for :bill_items do |b| %>
+      <%= b.label :description %>
+      <%= b.text_field :description %><br />
+      <%= b.label :price %>
+      <%= b.number_field :price %><br />
+    <% end %>
+    <%= f.label :paid %>
+    <%= f.check_box :paid %><br />
+    <%= f.submit 'Save'%>
   <% end %>
-  <%= f.label :paid %>
-  <%= f.check_box :paid %><br />
-  <%= f.submit 'Save'%>
-<% end %>
+</div>

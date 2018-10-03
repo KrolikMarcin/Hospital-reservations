@@ -1,39 +1,41 @@
-<%= form_for @reservation do |f| %>
-<form class="needs-validation" novalidate>
-  <% if @reservation.errors.any? %>
-    <div id='error_explanation'>
-      <h2>
-        <%= pluralize(@reservation.errors.count, "error") %> 
-        prohibited this reservation from being save:
-      </h2>
-      <ul>
-        <% @reservation.errors.full_messages.each do |msg| %>
-          <li><%= msg %></li>
-        <% end%>
-      </ul>
+<div class="container">    
+  <%= form_for @reservation do |f| %>
+  <form class="needs-validation" novalidate>
+    <% if @reservation.errors.any? %>
+      <div id='error_explanation'>
+        <h2>
+          <%= pluralize(@reservation.errors.count, "error") %> 
+          prohibited this reservation from being save:
+        </h2>
+        <ul>
+          <% @reservation.errors.full_messages.each do |msg| %>
+            <li><%= msg %></li>
+          <% end%>
+        </ul>
+      </div>
+    <% end %>
+
+    <div class='form-group'>
+      <%= f.label 'Date'%>
+      <%= f.datetime_select(:date_time, start_year: Date.today.year,
+        start_month: Date.today.month, start_day: Date.today.day,
+      end_year: Date.today.year + 1,  start_hour: 8, end_hour: 18, minute_step:60)%>
     </div>
+
+    <div class='form-group'>
+      <%= f.label :symptoms %>
+      <%= f.text_field :symptoms, class: "form-control" %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :specialization %><br />
+      <%= f.select(:doctor_specialization, @specializations, {}, class:'custom-select') %>
+    </div>
+
+    <div class="actions">
+
+    <%= f.submit 'Choice doctor', class:"btn btn-outline-secondary"%>
+    </div>
+  </form>
   <% end %>
-
-  <div class='form-group'>
-    <%= f.label 'Date'%>
-    <%= f.datetime_select(:date_time, start_year: Date.today.year,
-      start_month: Date.today.month, start_day: Date.today.day,
-    end_year: Date.today.year + 1,  start_hour: 8, end_hour: 18, minute_step:60)%>
-  </div>
-
-  <div class='form-group'>
-    <%= f.label :symptoms %>
-    <%= f.text_field :symptoms, class: "form-control" %>
-  </div>
-
-  <div class="form-group">
-    <%= f.label :specialization %><br />
-    <%= f.select(:doctor_specialization, @specializations, {}, class:'custom-select') %>
-  </div>
-
-  <div class="actions">
-
-   <%= f.submit 'Choice doctor', class:"btn btn-outline-secondary"%>
-  </div>
-</form>
-<% end %>
+</div>

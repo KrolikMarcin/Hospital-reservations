@@ -1,5 +1,5 @@
 class Admin::ReservationsController < ApplicationController
-  before_action :admin_only, only: [:index, :change_status, :change_status_save]
+  before_action :admin_only
   before_action :authenticate_user!
   def index
     @reservations = if params[:format]

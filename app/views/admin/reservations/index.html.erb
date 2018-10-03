@@ -12,9 +12,9 @@
   <tbody>
     <% @reservations.each do |reservation| %>
     <tr>
-      <td><%= reservation.users.find_by(employee: false).full_name %></td>
+      <td><%= reservation.patient.full_name %></td>
       <td><%= reservation.date_formated %></td>
-      <td><%= reservation.users.find_by(employee: true).full_name %>
+      <td><%= reservation.employee.full_name %></td>
       <td><%= reservation.check_status %>
       <td>
       <%= link_to 'Show', reservation_path(reservation), class: "btn btn-outline-secondary" %>

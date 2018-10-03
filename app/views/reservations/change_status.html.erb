@@ -1,38 +1,40 @@
-<h2><center>Change status</center></h2>
-<%= form_for @reservation, url: reservation_change_status_save_path do |f| %>
-<form class="needs-validation" novalidate>
-  <% if @reservation.errors.any? %>
-    <div id='error_explanation'>
-      <h2>
-        <%= pluralize(@reservation.errors.count, "error") %> 
-        prohibited this reservation from being save:
-      </h2>
-      <ul>
-        <% @reservation.errors.full_messages.each do |msg| %>
-          <li><%= msg %></li>
-        <% end%>
-      </ul>
-    </div>
-  <% end %>
+<div class="container">    
+  <h2><center>Change status</center></h2>
+  <%= form_for @reservation, url: reservation_change_status_save_path do |f| %>
+  <form class="needs-validation" novalidate>
+    <% if @reservation.errors.any? %>
+      <div id='error_explanation'>
+        <h2>
+          <%= pluralize(@reservation.errors.count, "error") %> 
+          prohibited this reservation from being save:
+        </h2>
+        <ul>
+          <% @reservation.errors.full_messages.each do |msg| %>
+            <li><%= msg %></li>
+          <% end%>
+        </ul>
+      </div>
+    <% end %>
 
-  <div class='form-group'>
-    <%= f.label 'Diagnosis'%>
-    <%= f.text_field :diagnosis, class: "form-control" %>
-  </div>
-
-  <%= f.fields_for :prescriptions do |p| %>
     <div class='form-group'>
-      <%= p.label :medicine %>
-      <%= p.text_field :medicine, class: "form-control" %>
+      <%= f.label 'Diagnosis'%>
+      <%= f.text_field :diagnosis, class: "form-control" %>
     </div>
 
-    <div class="form-group">
-      <%= p.label :recommendations %><br />
-      <%= p.text_field :recommendations, class:'form-control' %>
+    <%= f.fields_for :prescriptions do |p| %>
+      <div class='form-group'>
+        <%= p.label :medicine %>
+        <%= p.text_field :medicine, class: "form-control" %>
+      </div>
+
+      <div class="form-group">
+        <%= p.label :recommendations %><br />
+        <%= p.text_field :recommendations, class:'form-control' %>
+      </div>
+    <% end %>
+    <div class="actions">
+    <%= f.submit 'Save', class:"btn btn-outline-secondary"%>
     </div>
+  </form>
   <% end %>
-  <div class="actions">
-   <%= f.submit 'Save', class:"btn btn-outline-secondary"%>
-  </div>
-</form>
-<% end %>
+</div>

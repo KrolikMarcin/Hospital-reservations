@@ -1,1 +1,24 @@
-Recepty
+<div class="container">            
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Date</th>
+      <th>Diagnosis</th>
+      <th>Medicine</th>
+      <th>Recommendations</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @prescriptions.each do |prescription| %>
+    <tr>
+      <td><%= prescription.reservation.date_formated %></td>
+      <td><%= prescription.reservation.diagnosis %></td>
+      <td><%= prescription.medicine %></td>
+      <td><%= prescription.recommendations %></td>
+    <% end %>
+    </tr>
+    
+  </tbody>
+</table>
+
+</div>
