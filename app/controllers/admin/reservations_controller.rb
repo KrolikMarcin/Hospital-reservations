@@ -16,6 +16,6 @@ class Admin::ReservationsController < ApplicationController
   def destroy
     reservation = Reservation.find(params[:id])
     reservation.destroy
-    redirect_to reservations_path
+    redirect_to admin_reservations_path
   end
 end

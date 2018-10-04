@@ -116,7 +116,7 @@ RSpec.describe ReservationsController, type: :controller do
   end
 
   describe 'Delete #destroy' do
-    before(:each) do
+    before do
       allow_any_instance_of(Reservation).to receive(:date_with_free_doctors) { true }
       sign_in(create(:user))
       @reservation = create(:reservation)

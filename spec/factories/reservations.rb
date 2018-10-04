@@ -10,7 +10,6 @@ FactoryBot.define do
 
     factory :reservation_with_chosen_doctor do
       after(:create) do |reservation|
-        create(:user, reservations: [reservation])
         create(:user_doctor, reservations: [reservation])
       end
     end

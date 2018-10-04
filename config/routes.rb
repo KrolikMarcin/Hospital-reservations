@@ -1,6 +1,5 @@
 Rails.application.routes.draw do
   root 'reservations#index'
-  get 'bills/not_paid', to: 'bills#not_paid'
   devise_for :users
   resources :bills, only: :index do
     patch 'pay_bill'
@@ -15,7 +14,9 @@ Rails.application.routes.draw do
   end
   resources :addresses
   namespace :admin do
-    resources :reservations, only: [:index, :show]
-    resources :bills, only: [:index, :show, :new, :create]
+    resources :reservations, only: [:index, :show, :destroy]
+    resources :bills, only: [:index, :show, :new, :create] do
+      get 'not_paid'
+    end
   end
 end

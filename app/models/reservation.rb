@@ -8,7 +8,7 @@ class Reservation < ApplicationRecord
   validates :doctor_specialization, :symptoms, presence: true
 
   def self.today_all_reservations
-    where(status: false, date_time: Time.now.all_day).order(date_time: :desc)
+    where(date_time: Time.now.all_day).order(date_time: :desc)
   end
 
   def self.doctor_today_reservations(employee)
