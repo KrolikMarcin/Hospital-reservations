@@ -9,7 +9,7 @@ RSpec.describe Admin::ReservationsController, type: :controller do
     end
 
     context 'without params' do
-      it 'returns all reservations' do
+      it 'assigns the requested reservations to @reservations' do
         get :index
         expect(assigns(:reservations)).to eq(@reservations)
       end
@@ -54,7 +54,7 @@ RSpec.describe Admin::ReservationsController, type: :controller do
       expect(response).to render_template :show
     end
   end
-  
+
   describe 'Delete #destroy' do
     before do
       allow_any_instance_of(Reservation).to receive(:date_with_free_doctors) { true }
