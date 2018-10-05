@@ -10,9 +10,10 @@ RSpec.describe AddressesController, type: :controller do
   end
 
   describe 'GET #show' do
+    let(:address) { create(:address) }
+    before { sign_in(create(:user)) }
+
     it 'assigns the requested address to @address and renders the :show template' do
-      sign_in(create(:user))
-      address = create(:address)
       get :show, params: { id: address }
       expect(assigns(:address)).to eq(address)
       expect(response).to render_template :show
@@ -42,8 +43,8 @@ RSpec.describe AddressesController, type: :controller do
   end
 
   describe 'PATCH #update' do
-    before { sign_in(create(:user)) }
     let(:address) { create(:address) }
+    before { sign_in(create(:user)) }
 
     context 'valid attributes' do
       before do
@@ -84,9 +85,10 @@ RSpec.describe AddressesController, type: :controller do
   end
 
   describe 'Delete #destroy' do
+    let!(:address) { create(:address) }
+    before { sign_in(create(:user)) }
+
     it 'deletes the address and redirects to root' do
-      sign_in(create(:user))
-      address = create(:address)
       expect { delete :destroy, params: { id: address } }.to change(Address, :count).by(-1)
       expect(response).to redirect_to root_path
     end

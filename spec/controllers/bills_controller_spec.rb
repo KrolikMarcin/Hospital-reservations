@@ -7,9 +7,10 @@ RSpec.describe BillsController, type: :controller do
   end
 
   describe 'GET #show' do
+    let(:bill) { create(:bill) }
+    before { sign_in(bill.user) }
+
     it 'assigns the requested bill to @bill and renders to :show template' do
-      bill = create(:bill)
-      sign_in(bill.user)
       get :show, params: { id: bill }
       expect(assigns(:bill)).to eq(bill)
       expect(response).to render_template :show
@@ -17,9 +18,10 @@ RSpec.describe BillsController, type: :controller do
   end
 
   describe 'GET #index' do
+    let(:user) { create(:user_with_many_bills) }
+    before { sign_in(user) }
+
     it 'assigns the requested bills to user.bills and renders the :index template' do
-      user = create(:user_with_many_bills)
-      sign_in(user)
       get :index
       expect(assigns(:bills)).to eq(user.bills)
       expect(response).to render_template :index
@@ -27,9 +29,10 @@ RSpec.describe BillsController, type: :controller do
   end
 
   describe 'PATCH #pay_bill' do
+    let(:bill) { create(:bill, paid: false) }
+    before { sign_in(bill.user) }
+
     it 'returns bill with changed paid_status for true and redirects to bill#show' do
-      bill = create(:bill, paid: false)
-      sign_in(bill.user)
       patch :pay_bill, params: { bill_id: bill }
       expect(assigns(:bill).paid).to eq(true)
       expect(response).to redirect_to(bill_path(bill))

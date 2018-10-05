@@ -11,7 +11,7 @@ RSpec.describe Bill, type: :model do
     end
 
     it 'returns X if paid: false' do
-      bill = build(:bill, :paid_false)
+      bill = build(:bill, :not_paid)
       expect(bill.check_status).to eq('X')
     end
   end
@@ -23,7 +23,7 @@ RSpec.describe Bill, type: :model do
     end
 
     it 'returns current date + 7 days if paid: false' do
-      bill = build(:bill, :paid_false)
+      bill = build(:bill, :not_paid)
       time = Time.now
       expect(bill.check_status).equal?(time + 7.day..Time.now + 7.day)
     end
@@ -31,17 +31,17 @@ RSpec.describe Bill, type: :model do
 
   context '#bill_item_empty(attributes)' do
     it 'returns true if bill item attributes are empty or nil' do
-      bill = create(:bill)
+      bill = build(:bill)
       expect(bill.bill_item_empty(attributes_for(:bill_item_empty))).to be true
     end
 
     it 'returns false if bill item attributes are not empty' do
-      bill = create(:bill)
+      bill = build(:bill)
       expect(bill.bill_item_empty(attributes_for(:bill_item))).to be false
     end
 
     it 'returns true if one bill item attribute is empty and second is no empty' do
-      bill = create(:bill)
+      bill = build(:bill)
       expect(bill.bill_item_empty(attributes_for(:bill_item, price: nil))).to be true
     end
   end
