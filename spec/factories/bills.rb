@@ -14,7 +14,7 @@ FactoryBot.define do
       create_list(:bill_item, evaluator.bill_items_count, bill: bill)
     end
 
-    trait :paid_false do
+    trait :not_paid do
       paid { false }
     end
   end

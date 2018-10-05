@@ -24,11 +24,12 @@ class Admin::BillsController < ApplicationController
   def create
     @bill = Bill.new(bill_params)
     reservation = Reservation.find(params[:reservation_id])
+    @bill.reservation = reservation
     @bill.user = reservation.patient
     @bill.payment_date = @bill.check_paid
     @bill.amount = @bill.bill_items.sum(&:price)
     if @bill.save
-      redirect_to reservation_path(reservation)
+      redirect_to admin_bill_path(@bill)
     else
       render :new
     end
