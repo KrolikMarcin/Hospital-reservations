@@ -11,8 +11,8 @@ class BillsController < ApplicationController
   end
 
   def pay_bill
-    bill = Bill.find(params[:bill_id])
-    bill.update(paid: true)
-    redirect_to bill_path(bill)
+    @bill = Bill.find(params[:bill_id])
+    @bill.update(paid: true)
+    redirect_to bill_path(@bill)
   end
 end

@@ -48,7 +48,7 @@ FactoryBot.define do
         if evaluator.paid
           create_list(:bill, evaluator.bills_count, user: user)
         else
-          create_list(:bill, evaluator.bills_count, :paid_false, user: user)
+          create_list(:bill, evaluator.bills_count, :not_paid, user: user)
         end
       end
     end
