@@ -49,12 +49,12 @@ class Reservation < ApplicationRecord
   end
 
   def assign_patient_to_prescriptions
-    prescriptions.each { |p| p.user = users.find_by(employee: false) }
+    prescriptions.each { |p| p.user = users.find_by(roles: 'patient') }
   end
 
   def remove_doctor_if_exists
-    employee = users.where(employee: true)
-    users.delete(employee) if employee.exists?
+    doctor = users.where(roles: 'doctor')
+    users.delete(doctor) if doctor.exists?
   end
 
   def date_formated
@@ -65,11 +65,11 @@ class Reservation < ApplicationRecord
     status ? 'V' : 'X'
   end
 
-  def employee
-    users.find_by(employee: true)
+  def doctor
+    users.find_by(roles: 'doctor')
   end
 
   def patient
-    users.find_by(employee: false)
+    users.find_by(roles: 'patient')
   end
 end

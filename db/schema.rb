@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_08_29_115829) do
+ActiveRecord::Schema.define(version: 2018_10_08_092414) do
 
   create_table "addresses", force: :cascade do |t|
     t.string "street"
@@ -78,11 +78,11 @@ ActiveRecord::Schema.define(version: 2018_08_29_115829) do
     t.string "first_name"
     t.string "last_name"
     t.integer "pesel"
-    t.boolean "admin", default: false
-    t.boolean "employee", default: false
     t.boolean "want_email", default: true
     t.string "specialization"
+    t.string "roles"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
+
 end

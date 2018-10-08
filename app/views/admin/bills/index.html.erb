@@ -17,7 +17,7 @@
       <td><%= bill.amount %></td>
       <td><%= bill.check_status %></td>
       <td><%= bill.payment_date %></td>
-      <td><%= bill.reservation.employee.full_name %></td>
+      <td><%= bill.reservation.doctor.full_name %></td>
       <td><%= bill.user.full_name%></td>
       <td>
       <%= link_to 'Show', admin_bill_path(bill), class: "btn btn-outline-secondary" %>

@@ -42,8 +42,8 @@
     </div>
 
     <div class='form-group'>
-      <%= f.label :employee %>
-      <%= f.check_box :employee %>
+      <%= f.label :roles %>
+      <%= f.select(:roles, ['patient', 'doctor'], {}, class:'custom-select') %>
     </div>
 
     <div id="specialization" class="form-group hidden">
@@ -61,8 +61,8 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
 <script>
   $(document).ready(function() {
-    $('#user_employee').change(function() {
-       if($(this).is(":checked")) {
+    $('#user_roles').change(function() {
+       if($(this).val() == 'doctor') {
           $("#specialization").removeClass("hidden");
           return;
        }

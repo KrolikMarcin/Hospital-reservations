@@ -2,7 +2,7 @@ class ReservationsController < ApplicationController
   before_action :authenticate_user!
   before_action :patient_only, only: [:new, :create, :choice_doctor,
    :choice_doctor_save, :edit, :destroy]
-  before_action :employee_only, only: [:change_status, :change_status_save]
+  before_action :doctor_only, only: [:change_status, :change_status_save]
   def index
     @reservations = if params[:format]
                       Reservation.send(params[:format].to_sym, current_user)

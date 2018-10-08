@@ -13,9 +13,9 @@
     </thead>
     <tbody>
       <tr>
-        <td><%= @reservation.users.find_by(employee: false).full_name %></td>
+        <td><%= @reservation.users.find_by(roles: 'patient').full_name %></td>
         <td><%= @reservation.date_formated %></td>
-        <td><%= @reservation.users.find_by(employee: true).full_name %>
+        <td><%= @reservation.users.find_by(roles: 'doctor').full_name %>
         <td><%= @reservation.symptoms %></td>
         <td><%= @reservation.check_status%>
         <td><%= @reservation.diagnosis %></td>

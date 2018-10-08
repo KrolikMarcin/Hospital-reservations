@@ -14,7 +14,7 @@
     <tr>
       <td><%= reservation.patient.full_name %></td>
       <td><%= reservation.date_formated %></td>
-      <td><%= reservation.employee.full_name %></td>
+      <td><%= reservation.doctor.full_name %></td>
       <td><%= reservation.check_status %>
       <td>
       <%= link_to 'Show', reservation_path(reservation), class: "btn btn-outline-secondary" %>

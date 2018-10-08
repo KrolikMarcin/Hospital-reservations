@@ -11,7 +11,7 @@ class User < ApplicationRecord
   validates :pesel, presence: true, numericality: { equel_to: 9 }
 
   def self.free_doctors(reservation)
-    users = where(employee: true, specialization: reservation.doctor_specialization)
+    users = where(roles: 'doctor', specialization: reservation.doctor_specialization)
             .left_outer_joins(:reservations)
     users = users.where.not(reservations:
       { date_time: reservation.date_time }).or(users.where(reservations: { id: nil }))
@@ -19,7 +19,7 @@ class User < ApplicationRecord
   end
 
   def self.specializations
-    where(employee: true).pluck(:specialization).uniq
+    where(roles: 'doctor').pluck(:specialization).uniq
   end
 
   def collection
@@ -28,5 +28,17 @@ class User < ApplicationRecord
 
   def full_name
     "#{first_name} #{last_name}"
+  end
+
+  def admin
+    true if roles == 'admin'
+  end
+
+  def patient
+    true if roles == 'patient'
+  end
+
+  def doctor
+    true if roles == 'doctor'
   end
 end

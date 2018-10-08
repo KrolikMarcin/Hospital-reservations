@@ -5,21 +5,21 @@ class ApplicationController < ActionController::Base
 
   def configure_permitted_parameters
     devise_parameter_sanitizer.permit(:sign_up, keys:
-      [:employee, :first_name, :last_name, :pesel, :want_email, :specialization])
+      [:first_name, :last_name, :pesel, :want_email, :specialization, :roles])
   end
 
   def admin_only
     redirect_back(fallback_location: root_path, alert: 'Access denied.') unless
-      current_user.admin?
+      current_user.admin
   end
 
   def patient_only
-    redirect_back(fallback_location: root_path, alert: 'Access denied.') if
-      current_user.employee? || current_user.admin?
+    redirect_back(fallback_location: root_path, alert: 'Access denied.') unless
+      current_user.patient
   end
 
-  def employee_only
-    redirect_back(fallback_location: root_path, alert: 'Access denied.') if
-    !current_user.employee? || current_user.admin?
+  def doctor_only
+    redirect_back(fallback_location: root_path, alert: 'Access denied.') unless
+    current_user.doctor
   end
 end

@@ -29,10 +29,10 @@
 
       <% if user_signed_in? && current_user.admin %>
         <%= render 'layouts/admin_navbar'%>
-      <% elsif user_signed_in? && !current_user.employee %>
+      <% elsif user_signed_in? && current_user.patient %>
         <%= render 'layouts/patient_navbar'%>
-      <% elsif user_signed_in? && current_user.employee && !current_user.admin %>
-        <%= render 'layouts/employee_navbar'%>
+      <% elsif user_signed_in? && current_user.doctor  %>
+        <%= render 'layouts/doctor_navbar'%>
       <% end %>
 
       <% if user_signed_in? %>

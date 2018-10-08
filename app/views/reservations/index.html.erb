@@ -1,6 +1,6 @@
 <h2><center>Reservations:</center></h2>
-<% if current_user.employee %>
-  <%= render 'employee_index'%>
+<% if current_user.doctor %>
+  <%= render 'doctor_index'%>
 <% else %>
   <%= render 'patient_index' %>
 <% end %>
