@@ -12,10 +12,11 @@
   <tbody>
     <% @reservations.each do |reservation| %>
     <tr>
-  
       <td><%= reservation.date_formated %></td>
-      <td><%= reservation.doctor.full_name %></td>
-      <td><%= reservation.doctor.specialization%></td>
+      <% unless reservation.doctor.nil? %>
+        <td><%= reservation.doctor.full_name %></td>
+        <td><%= reservation.doctor.specialization%></td>
+      <% end %>
       <td><%= reservation.check_status %></td>
       <td>
       <%= link_to 'Show', reservation_path(reservation), class: "btn btn-outline-secondary" %>

@@ -5,16 +5,15 @@ FactoryBot.define do
     sequence(:last_name) { |n| "Koc#{n}" }
     pesel { Random.new.rand(10**8..999_999_999).to_i }
     password { 'asdasd' }
-    employee { false }
+    roles { 'patient' }
 
     trait :doctor do
-      employee { true }
+      roles { 'doctor' }
       specialization { 'psychiatrist' }
     end
 
     trait :admin do
-      admin { true }
-      employee { true }
+      roles { 'admin' }
     end
 
     trait :random_specialization do

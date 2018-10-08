@@ -120,7 +120,7 @@ RSpec.describe ReservationsController, type: :controller do
   end
 
   describe 'GET #doctor_choice' do
-    let(:reservation) { create(:reservation) }    
+    let(:reservation) { create(:reservation) }
     before do
       allow_any_instance_of(Reservation).to receive(:date_with_free_doctors) { true }
       sign_in(reservation.patient)
@@ -166,7 +166,7 @@ RSpec.describe ReservationsController, type: :controller do
     let(:reservation) { create(:reservation_with_chosen_doctor) }
     before do
       allow_any_instance_of(Reservation).to receive(:date_with_free_doctors) { true }
-      sign_in(reservation.employee)
+      sign_in(reservation.doctor)
       get :change_status, params: { reservation_id: reservation.id }
     end
 
@@ -184,8 +184,9 @@ RSpec.describe ReservationsController, type: :controller do
     let(:reservation) { create(:reservation_with_chosen_doctor) }
     before do
       allow_any_instance_of(Reservation).to receive(:date_with_free_doctors) { true }
-      sign_in(reservation.employee)
+      sign_in(reservation.doctor)
     end
+
     context 'with valid params' do
       before do
         patch :change_status_save, params: {

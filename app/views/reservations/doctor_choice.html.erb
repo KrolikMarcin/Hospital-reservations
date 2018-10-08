@@ -1,6 +1,6 @@
 <div class="container">    
   <h2><center>Choice doctor:</center></h2>
-  <%= form_for @reservation, url: reservation_doctor_choice_save_path do |f|%>
+  <%= form_for @reservation, url: reservation_doctor_choice_save_path(@reservation) do |f|%>
     <div class="form-group">
       <%= f.label 'Doctors:'%>
       <%= f.select(:user_ids, @doctors, {}, class:'custom-select') %>

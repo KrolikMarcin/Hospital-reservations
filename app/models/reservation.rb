@@ -3,10 +3,10 @@ class Reservation < ApplicationRecord
   has_one :bill, dependent: :destroy
   has_many :prescriptions, dependent: :destroy
   accepts_nested_attributes_for :prescriptions, reject_if: :prescription_empty
-  validate :date_with_free_doctors, :current_date
+  validate :date_with_free_doctors, :current_date, if: :date_changed?
   before_destroy :check_date
   validates :doctor_specialization, :symptoms, presence: true
-
+  # after_initialize :invalid_choice
   def self.today_all_reservations
     where(date_time: Time.now.all_day).order(date_time: :desc)
   end
@@ -61,6 +61,10 @@ class Reservation < ApplicationRecord
     date_time.strftime('%a, %d-%m-%Y %H:%M')
   end
 
+  def date_changed?
+    date_time_changed?
+  end
+
   def check_status
     status ? 'V' : 'X'
   end
@@ -72,4 +76,8 @@ class Reservation < ApplicationRecord
   def patient
     users.find_by(roles: 'patient')
   end
+
+  # def invalid_choice
+  #   redirect_to reservation_doctor_choice_path(self) if doctor.nil?
+  # end
 end
