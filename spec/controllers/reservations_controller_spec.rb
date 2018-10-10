@@ -88,7 +88,7 @@ RSpec.describe ReservationsController, type: :controller do
       end
 
       it 'redirects to the updated reservation' do
-        expect(response).to redirect_to reservation
+        expect(response).to redirect_to reservation_doctor_choice_path(reservation)
       end
     end
 

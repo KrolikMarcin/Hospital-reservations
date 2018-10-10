@@ -6,7 +6,7 @@ class Reservation < ApplicationRecord
   validate :date_with_free_doctors, :current_date, if: :date_changed?
   before_destroy :check_date
   validates :doctor_specialization, :symptoms, presence: true
-  # after_initialize :invalid_choice
+
   def self.today_all_reservations
     where(date_time: Time.now.all_day).order(date_time: :desc)
   end
@@ -77,7 +77,4 @@ class Reservation < ApplicationRecord
     users.find_by(roles: 'patient')
   end
 
-  # def invalid_choice
-  #   redirect_to reservation_doctor_choice_path(self) if doctor.nil?
-  # end
 end
