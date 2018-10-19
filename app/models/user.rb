@@ -6,7 +6,7 @@ class User < ApplicationRecord
   has_one :address
   has_many :bills
   has_many :prescriptions
-  has_and_belongs_to_many :reservations
+  has_and_belongs_to_many :reservations, dependent: :destroy 
   validates :first_name, :last_name, presence: true, length: { in: 3..20 }
   validates :pesel, presence: true, numericality: { equel_to: 9 }
 

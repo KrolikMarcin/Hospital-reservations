@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   resources :bills, only: :index do
     patch 'pay_bill'
   end
-  resources :prescriptions, only: :index
+  resources :prescriptions, only: [:index, :show]
   resources :reservations, shallow: true do
     get 'doctor_choice'
     patch 'doctor_choice_save'
