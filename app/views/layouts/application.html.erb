@@ -11,7 +11,7 @@
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
-    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
   </head>
 
@@ -45,11 +45,13 @@
             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
       
               <%= link_to 'Edit profile', edit_user_registration_path, class: 'dropdown-item' %> 
-              <%= link_to 'Destroy', user_registration_path(current_user), method: :delete, class: 'dropdown-item' %>
+              <%= link_to 'Destroy', user_registration_path(current_user), method: :delete,
+                data: { confirm: 'Are you sure?' }, class: 'dropdown-item' %>
               <div class="dropdown-divider"></div>
-              <%= link_to 'Add address', new_address_path, class: 'dropdown-item'%>
-              <% unless current_user.address.nil? %>
-                <%= link_to 'Edit address', edit_address_path(current_user.address), class: 'dropdown-item'%>
+              <% if current_user.address.nil? %>
+                <%= link_to 'Add address', new_address_path, class: 'dropdown-item' %>
+              <% else %>
+                <%= link_to 'Address', address_path(current_user.address), class: 'dropdown-item' %>
               <% end %>
             </div>
           </li>
