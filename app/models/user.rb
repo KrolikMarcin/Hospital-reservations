@@ -11,11 +11,11 @@ class User < ApplicationRecord
   validates :pesel, presence: true, numericality: { equel_to: 9 }
 
   def self.free_doctors(reservation)
-    users = where(roles: 'doctor', specialization: reservation.doctor_specialization)
-            .left_outer_joins(:reservations)
-    users = users.where.not(reservations:
-      { date_time: reservation.date_time }).or(users.where(reservations: { id: nil }))
-    users.group(:id).order(Arel.sql('count(reservations.id)'))
+    doctors = where(roles: 'doctor', specialization: reservation.doctor_specialization)
+              .left_outer_joins(:reservations)
+    busy_doctors = doctors.where(reservations: { date_time: reservation.date_time }).pluck(:id)
+    # returns sorted free doctors
+    doctors.where.not(id: busy_doctors).group(:id).order(Arel.sql('count(reservations.id)'))
   end
 
   def self.specializations
