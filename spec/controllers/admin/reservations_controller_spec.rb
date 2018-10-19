@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe Admin::ReservationsController, type: :controller do
   before { allow_any_instance_of(Reservation).to receive(:date_with_free_doctors) { true } }
-  before { sign_in(create(:user, :admin))}
+  before { sign_in(create(:user, :admin)) }
 
   describe 'GET #index' do
     let(:reservations) do
