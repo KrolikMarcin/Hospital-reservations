@@ -1,49 +1,52 @@
 <h2><center>Reservation</center></h2>
 <div class="container">            
   <table class="table table-striped">
-    <thead>
-      <tr>
-        <th>Patient</th>
-        <th>Date</th>
-        <th>Doctor</th>
-        <th>Status</th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td><%= @reservation.patient.full_name %></td>
-        <td><%= @reservation.date_formated %></td>
-        <% unless @reservation.doctor.nil?%>
-          <td><%= @reservation.doctor.full_name %>
-        <% end %>
-        <td><%= @reservation.check_status%>
-        <td>
-        <% if current_user.patient && !@reservation.status %>
-          <%= link_to 'Edit', edit_reservation_path(@reservation), class: "btn btn-outline-secondary" %> 
-          <% if Time.now.beginning_of_day + 3.days < @reservation.date_time %>
-            <%= link_to 'Cancel', reservation_path(@reservation),
-                method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-outline-secondary"%>
-          <% end %>
-          
-        <% end %>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+      <tbody>
+        <tr>
+          <th>Patient</th>
+            <td><%= @reservation.patient.full_name %></td>
+        </tr>
 
-  <table class="table table-striped" id="productSizes">
-    <thead>
-      <tr class="d-flex">
-        <th class='col-6'>Symptoms</th>
-        <th class='col-6'>Diagnosis</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr class="d-flex">
-        <td class='col-6'><%= @reservation.symptoms %></td>
-        <td class='col-6'><%= @reservation.diagnosis %></td>
-      </tr>
-    </tbody>
+        <tr>
+          <th>Date</th>
+            <td><%= @reservation.date_formated %></td>
+        </tr>
+
+        <tr>
+          <th>Doctor</th>
+            <td><%= @reservation.doctor.full_name %></td>
+        </tr>
+
+        <tr>
+          <th>Date</th>
+            <td><%= @reservation.date_formated %></td>
+        </tr>
+
+        <tr>
+          <th>Symptoms</th>
+            <td><%= @reservation.symptoms %></td>
+        </tr>
+
+        <tr>
+          <th>Status</th>
+            <td><%= @reservation.check_status %></td>
+        </tr>
+
+        <tr>
+          <th>Diagnosis</th>
+            <td><%= @reservation.diagnosis %></td>
+        </tr>
+      </tbody>
   </table>
+  <% if current_user.patient && !@reservation.status %>
+    <%= link_to 'Edit', edit_reservation_path(@reservation), class: "btn btn-outline-secondary" %> 
+    <% if Time.now.beginning_of_day + 3.days < @reservation.date_time %>
+    <%= link_to 'Cancel', reservation_path(@reservation),
+        method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-outline-secondary"%>
+    <% end %>
+  <% end %>
+  <% if current_user.patient && @reservation.status %>
+    <%= link_to 'Bill', bill_path(@reservation.bill), class: "btn btn-outline-secondary"%>
+    <%= link_to 'Prescriptions', prescriptions_path(@reservation), class: "btn btn-outline-secondary"%>
+  <% end %>
 </div>

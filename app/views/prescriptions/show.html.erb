@@ -1,35 +1,27 @@
 <div class='container'>
   <table class="table table-striped">
-    <thead>
-      <tr>
-        <th>Date</th>
-        <th>Doctor</th>
-        <th>Medicine</th>
-        <th>Recommendations</th>
-      </tr>
-    </thead>
     <tbody>
       <tr>
-        <td><%= @prescription.reservation.date_formated %></td>
-        <td><%= @prescription.reservation.doctor.full_name %>
-        <td><%= @prescription.medicine %></td>
-        <td><%= @prescription.recommendations %></td>
-      </tr>    
-    </tbody>
-  </table>
+        <th>Date of issue</th>
+          <td><%= @prescription.reservation.date_formated %></td>
+      </tr>
 
-  <table class='table table-striped' id="productSizes" >
-    <thead>
-      <tr class="d-flex">
-        <th class='col-6'>Symptoms</th>
-        <th class=col-6>Diagnosis</th>
+      <tr>
+        <th>Doctor</th>
+          <td><%= @prescription.reservation.doctor.full_name %></td>
       </tr>
-    </thead>
-    <tbody>
-        <tr class="d-flex">
-          <td class='col-6'><%= @prescription.reservation.symptoms %></td>
-          <td class='col-6'><%= @prescription.reservation.diagnosis %></td>
-        </tr>
+
+      <tr>
+        <th>Medicine</th>
+          <td><%= @prescription.medicine %></td>
+      </tr>
+
+      <tr>
+        <th>Recommendations</th>
+          <td><%= @prescription.recommendations %></td>
+      </tr>
+
     </tbody>
   </table>
+  <%= link_to 'Reservation', reservation_path(@prescription.reservation), class: "btn btn-outline-secondary" %>
 </div>

@@ -3,7 +3,11 @@ class PrescriptionsController < ApplicationController
   before_action :patient_only
 
   def index
-    @prescriptions = Prescription.where(user: current_user)
+    @prescriptions = if params[:format]
+                       Reservation.find(params[:format]).prescriptions
+                     else
+                       Prescription.where(user: current_user)
+                     end
   end
 
   def show
