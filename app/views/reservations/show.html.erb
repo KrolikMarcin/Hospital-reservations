@@ -6,9 +6,7 @@
         <th>Patient</th>
         <th>Date</th>
         <th>Doctor</th>
-        <th>Symptoms</th>
         <th>Status</th>
-        <th>Diagnosis</th>
         <th></th>
       </tr>
     </thead>
@@ -19,9 +17,7 @@
         <% unless @reservation.doctor.nil?%>
           <td><%= @reservation.doctor.full_name %>
         <% end %>
-        <td><%= @reservation.symptoms %></td>
         <td><%= @reservation.check_status%>
-        <td><%= @reservation.diagnosis %></td>
         <td>
         <% if current_user.patient && !@reservation.status %>
           <%= link_to 'Edit', edit_reservation_path(@reservation), class: "btn btn-outline-secondary" %> 
@@ -32,6 +28,21 @@
           
         <% end %>
         </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <table class="table table-striped" id="productSizes">
+    <thead>
+      <tr class="d-flex">
+        <th class='col-6'>Symptoms</th>
+        <th class='col-6'>Diagnosis</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="d-flex">
+        <td class='col-6'><%= @reservation.symptoms %></td>
+        <td class='col-6'><%= @reservation.diagnosis %></td>
       </tr>
     </tbody>
   </table>

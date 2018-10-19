@@ -5,21 +5,30 @@
         <th>Patient</th>
         <th>Date</th>
         <th>Doctor</th>
-        <th>Symptoms</th>
         <th>Status</th>
-        <th>Diagnosis</th>
-   
       </tr>
     </thead>
     <tbody>
       <tr>
-        <td><%= @reservation.users.find_by(roles: 'patient').full_name %></td>
+        <td><%= @reservation.patient.full_name %></td>
         <td><%= @reservation.date_formated %></td>
-        <td><%= @reservation.users.find_by(roles: 'doctor').full_name %>
-        <td><%= @reservation.symptoms %></td>
+        <td><%= @reservation.doctor.full_name %>
         <td><%= @reservation.check_status%>
-        <td><%= @reservation.diagnosis %></td>
-       
+      </tr>
+    </tbody>
+  </table>
+
+  <table class="table table-striped" id="productSizes">
+    <thead>
+      <tr class="d-flex">
+        <th class='col-6'>Symptoms</th>
+        <th class='col-6'>Diagnosis</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="d-flex">
+        <td class='col-6'><%= @reservation.symptoms %></td>
+        <td class='col-6'><%= @reservation.diagnosis %></td>
       </tr>
     </tbody>
   </table>
