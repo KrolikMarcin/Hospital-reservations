@@ -10,10 +10,6 @@ class Admin::BillsController < ApplicationController
              end
   end
 
-  def show
-    @bill = Bill.find(params[:id])
-  end
-
   def new
     @bill = Bill.new
     3.times do
@@ -29,7 +25,7 @@ class Admin::BillsController < ApplicationController
     @bill.payment_date = @bill.check_paid
     @bill.amount = @bill.bill_items.sum(&:price)
     if @bill.save
-      redirect_to admin_bill_path(@bill)
+      redirect_to bill_path(@bill)
     else
       render :new
     end

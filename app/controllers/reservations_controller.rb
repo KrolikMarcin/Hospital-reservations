@@ -49,7 +49,7 @@ class ReservationsController < ApplicationController
   def destroy
     reservation = Reservation.find(params[:id])
     reservation.destroy
-    redirect_to reservations_path
+    redirect_to current_user.admin ? admin_reservations_path : reservations_path
   end
 
   def doctor_choice

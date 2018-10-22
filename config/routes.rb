@@ -14,11 +14,9 @@ Rails.application.routes.draw do
   end
   resources :addresses
   namespace :admin, shallow: true do
-    resources :reservations, only: [:index, :show, :destroy] do
+    resources :reservations, only: :index do
       resources :bills, only: [:new, :create]
     end
-    resources :bills, only: [:index, :show] do
-      get 'not_paid'
-    end
+    resources :bills, only: [:index, :destroy]
   end
 end

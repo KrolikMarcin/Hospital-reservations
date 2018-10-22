@@ -1,6 +1,5 @@
 class PrescriptionsController < ApplicationController
   before_action :authenticate_user!
-  before_action :patient_only
 
   def index
     @prescriptions = if params[:format]

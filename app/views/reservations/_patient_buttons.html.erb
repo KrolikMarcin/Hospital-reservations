@@ -1,0 +1,10 @@
+<% if current_user.patient && !@reservation.status %>
+    <%= link_to 'Edit', edit_reservation_path(@reservation), class: "btn btn-outline-secondary" %> 
+    <% if Time.now.beginning_of_day + 3 && @reservation.status.days < @reservation.date_time %>
+    <%= link_to 'Cancel', reservation_path(@reservation),
+        method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-outline-secondary"%>
+    <% end %>
+<% end %>
+<% unless @reservation.bill.nil?  %>
+  <%= link_to 'Bill', bill_path(@reservation.bill), class: "btn btn-outline-secondary"%>
+<% end %>

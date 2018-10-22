@@ -1,6 +1,7 @@
 class BillsController < ApplicationController
   before_action :authenticate_user!
-  before_action :patient_only
+  before_action :patient_only, only: [:index, :pay_bill]
+  before_action :admin_and_patient, only: :show
 
   def index
     @bills = Bill.where(user: current_user).order(payment_date: :desc)
@@ -11,6 +12,7 @@ class BillsController < ApplicationController
   end
 
   def pay_bill
+    # will be implement possibility to pay by bank transfer
     @bill = Bill.find(params[:bill_id])
     @bill.update(paid: true)
     redirect_to bill_path(@bill)

@@ -9,13 +9,14 @@ class Admin::ReservationsController < ApplicationController
                     end
   end
 
-  def show
-    @reservation = Reservation.find(params[:id])
-  end
+  # def show
+  #   @reservation = Reservation.find(params[:id])
+  #   render 'reservations/show'
+  # end
 
-  def destroy
-    reservation = Reservation.find(params[:id])
-    reservation.destroy
-    redirect_to admin_reservations_path
-  end
+  # def destroy
+  #   reservation = Reservation.find(params[:id])
+  #   reservation.destroy
+  #   redirect_to admin_reservations_path
+  # end
 end

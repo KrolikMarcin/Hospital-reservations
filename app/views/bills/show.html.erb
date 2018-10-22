@@ -15,7 +15,7 @@
     </tbody>
   </table>
 
-  <table class='table table-striped' id="productSizes" >
+  <table class='table table-striped border' id="productSizes" >
     <thead>
       <tr class="d-flex">
         <th class='col-9'>Description</th>
@@ -40,4 +40,10 @@
       <p class="font-weight-bold"><%= @bill.amount %> e</p>
     </div>
   </div>
+
+  <%= link_to 'Reservation', reservation_path(@bill.reservation), class: "btn btn-outline-secondary"%>
+  <% if current_user.admin %>
+    <%= link_to 'Destroy', bill_path(@bill), method: :delete, 
+    data: { confirm: 'Are you sure?' }, class: "btn btn-outline-secondary"%>
+  <% end %>
  </div>
