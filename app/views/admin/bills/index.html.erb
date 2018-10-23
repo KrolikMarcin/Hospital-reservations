@@ -7,21 +7,18 @@
       <th>Payment date</th>
       <th>Doctor name</th>
       <th>Patient name</th>
-      <th></th>
     </tr>
   </thead>
   <tbody>
     <% @bills.each do |bill| %>
-    <tr>
+    <tr data-link="<%= bill_path(bill) %>" style="cursor: pointer;">
   
       <td><%= bill.amount %></td>
       <td><%= bill.check_status %></td>
       <td><%= bill.payment_date %></td>
       <td><%= bill.reservation.doctor.full_name %></td>
       <td><%= bill.user.full_name%></td>
-      <td>
-      <%= link_to 'Show', bill_path(bill), class: "btn btn-outline-secondary" %>
-      </td>
+ 
     <% end %>
     </tr>
     

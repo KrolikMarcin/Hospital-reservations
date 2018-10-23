@@ -7,26 +7,12 @@ class Reservation < ApplicationRecord
   before_destroy :check_date
   validates :doctor_specialization, :symptoms, presence: true
 
-  def self.today_all_reservations
-    where(date_time: Time.now.all_day).order(date_time: :desc)
+  def self.chosen_day(date)
+    where(date_time: date.all_day)
   end
 
-  def self.doctor_today_reservations(employee)
-    where(date_time: Time.now.all_day).joins(:users)
-                                      .where(users: { id: employee.id })
-                                      .order(date_time: :desc)
-  end
-
-  def self.doctor_week_reservations(employee)
-    where(date_time: Time.now.all_week).joins(:users)
-                                       .where(users: { id: employee.id })
-                                       .order(date_time: :desc)
-  end
-
-  def self.doctor_month_reservations(employee)
-    where(date_time: Time.now.all_month).joins(:users)
-                                        .where(users: { id: employee.id })
-                                        .order(date_time: :desc)
+  def self.user_reservations(user)
+    joins(:users).where(users: { id: user.id })
   end
 
   def prescription_empty(attributes)
@@ -77,4 +63,7 @@ class Reservation < ApplicationRecord
     users.find_by(roles: 'patient')
   end
 
+  def start_time
+    date_time
+  end
 end

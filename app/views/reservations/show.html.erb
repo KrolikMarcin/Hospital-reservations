@@ -33,7 +33,7 @@
         </tr>
       </tbody>
   </table>
-  <% unless @reservation.prescriptions.nil? %>
+  <% unless @reservation.prescriptions.empty? %>
     <%= link_to 'Prescriptions', prescriptions_path(@reservation), class: "btn btn-outline-secondary"%>
   <% end %>
   <% if current_user.admin %>

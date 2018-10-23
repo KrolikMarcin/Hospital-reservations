@@ -4,10 +4,10 @@ class ReservationsController < ApplicationController
    :choice_doctor_save, :edit, :destroy]
   before_action :doctor_only, only: [:change_status, :change_status_save]
   def index
-    @reservations = if params[:format]
-                      Reservation.send(params[:format].to_sym, current_user)
+    @reservations = if params[:date]
+                      current_user.reservations.chosen_day(params[:date].to_date)
                     else
-                      current_user.reservations.order(date_time: :desc)
+                      current_user.reservations
                     end
   end
 

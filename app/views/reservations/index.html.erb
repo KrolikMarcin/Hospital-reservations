@@ -1,6 +1,19 @@
 <h2><center>Reservations:</center></h2>
-<% if current_user.doctor %>
-  <%= render 'doctor_index'%>
+<% if params[:date] %>
+  <%= render 'chosen_day_calendar'%>
+<% elsif params[:calendar] == 'week_calendar' %>
+  <%= render 'week_calendar' %>
 <% else %>
-  <%= render 'patient_index' %>
+  <%= render 'month_calendar' %>
 <% end %>
+ <script>
+$(".clickable").click(function () {
+    window.location = $(this).data("link");
+    
+});
+</script>
+ <script>
+   $("tr[data-link]").click(function() {
+    window.location = $(this).data("link")
+  })
+</script>

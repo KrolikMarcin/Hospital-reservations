@@ -1,0 +1,31 @@
+<div class='container'>
+  <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Patient</th>
+          <th>Date</th>
+          <th>Status</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @reservations.each do |reservation| %>
+          <tr data-link="<%= reservation_path(reservation) %>" style="cursor: pointer;">
+            <% if current_user.doctor %>
+              <td><%= reservation.patient.full_name %></td>
+            <% else %>
+              <td><%= reservation.doctor.full_name %></td>
+            <% end %>
+
+            <td><%= reservation.date_formated %></td>
+            <td><%= reservation.check_status %></td>
+            <td>
+            <% if current_user.doctor && !reservation.status && params[:date] == Time.now.to_date.to_s %>
+              <%= link_to 'Change status', reservation_change_status_path(reservation), class: "btn btn-outline-secondary"%>
+            <% end %>
+            </td>
+        <% end %>
+          </tr>
+      </tbody>
+    </table>
+  </div>

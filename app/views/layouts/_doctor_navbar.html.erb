@@ -5,9 +5,9 @@
       Reservations
     </a>
     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-      <%= link_to 'Today reservations', reservations_path(:doctor_today_reservations), class: 'dropdown-item'%>
-      <%= link_to 'All week reservations', reservations_path(:doctor_week_reservations), class: 'dropdown-item' %>
-      <%= link_to 'All month reservations', reservations_path(:doctor_month_reservations), class: 'dropdown-item' %>
+      <%= link_to 'Today reservations', reservations_path(date: Time.now.to_date), class: 'dropdown-item'%>
+      <%= link_to 'All week reservations', reservations_path(calendar: :week_calendar), class: 'dropdown-item' %>
+      <%= link_to 'All month reservations', reservations_path, class: 'dropdown-item' %>
     </div>
   </li>
 </ul>

@@ -6,17 +6,15 @@
       <th>Doctor</th>
       <th>Medicine</th>
       <th>Recommendations</th>
-      <th></th>
     </tr>
   </thead>
   <tbody>
     <% @prescriptions.each do |prescription| %>
-    <tr>
+    <tr data-link="<%= prescription_path(prescription) %>" style="cursor: pointer;">
       <td><%= prescription.reservation.date_formated %></td>
       <td><%= prescription.reservation.doctor.full_name %>
       <td><%= prescription.medicine %></td>
       <td><%= prescription.recommendations %></td>
-      <td><%= link_to 'Show', prescription_path(prescription), class: "btn btn-outline-secondary" %>
     <% end %>
     </tr>
     
@@ -24,3 +22,8 @@
 </table>
 
 </div>
+ <script>
+   $("tr[data-link]").click(function() {
+    window.location = $(this).data("link")
+  })
+</script>
