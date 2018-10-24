@@ -1,18 +1,24 @@
 <div class='container'>
   <%= month_calendar events: @reservations do |date, reservations| %>
       <div class='clickable' data-link="<%= reservations_path(date: date) %>" style="cursor: pointer;">
-        <%= date %><br />
+        <center><%= date %></center>
       </div>
       <% reservations.each do |reservation| %>
         <div class='clickable' data-link="<%= reservation_path(reservation) %>" style="cursor: pointer;">
-          <%= reservation.date_time.hour %>
+          <%= reservation.hour_formated %>
           <% if current_user.patient %>
             <%= reservation.doctor.full_name %>
           <% else %>
             <%= reservation.patient.full_name %>
           <% end %>
-          <%= reservation.check_status %>
         </div>
       <% end %>
 <% end %>
 </div>
+
+<script>
+$(".clickable").click(function () {
+    window.location = $(this).data("link");
+    
+});
+</script>

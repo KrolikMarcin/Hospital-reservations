@@ -6,14 +6,3 @@
 <% else %>
   <%= render 'month_calendar' %>
 <% end %>
- <script>
-$(".clickable").click(function () {
-    window.location = $(this).data("link");
-    
-});
-</script>
- <script>
-   $("tr[data-link]").click(function() {
-    window.location = $(this).data("link")
-  })
-</script>

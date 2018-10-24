@@ -14,14 +14,6 @@ class Bill < ApplicationRecord
     paid ? Time.now : Time.now + 7.days
   end
 
-  def self.not_paid
-    where(paid: false).order(payment_date: :desc)
-  end
-
-  def self.paid
-    where(paid: true).order(payment_date: :desc)
-  end
-
   def check_status
     paid ? 'V' : 'X'
   end

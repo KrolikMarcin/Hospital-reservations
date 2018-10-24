@@ -34,11 +34,14 @@
       </tbody>
   </table>
   <% unless @reservation.prescriptions.empty? %>
-    <%= link_to 'Prescriptions', prescriptions_path(@reservation), class: "btn btn-outline-secondary"%>
+    <%= link_to 'Prescriptions', prescriptions_path(reservation_id: @reservation), class: "btn btn-outline-secondary"%>
   <% end %>
   <% if current_user.admin %>
     <%= render 'admin_buttons'%>
   <% elsif current_user.patient %>
     <%= render 'patient_buttons'%>
+  <% end %>
+  <% if current_user.doctor && !@reservation.status && @reservation.date_time.to_date == Time.now.to_date %>
+    <%= link_to 'Change status', reservation_change_status_path(@reservation), class: "btn btn-outline-secondary"%>
   <% end %>
 </div>

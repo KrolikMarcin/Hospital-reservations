@@ -43,6 +43,10 @@ class Reservation < ApplicationRecord
     users.delete(doctor) if doctor.exists?
   end
 
+  def hour_formated
+    date_time.strftime('%H:%M')
+  end
+
   def date_formated
     date_time.strftime('%a, %d-%m-%Y %H:%M')
   end
@@ -63,6 +67,7 @@ class Reservation < ApplicationRecord
     users.find_by(roles: 'patient')
   end
 
+  # need for the simple calendar
   def start_time
     date_time
   end

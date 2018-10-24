@@ -1,0 +1,29 @@
+<div class='container'>
+  <% @doctors.each do |doctor|%>
+      <center><p class="font-weight-bold">Doctor: <%= doctor.full_name %>, <%= doctor.specialization %></p></center>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>Patient</th>
+            <th>Date</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% doctor.reservations.each do |reservation| %>
+            <tr data-link="<%= reservation_path(reservation) %>" style="cursor: pointer;">
+            
+              <td><%= reservation.patient.full_name %></td>
+              <td><%= reservation.date_formated %></td>
+              <td><%= reservation.check_status %></td>
+          <% end %>
+            </tr>
+        </tbody>
+      </table>
+  <% end %>
+</div>
+<script>
+$("tr[data-link]").click(function() {
+    window.location = $(this).data("link");
+});
+</script>

@@ -22,6 +22,11 @@ class User < ApplicationRecord
     where(roles: 'doctor').pluck(:specialization).uniq
   end
 
+  def self.doctors_with_reservations_in_chosen_day(date)
+    User.where(roles: 'doctor').includes(:reservations)
+        .where(reservations: { date_time: date.all_day }).order(:specialization, :last_name)
+  end
+
   def collection
     [full_name, id]
   end

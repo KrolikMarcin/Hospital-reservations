@@ -1,0 +1,14 @@
+<div class='container'>
+  <%= month_calendar events: @reservations do |date, reservations| %>
+    <div class='clickable' data-link="<%= admin_reservations_path(date: date) %>" style="cursor: pointer;">
+    <center><%= date %><br />
+    Reservations: <%= reservations.count%></center>
+    </div>
+  <% end %>
+</div>
+<script>
+$(".clickable").click(function () {
+    window.location = $(this).data("link");
+    
+});
+</script>

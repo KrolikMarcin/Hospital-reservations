@@ -3,8 +3,8 @@ class Admin::BillsController < ApplicationController
   before_action :admin_only
 
   def index
-    @bills = if params[:format]
-               Bill.send(params[:format].to_sym)
+    @bills = if params[:payment_status]
+               Bill.where(paid: params[:payment_status]).order(payment_date: :desc)
              else
                Bill.all.order(payment_date: :desc)
              end

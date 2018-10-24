@@ -16,6 +16,8 @@
     </a>
     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
       <%= link_to 'All bills', admin_bills_path, class: 'dropdown-item' %>
+      <%= link_to 'Paid bills', admin_bills_path(payment_status: :true), class: 'dropdown-item'%>
+      <%= link_to 'Unpaid bills', admin_bills_path(payment_status: :false), class: 'dropdown-item'%>
     </div>
   </li>
 </ul>

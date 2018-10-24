@@ -2,8 +2,8 @@ class PrescriptionsController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @prescriptions = if params[:format]
-                       Reservation.find(params[:format]).prescriptions
+    @prescriptions = if params[:reservation_id]
+                       Reservation.find(params[:reservation_id]).prescriptions
                      else
                        Prescription.where(user: current_user)
                      end
