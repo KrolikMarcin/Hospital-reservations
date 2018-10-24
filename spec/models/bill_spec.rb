@@ -11,7 +11,7 @@ RSpec.describe Bill, type: :model do
     end
 
     it 'returns X if paid: false' do
-      bill = build(:bill, :not_paid)
+      bill = build(:bill, :unpaid)
       expect(bill.check_status).to eq('X')
     end
   end
@@ -23,7 +23,7 @@ RSpec.describe Bill, type: :model do
     end
 
     it 'returns current date + 7 days if paid: false' do
-      bill = build(:bill, :not_paid)
+      bill = build(:bill, :unpaid)
       time = Time.now
       expect(bill.check_status).equal?(time + 7.day..Time.now + 7.day)
     end

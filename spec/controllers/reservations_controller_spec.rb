@@ -224,39 +224,23 @@ RSpec.describe ReservationsController, type: :controller do
   end
 
   describe 'GET #index' do
-    let(:doctor) { create(:doctor_with_many_reservations, reservations_count: 10) }
+    let(:doctor) { create(:doctor_with_many_reservations, random_date: true) }
     before do
       allow_any_instance_of(Reservation).to receive(:date_with_free_doctors) { true }
       sign_in(doctor)
     end
 
-    context 'with params[:format]' do
-      it "returns only today's reservations for a login doctor if
-          params[:format] = :doctor_today_reservations" do
-        get :index, params: { format: 'doctor_today_reservations' }
-        expect(assigns(:reservations)).to eq(doctor.reservations
-                                                    .where(date_time: Time.now.all_day))
-      end
-
-      it "returns reservations from this week's for a login doctor if
-          params[:format] = :doctor_week_reservations" do
-        get :index, params: { format: 'doctor_week_reservations' }
-        expect(assigns(:reservations)).to eq(doctor.reservations
-                                              .where(date_time: Time.now.all_week))
-      end
-
-      it "returns reservations from this month's for a login doctor if
-          params[:format] = :doctor_month_reservations" do
-        get :index, params: { format: 'doctor_month_reservations' }
-        expect(assigns(:reservations)).to eq(doctor.reservations
-                                              .where(date_time: Time.now.all_month))
+    context 'with params[:date]' do
+      it 'returns reservations of the logged user from chosen day' do
+        get :index, params: { date: doctor.reservations.first.date_time }
+        expect(assigns(:reservations)).to eq([doctor.reservations.first])
       end
     end
 
     context 'without params' do
-      it 'returns all login user reservations' do
+      it 'returns all reservations of the logged user' do
         get :index
-        expect(assigns(:reservations)).to eq(doctor.reservations.order(date_time: :desc))
+        expect(assigns(:reservations)).to eq(doctor.reservations)
       end
     end
   end

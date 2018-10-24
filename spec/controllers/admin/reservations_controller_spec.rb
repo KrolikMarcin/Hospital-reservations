@@ -6,47 +6,25 @@ RSpec.describe Admin::ReservationsController, type: :controller do
 
   describe 'GET #index' do
     let(:reservations) do
-      create_list(:reservation_with_chosen_doctor, 5, date_time: Time.now + 8.days)
+      create_list(:reservation_with_chosen_doctor, 5, :random_date)
     end
 
     context 'without params' do
-      it 'assigns the requested reservations to @reservations and renders the :index template' do
+      it 'assigns the requested reservations to @reservations and
+          renders the :month_calendar template' do
         get :index
         expect(assigns(:reservations)).to eq(reservations)
-        expect(response).to render_template :index
+        expect(response).to render_template :month_calendar
       end
     end
 
-    context 'with params[:format]' do
-      let(:todays_reservations) do
-        create_list(:reservation_with_chosen_doctor, 3, date_time: Time.now + 1.hour)
-      end
-
-      it "returns all today's reservations if params[:format] = 'today_all_reservations' and
+    context 'with params[:date]' do
+      it "assigns requested reservations from chosen day if params[:date] and
           renders :index template" do
-        get :index, params: { format: 'today_all_reservations' }
-        expect(assigns(:reservations)).to eq(todays_reservations)
-        expect(response).to render_template :index
+        get :index, params: { date: reservations.first.date_time }
+        expect(assigns(:doctors)).to eq([reservations.first.doctor])
+        expect(response).to render_template :index_with_chosen_date
       end
-    end
-  end
-
-  describe 'GET #show' do
-    let(:reservation) { create(:reservation_with_chosen_doctor) }
-
-    it 'assigns the requested reservation to @reservation and renders the :show template' do
-      get :show, params: { id: reservation }
-      expect(assigns(:reservation)).to eq(reservation)
-      expect(response).to render_template :show
-    end
-  end
-
-  describe 'Delete #destroy' do
-    let!(:reservation) { create(:reservation_with_chosen_doctor) }
-
-    it 'deletes the @reservation and redirects to admin/reservations#index' do
-      expect { delete :destroy, params: { id: reservation } }.to change(Reservation, :count).by(-1)
-      expect(response).to redirect_to admin_reservations_path
     end
   end
 end

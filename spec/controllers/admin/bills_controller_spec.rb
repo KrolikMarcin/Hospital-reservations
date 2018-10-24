@@ -5,6 +5,7 @@ RSpec.describe Admin::BillsController, type: :controller do
     allow_any_instance_of(Reservation).to receive(:date_with_free_doctors) { true }
     sign_in(create(:user, :admin))
   end
+
   describe 'GET #index' do
     before { allow_any_instance_of(Bill).to receive(:bill_items_empty) { true } }
     let!(:bills) { create_list(:bill, 3, paid: true) }
@@ -17,33 +18,22 @@ RSpec.describe Admin::BillsController, type: :controller do
       end
     end
 
-    context 'with params[:format]' do
-      let!(:not_paid_bills) { create_list(:bill, 3, :not_paid) }
+    context 'with params[:payment_status]' do
+      let!(:unpaid_bills) { create_list(:bill, 3, :unpaid) }
 
-      it "assigns all not paid bills to @bills if params[:format] = 'not_paid'
+      it "assigns all not paid bills to @bills if params[:payment_status] = 'false'
           and renders :index template" do
-        get :index, params: { format: 'not_paid' }
-        expect(assigns(:bills)).to eq(not_paid_bills)
+        get :index, params: { payment_status: false }
+        expect(assigns(:bills)).to eq(unpaid_bills)
         expect(response).to render_template :index
       end
 
-      it "assigns paid bills to @bills if params[:format] = 'paid'
+      it "assigns paid bills to @bills if params[:payment_status] = 'true'
           and renders :index template" do
-        get :index, params: { format: 'paid' }
+        get :index, params: { payment_status: true }
         expect(assigns(:bills)).to eq(bills)
         expect(response).to render_template :index
       end
-    end
-  end
-
-  describe 'GET #show' do
-    let(:bill) { create(:bill) }
-    before { allow_any_instance_of(Bill).to receive(:bill_items_empty) { true } }
-
-    it 'assigns the requested bill to @bill and render :index template' do
-      get :show, params: { id: bill }
-      expect(assigns(:bill)).to eq(bill)
-      expect(response).to render_template :show
     end
   end
 
@@ -77,7 +67,7 @@ RSpec.describe Admin::BillsController, type: :controller do
 
       it 'redirects to the created bill' do
         post :create, params: valid_params
-        expect(response).to redirect_to admin_bill_path(assigns(:bill))
+        expect(response).to redirect_to bill_path(assigns(:bill))
       end
     end
 
