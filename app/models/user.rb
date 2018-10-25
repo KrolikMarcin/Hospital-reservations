@@ -12,10 +12,11 @@ class User < ApplicationRecord
 
   def self.free_doctors(reservation)
     doctors = where(roles: 'doctor', specialization: reservation.doctor_specialization)
-              .left_outer_joins(:reservations)
-    busy_doctors = doctors.where(reservations: { date_time: reservation.date_time }).pluck(:id)
+    busy_doctors = doctors.left_outer_joins(:reservations)
+                          .where(reservations: { date_time: reservation.date_time }).pluck(:id)
     # returns sorted free doctors
-    doctors.where.not(id: busy_doctors).group(:id).order(Arel.sql('count(reservations.id)'))
+    doctors.left_outer_joins(:reservations).where.not(id: busy_doctors)
+           .group(:id).order(Arel.sql('count(reservations.id)'))
   end
 
   def self.specializations

@@ -12,18 +12,21 @@
 
 ActiveRecord::Schema.define(version: 2018_10_08_092414) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "addresses", force: :cascade do |t|
     t.string "street"
     t.string "house_number"
     t.string "apartment_number"
     t.string "postal_code"
     t.string "city"
-    t.integer "user_id"
+    t.bigint "user_id"
     t.index ["user_id"], name: "index_addresses_on_user_id"
   end
 
   create_table "bill_items", force: :cascade do |t|
-    t.integer "bill_id"
+    t.bigint "bill_id"
     t.string "description"
     t.decimal "price"
     t.index ["bill_id"], name: "index_bill_items_on_bill_id"
@@ -33,8 +36,8 @@ ActiveRecord::Schema.define(version: 2018_10_08_092414) do
     t.decimal "amount"
     t.date "payment_date"
     t.boolean "paid", default: false
-    t.integer "reservation_id"
-    t.integer "user_id"
+    t.bigint "reservation_id"
+    t.bigint "user_id"
     t.index ["reservation_id"], name: "index_bills_on_reservation_id"
     t.index ["user_id"], name: "index_bills_on_user_id"
   end
@@ -42,8 +45,8 @@ ActiveRecord::Schema.define(version: 2018_10_08_092414) do
   create_table "prescriptions", force: :cascade do |t|
     t.string "medicine"
     t.string "recommendations"
-    t.integer "reservation_id"
-    t.integer "user_id"
+    t.bigint "reservation_id"
+    t.bigint "user_id"
     t.index ["reservation_id"], name: "index_prescriptions_on_reservation_id"
     t.index ["user_id"], name: "index_prescriptions_on_user_id"
   end
@@ -57,8 +60,8 @@ ActiveRecord::Schema.define(version: 2018_10_08_092414) do
   end
 
   create_table "reservations_users", id: false, force: :cascade do |t|
-    t.integer "user_id", null: false
-    t.integer "reservation_id", null: false
+    t.bigint "user_id", null: false
+    t.bigint "reservation_id", null: false
     t.index ["user_id", "reservation_id"], name: "index_reservations_users_on_user_id_and_reservation_id"
   end
 
@@ -85,4 +88,10 @@ ActiveRecord::Schema.define(version: 2018_10_08_092414) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "addresses", "users"
+  add_foreign_key "bill_items", "bills"
+  add_foreign_key "bills", "reservations"
+  add_foreign_key "bills", "users"
+  add_foreign_key "prescriptions", "reservations"
+  add_foreign_key "prescriptions", "users"
 end
