@@ -38,22 +38,26 @@ class ReservationsController < ApplicationController
 
   def update
     @reservation = Reservation.find(params[:id])
-    @reservation.remove_doctor_if_exists
     if @reservation.update(reservation_params)
       redirect_to reservation_doctor_choice_path(@reservation)
     else
+      @specializations = User.specializations
       render :edit
     end
   end
 
   def destroy
-    reservation = Reservation.find(params[:id])
-    reservation.destroy
-    redirect_to current_user.admin ? admin_reservations_path : reservations_path
+    @reservation = Reservation.find(params[:id])
+    if @reservation.destroy
+      redirect_to current_user.admin ? admin_reservations_path : reservations_path
+    else
+      render :show
+    end
   end
 
   def doctor_choice
     @reservation = Reservation.find(params[:reservation_id])
+    @reservation.remove_doctor_if_exists
     @doctors = User.free_doctors(@reservation).map(&:collection)
   end
 

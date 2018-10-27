@@ -1,5 +1,19 @@
 <h2><center>Reservation</center></h2>
-<div class="container">            
+<div class="container">
+    <% if @reservation.errors.any? %>
+      <div id='error_explanation'>
+        <h2>
+          <%= pluralize(@reservation.errors.count, "error") %> 
+          prohibited this reservation from being save:
+        </h2>
+        <ul>
+          <% @reservation.errors.full_messages.each do |msg| %>
+            <li><%= msg %></li>
+          <% end%>
+        </ul>
+      </div>
+    <% end %>
+    
   <table class="table table-striped">
       <tbody>
         <tr>
