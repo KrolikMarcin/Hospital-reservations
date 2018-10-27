@@ -48,7 +48,7 @@
               <%= link_to 'Destroy', user_registration_path(current_user), method: :delete,
                 data: { confirm: 'Are you sure?' }, class: 'dropdown-item' %>
               <div class="dropdown-divider"></div>
-              <% if current_user.address.nil? %>
+              <% if current_user.address.nil? || !current_user.address.valid?%>
                 <%= link_to 'Add address', new_address_path, class: 'dropdown-item' %>
               <% else %>
                 <%= link_to 'Address', address_path(current_user.address), class: 'dropdown-item' %>

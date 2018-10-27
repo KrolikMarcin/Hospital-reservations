@@ -6,9 +6,10 @@ class User < ApplicationRecord
   has_one :address
   has_many :bills
   has_many :prescriptions
-  has_and_belongs_to_many :reservations, dependent: :destroy 
+  has_and_belongs_to_many :reservations, dependent: :destroy
   validates :first_name, :last_name, presence: true, length: { in: 3..20 }
   validates :pesel, presence: true, numericality: { equel_to: 9 }
+  before_save :titleize_full_name
 
   def self.free_doctors(reservation)
     doctors = where(roles: 'doctor', specialization: reservation.doctor_specialization)
@@ -46,5 +47,10 @@ class User < ApplicationRecord
 
   def doctor
     true if roles == 'doctor'
+  end
+
+  def titleize_full_name
+    write_attribute(:first_name, first_name.titleize)
+    write_attribute(:last_name, last_name.titleize)
   end
 end
