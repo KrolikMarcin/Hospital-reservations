@@ -37,15 +37,15 @@ class User < ApplicationRecord
   end
 
   def self.doctors
-    where(roles: 'doctor').order(:specialization)
+    where(role: 'doctor').order(:specialization)
   end
 
   def self.patients
-    where(roles: 'patient').order(:last_name)
+    where(role: 'patient').order(:last_name)
   end
 
   def self.admins
-    where(roles: 'admin').order(:last_name)
+    where(role: 'admin').order(:last_name)
   end
 
   def collection
@@ -57,15 +57,15 @@ class User < ApplicationRecord
   end
 
   def admin?
-    roles == 'admin'
+    role == 'admin'
   end
 
   def patient?
-    roles == 'patient'
+    role == 'patient'
   end
 
   def doctor?
-    roles == 'doctor'
+    role == 'doctor'
   end
 
   private

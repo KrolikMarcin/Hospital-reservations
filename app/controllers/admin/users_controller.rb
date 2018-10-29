@@ -5,7 +5,7 @@ class Admin::UsersController < ApplicationController
     @users = if params[:role]
                User.send(params[:role].to_sym)
              else
-               User.all.order(:roles)
+               User.all.order(:role)
              end
   end
 
@@ -15,7 +15,7 @@ class Admin::UsersController < ApplicationController
 
   def change_role
     @user = User.find(params[:user_id])
-    @user.update(roles: 'admin', specialization: nil)
+    @user.update(role: 'admin', specialization: nil)
     redirect_to admin_user_path(@user)
   end
 

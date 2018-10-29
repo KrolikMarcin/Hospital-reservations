@@ -5,7 +5,7 @@ class ApplicationController < ActionController::Base
 
   def configure_permitted_parameters
     devise_parameter_sanitizer.permit(:sign_up, keys:
-      [:first_name, :last_name, :pesel, :want_email, :specialization, :roles])
+      [:first_name, :last_name, :pesel, :want_email, :specialization, :role])
   end
 
   def admin_only

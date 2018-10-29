@@ -18,11 +18,10 @@ class Reservation < ApplicationRecord
   end
 
   def assign_patient_to_prescriptions
-    prescriptions.each { |p| p.user = users.find_by(roles: 'patient') }
+    prescriptions.each { |p| p.user = doctor }
   end
 
   def remove_doctor_if_exists
-    doctor = users.where(roles: 'doctor')
     users.delete(doctor) if doctor.exists?
   end
 
@@ -39,11 +38,11 @@ class Reservation < ApplicationRecord
   end
 
   def doctor
-    users.find_by(roles: 'doctor')
+    users.find_by(role: 'doctor')
   end
 
   def patient
-    users.find_by(roles: 'patient')
+    users.find_by(role: 'patient')
   end
 
   # need for the simple calendar
