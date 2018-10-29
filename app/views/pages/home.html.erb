@@ -1,0 +1,13 @@
+<div class='vertical-center'>
+  <div class='container'>
+    <div class='row' style="width:800px; margin: auto;">
+      <%= image_tag("clinic.png", size: "520x360", style:"float:left")%>
+
+      <ul>
+        <% @specializations.each do |specialization| %>
+          <li><p><%= specialization << 's' %></p></li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+</div>
