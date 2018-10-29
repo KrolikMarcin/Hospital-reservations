@@ -1,0 +1,39 @@
+<div class='container'>
+  <h3><center><%= @user.roles.capitalize %></center></h3>
+  <table class="table table-striped">
+    <tbody>
+      <tr>
+        <th>First name</th>
+          <td><%= @user.first_name%></td>
+      </tr>
+
+      <tr>
+        <th>Last name</th>
+          <td><%= @user.last_name%></td>
+      </tr>
+
+      <tr>
+        <th>Email</th>
+          <td><%= @user.email %></td>
+      </tr>
+
+      <tr>
+        <th>Role</th>
+          <td><%= @user.roles %></td>
+      </tr>
+    <% if @user.specialization? %>
+      <tr>
+        <th>Specializaton</th>
+          <td><%= @user.specialization %></td>
+      </tr>
+    <% end %>
+    </tbody>
+  </table>
+  <% unless @user.admin %>
+    <%= link_to 'Add admin permissions', admin_user_change_role_path(@user), 
+      data: { confirm: 'Are you sure? You add admin permissions' },class: "btn btn-outline-secondary" %>
+  <% end %>
+  <% unless @user.address.nil? %>
+    <%= link_to 'Address', address_path(@user.address), class: "btn btn-outline-secondary"%>
+  <% end %>
+</div>

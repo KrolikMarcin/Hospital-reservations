@@ -1,0 +1,42 @@
+<div class="container">
+
+<% @users.pluck(:roles).uniq.each do |role| %>
+<div class='clickable' data-link="<%= admin_users_path(role: role << 's') %>" style="cursor: pointer;">
+  <h3><center><%= role.capitalize %></center></h3>
+</div>
+  <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Full name</th>
+          <% if role == 'doctors'%>
+            <th>Specialization</th>
+          <% else %>
+            <th>Email</th>
+          <% end %>
+        </tr>
+      </thead>
+      <tbody>
+        <% User.send(role.to_sym).each do |user| %>
+        <tr data-link="<%= admin_user_path(user) %>" style="cursor: pointer;">
+          <td><%= user.full_name %></td>
+          <% if role == 'doctors'%>
+            <td><%= user.specialization %></td>
+          <% else %>
+            <td><%= user.email %></td>
+          <% end %>
+        <% end %>
+        </tr>
+      </tbody>
+    </table>
+<% end %>
+ <script>
+   $("tr[data-link]").click(function() {
+    window.location = $(this).data("link")
+  })
+</script>
+<script>
+$(".clickable").click(function () {
+    window.location = $(this).data("link");
+    
+});
+</script>

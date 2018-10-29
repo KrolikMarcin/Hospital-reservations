@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  root 'reservations#index'
+  root 'pages#home'
   devise_for :users
   resources :bills, only: :index do
     patch 'pay_bill'
@@ -14,6 +14,9 @@ Rails.application.routes.draw do
   end
   resources :addresses
   namespace :admin, shallow: true do
+    resources :users, only: [:index, :show, :destroy] do
+      get 'change_role'
+    end
     resources :reservations, only: :index do
       resources :bills, only: [:new, :create]
     end
