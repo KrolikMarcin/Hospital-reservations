@@ -10,21 +10,21 @@ class ApplicationController < ActionController::Base
 
   def admin_only
     redirect_back(fallback_location: root_path, alert: 'Access denied.') unless
-      current_user.admin
+      current_user.admin?
   end
 
   def patient_only
     redirect_back(fallback_location: root_path, alert: 'Access denied.') unless
-      current_user.patient
+      current_user.patient?
   end
 
   def doctor_only
     redirect_back(fallback_location: root_path, alert: 'Access denied.') unless
-    current_user.doctor
+    current_user.doctor?
   end
 
   def admin_and_patient
     redirect_back(fallback_location: root_path, alert: 'Access denied.') unless
-    current_user.admin || current_user.patient
+    current_user.admin? || current_user.patient?
   end
 end

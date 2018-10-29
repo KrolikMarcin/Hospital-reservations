@@ -48,7 +48,7 @@
 
     <div id="specialization" class="form-group hidden">
       <%= f.label :specialization %><br />
-      <%= f.text_field :specialization, class: "form-control"  %>
+      <%= f.select(:specialization, User.clinic_specializations, {}, class: "custom-select")  %>
     </div>
 
     <div class="actions">

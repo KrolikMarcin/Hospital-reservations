@@ -5,19 +5,31 @@
       Reservations
     </a>
     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-      <%= link_to 'Today reservations', admin_reservations_path(date: Time.now.to_date), class: 'dropdown-item'%>
-      <%= link_to 'All reservations', admin_reservations_path, class: 'dropdown-item' %>
+      <%= link_to 'Today', admin_reservations_path(date: Time.now.to_date), class: 'dropdown-item'%>
+      <%= link_to 'All', admin_reservations_path, class: 'dropdown-item' %>
     </div>
   </li>
 
+  <li class='navbar-item dropdown'>
+    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+      Users
+    </a>
+    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+      <%= link_to 'All', admin_users_path, class: 'dropdown-item'%>
+      <%= link_to 'Doctors', admin_users_path(role: 'doctors'), class: 'dropdown-item'%>
+      <%= link_to 'Patients', admin_users_path(role: 'patients'), class: 'dropdown-item'%>
+      <%= link_to 'Admins', admin_users_path(role: 'admins'), class: 'dropdown-item'%>
+    </div>
+  </li>
+    
   <li class='nabar-item dropdown'>
     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
       Bills
     </a>
     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-      <%= link_to 'All bills', admin_bills_path, class: 'dropdown-item' %>
-      <%= link_to 'Paid bills', admin_bills_path(payment_status: :true), class: 'dropdown-item'%>
-      <%= link_to 'Unpaid bills', admin_bills_path(payment_status: :false), class: 'dropdown-item'%>
+      <%= link_to 'All', admin_bills_path, class: 'dropdown-item' %>
+      <%= link_to 'Paid', admin_bills_path(payment_status: :true), class: 'dropdown-item'%>
+      <%= link_to 'Unpaid', admin_bills_path(payment_status: :false), class: 'dropdown-item'%>
     </div>
   </li>
 </ul>

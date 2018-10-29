@@ -27,11 +27,11 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
 
-      <% if user_signed_in? && current_user.admin %>
+      <% if user_signed_in? && current_user.admin? %>
         <%= render 'layouts/admin_navbar'%>
-      <% elsif user_signed_in? && current_user.patient %>
+      <% elsif user_signed_in? && current_user.patient? %>
         <%= render 'layouts/patient_navbar'%>
-      <% elsif user_signed_in? && current_user.doctor  %>
+      <% elsif user_signed_in? && current_user.doctor?  %>
         <%= render 'layouts/doctor_navbar'%>
       <% end %>
 

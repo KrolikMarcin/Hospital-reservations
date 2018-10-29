@@ -6,7 +6,7 @@
       <% reservations.each do |reservation| %>
         <div class='clickable' data-link="<%= reservation_path(reservation) %>" style="cursor: pointer;">
           <%= reservation.hour_formated %>
-          <% if current_user.doctor %>
+          <% if current_user.doctor? %>
             <%= reservation.patient.full_name %>
           <% else %>
             <%= reservation.doctor.full_name %>

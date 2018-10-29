@@ -1,6 +1,7 @@
 class Admin::ReservationsController < ApplicationController
   before_action :admin_only
   before_action :authenticate_user!
+
   def index
     if params[:date]
       @doctors = User.doctors_with_reservations_in_chosen_day(params[:date].to_date)

@@ -12,7 +12,7 @@
     <% @prescriptions.each do |prescription| %>
     <tr data-link="<%= prescription_path(prescription) %>" style="cursor: pointer;">
       <td><%= prescription.reservation.date_formated %></td>
-      <td><%= prescription.reservation.doctor.full_name %>
+      <td><%= prescription.reservation.doctor.full_name %></td>
       <td><%= prescription.medicine %></td>
       <td><%= prescription.recommendations %></td>
     <% end %>

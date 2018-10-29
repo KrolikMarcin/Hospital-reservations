@@ -10,7 +10,7 @@
       <tbody>
         <% @reservations.each do |reservation| %>
           <tr data-link="<%= reservation_path(reservation) %>" style="cursor: pointer;">
-            <% if current_user.doctor %>
+            <% if current_user.doctor? %>
               <td><%= reservation.patient.full_name %></td>
             <% else %>
               <td><%= reservation.doctor.full_name %></td>

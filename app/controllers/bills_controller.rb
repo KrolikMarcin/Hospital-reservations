@@ -14,7 +14,7 @@ class BillsController < ApplicationController
   def pay_bill
     # will be implement possibility to pay by bank transfer
     @bill = Bill.find(params[:bill_id])
-    @bill.update(paid: true)
+    @bill.update(paid: true, payment_date: Time.now)
     redirect_to bill_path(@bill)
   end
 end
