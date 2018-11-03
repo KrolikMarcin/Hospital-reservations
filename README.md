@@ -1,24 +1,5 @@
-# README
+Hospital 
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+App used to booking visits as well as issuing bills and prescriptions.
 
-Things you may want to cover:
-
-* Ruby version
-
-* System dependencies
-
-* Configuration
-
-* Database creation
-
-* Database initialization
-
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
+It gives possibility login in from three perspectives: admin , patient and doctor.
