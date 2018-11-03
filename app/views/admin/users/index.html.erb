@@ -1,6 +1,6 @@
 <div class="container">
 
-<% @users.pluck(:roles).uniq.each do |role| %>
+<% @users.pluck(:role).uniq.each do |role| %>
 <div class='clickable' data-link="<%= admin_users_path(role: role << 's') %>" style="cursor: pointer;">
   <h3><center><%= role.capitalize %></center></h3>
 </div>
@@ -28,6 +28,7 @@
         </tr>
       </tbody>
     </table>
+
 <% end %>
  <script>
    $("tr[data-link]").click(function() {

@@ -42,8 +42,8 @@
     </div>
 
     <div class='form-group'>
-      <%= f.label :roles %>
-      <%= f.select(:roles, ['patient', 'doctor'], {}, class:'custom-select') %>
+      <%= f.label :role %>
+      <%= f.select(:role, ['patient', 'doctor'], {}, class:'custom-select') %>
     </div>
 
     <div id="specialization" class="form-group hidden">
@@ -61,7 +61,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
 <script>
   $(document).ready(function() {
-    $('#user_roles').change(function() {
+    $('#user_role').change(function() {
        if($(this).val() == 'doctor') {
           $("#specialization").removeClass("hidden");
           return;

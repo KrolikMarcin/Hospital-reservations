@@ -1,5 +1,5 @@
 <div class='container'>
-  <h3><center><%= @user.roles.capitalize %></center></h3>
+  <h3><center><%= @user.role.capitalize %></center></h3>
   <table class="table table-striped">
     <tbody>
       <tr>
@@ -19,7 +19,7 @@
 
       <tr>
         <th>Role</th>
-          <td><%= @user.roles %></td>
+          <td><%= @user.role %></td>
       </tr>
     <% if @user.specialization? %>
       <tr>
@@ -29,7 +29,7 @@
     <% end %>
     </tbody>
   </table>
-  <% unless @user.admin %>
+  <% unless @user.admin? %>
     <%= link_to 'Add admin permissions', admin_user_change_role_path(@user), 
       data: { confirm: 'Are you sure? You add admin permissions' },class: "btn btn-outline-secondary" %>
   <% end %>

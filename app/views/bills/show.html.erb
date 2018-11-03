@@ -42,7 +42,7 @@
   </div>
 
   <%= link_to 'Reservation', reservation_path(@bill.reservation), class: "btn btn-outline-secondary"%>
-  <% if current_user.admin %>
+  <% if current_user.admin? %>
     <%= link_to 'Destroy', bill_path(@bill), method: :delete, 
     data: { confirm: 'Are you sure?' }, class: "btn btn-outline-secondary"%>
   <% end %>
