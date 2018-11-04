@@ -4,7 +4,7 @@ class BillsController < ApplicationController
   before_action :admin_and_patient, only: :show
 
   def index
-    @bills = Bill.where(user: current_user).order(payment_date: :desc)
+    @bills = Bill.where(user: current_user).order(payment_date: :desc).page(params[:page])
   end
 
   def show

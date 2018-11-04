@@ -1,29 +1,30 @@
 <div class="container">            
-<table class="table table-striped">
-  <thead>
-    <tr>
-      <th>Amount</th>
-      <th>Paid</th>
-      <th>Payment date</th>
-      <th>Doctor name</th>
-      <th>Patient name</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @bills.each do |bill| %>
-    <tr data-link="<%= bill_path(bill) %>" style="cursor: pointer;">
-  
-      <td><%= bill.amount %></td>
-      <td><%= bill.check_status %></td>
-      <td><%= bill.payment_date %></td>
-      <td><%= bill.reservation.doctor.full_name %></td>
-      <td><%= bill.user.full_name%></td>
- 
-    <% end %>
-    </tr>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th>Amount</th>
+        <th>Paid</th>
+        <th>Payment date</th>
+        <th>Doctor name</th>
+        <th>Patient name</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @bills.each do |bill| %>
+      <tr data-link="<%= bill_path(bill) %>" style="cursor: pointer;">
     
-  </tbody>
-</table>
+        <td><%= bill.amount %></td>
+        <td><%= bill.check_status %></td>
+        <td><%= bill.payment_date %></td>
+        <td><%= bill.reservation.doctor.full_name %></td>
+        <td><%= bill.user.full_name%></td>
+  
+      <% end %>
+      </tr>
+      
+    </tbody>
+  </table>
+  <%= paginate @bills%>
 </div>
  <script>
    $("tr[data-link]").click(function() {

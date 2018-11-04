@@ -5,8 +5,9 @@ class Admin::BillsController < ApplicationController
   def index
     @bills = if params[:payment_status]
                Bill.where(paid: params[:payment_status]).order(payment_date: :desc)
+                   .page(params[:page])
              else
-               Bill.all.order(payment_date: :desc)
+               Bill.all.order(payment_date: :desc).page(params[:page])
              end
   end
 
