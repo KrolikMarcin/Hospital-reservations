@@ -91,8 +91,8 @@ RSpec.describe Reservation, type: :model do
           reservation = build(:reservation, date_time: Time.new(2016, 10, 10, 18))
           expect(reservation).to_not be_valid
           expect(reservation.errors.messages[:date_time])
-            .to eq(
-              ['There are no free doctors at the given time!', "You can't chose outdated date"]
+            .to include(
+              'There are no free doctors at the given time!', "You can't chose outdated date"
             )
         end
       end

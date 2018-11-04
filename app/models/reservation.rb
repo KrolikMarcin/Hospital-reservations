@@ -13,16 +13,12 @@ class Reservation < ApplicationRecord
     where(date_time: date.all_day)
   end
 
-  def self.user_reservations(user)
-    joins(:users).where(users: { id: user.id })
-  end
-
   def assign_patient_to_prescriptions
     prescriptions.each { |p| p.user = doctor }
   end
 
   def remove_doctor_if_exists
-    users.delete(doctor) if doctor.exists?
+    users.delete(doctor) unless doctor.nil?
   end
 
   def hour_formated

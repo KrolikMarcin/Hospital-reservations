@@ -1,5 +1,5 @@
 
-  <% if Time.now.beginning_of_day + 1.days  < @reservation.date_time && !@reservation.status && current_user.patient %>
+  <% if Time.now.beginning_of_day + 1.days  < @reservation.date_time && !@reservation.status && current_user.patient? %>
     <%= link_to 'Edit', edit_reservation_path(@reservation), class: "btn btn-outline-secondary" %>
     <%= link_to 'Cancel', reservation_path(@reservation),
       method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-outline-secondary"%>
